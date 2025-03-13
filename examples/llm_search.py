@@ -1,7 +1,7 @@
 import asyncio
 import time
 from pathlib import Path
-from soli import SOLI
+from folio import FOLIO
 from alea_llm_client import OpenAIModel, AnthropicModel
 
 
@@ -10,7 +10,7 @@ async def main():
     example_text = "review and revise license agreement"
 
     # set at initialization
-    g = SOLI(llm=OpenAIModel(model="gpt-4o"))
+    g = FOLIO(llm=OpenAIModel(model="gpt-4o"))
 
     print("gpt-4o results:")
     for x in await g.parallel_search_by_llm(

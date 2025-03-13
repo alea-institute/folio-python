@@ -1,18 +1,18 @@
-# SOLI Python Library
+# FOLIO Python Library
 
-![SOLI Logo](https://openlegalstandard.org/assets/images/soli-intro-logo.png)
+![FOLIO Logo](https://openlegalstandard.org/assets/images/folio-intro-logo.png)
 
-[![PyPI version](https://badge.fury.io/py/soli-python.svg)](https://badge.fury.io/py/soli-python)
+[![PyPI version](https://badge.fury.io/py/folio-python.svg)](https://badge.fury.io/py/folio-python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python Versions](https://img.shields.io/pypi/pyversions/soli-python.svg)](https://pypi.org/project/soli-python/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/folio-python.svg)](https://pypi.org/project/folio-python/)
 
-The SOLI Python Library provides a simple and efficient way to interact with the Standard for Open Legal Information (SOLI) ontology.
+The FOLIO Python Library provides a simple and efficient way to interact with the Federated Open Legal Information Ontology (FOLIO).
 
-SOLI is an open, CC-BY licensed standard designed to represent universal elements of legal data, improving communication and data interoperability across the legal industry.
+FOLIO is an open, CC-BY licensed standard designed to represent universal elements of legal data, improving communication and data interoperability across the legal industry.
 
 ## Features
 
-- Load the SOLI ontology from GitHub or a custom HTTP URL
+- Load the FOLIO ontology from GitHub or a custom HTTP URL
 - Search for classes by label or definition
 - Get subclasses and parent classes
 - Access detailed information about each class, including labels, definitions, and examples
@@ -23,40 +23,40 @@ The changelog can be found at [CHANGES.md](CHANGES.md).
 
 ## Installation
 
-You can install the SOLI Python library using pip:
+You can install the FOLIO Python library using pip:
 
 ```bash
-pip install soli-python
+pip install folio-python
 ```
 
 For the latest development version, you can install directly from GitHub:
 
 ```bash
-pip install --upgrade https://github.com/alea-institute/soli-python/archive/refs/heads/main.zip
+pip install --upgrade https://github.com/alea-institute/folio-python/archive/refs/heads/main.zip
 ```
 
 ## Quick Start
 
-Here's a simple example to get you started with the SOLI Python library:
+Here's a simple example to get you started with the FOLIO Python library:
 
 ```python
-from soli import SOLI
+from folio import FOLIO
 
-# Initialize the SOLI client
-soli = SOLI()
+# Initialize the FOLIO client
+folio = FOLIO()
 
 # Search by prefix
-results = soli.search_by_prefix("Mich")
+results = folio.search_by_prefix("Mich")
 for owl_class in results:
     print(f"Class: {owl_class.label}")
 
 # Search for a class by label
-results = soli.search_by_label("Mich")
+results = folio.search_by_label("Mich")
 for owl_class, score in results:
     print(f"Class: {owl_class.label}, Score: {score}")
 
 # Get all areas of law
-areas_of_law = soli.get_areas_of_law()
+areas_of_law = folio.get_areas_of_law()
 for area in areas_of_law:
     print(area.label)
 ```
@@ -66,11 +66,11 @@ for area in areas_of_law:
 ```python
 # Search with an LLM
 async def search_example():
-    for result in await soli.parallel_search_by_llm(
+    for result in await folio.parallel_search_by_llm(
         "redline lease agreement",
         search_sets=[
-            soli.get_areas_of_law(max_depth=1),
-            soli.get_player_actors(max_depth=2),
+            folio.get_areas_of_law(max_depth=1),
+            folio.get_player_actors(max_depth=2),
         ],
     ):
         print(result)
@@ -83,11 +83,11 @@ LLM search uses the `alea_llm_client` to provide abstraction across multiple API
 
 ## Documentation
 
-For more detailed information about using the SOLI Python library, please refer to our [full documentation](https://soli-python.readthedocs.io/).
+For more detailed information about using the FOLIO Python library, please refer to our [full documentation](https://folio-python.readthedocs.io/).
 
 ## Contributing
 
-We welcome contributions to the SOLI Python library! If you'd like to contribute, please follow these steps:
+We welcome contributions to the FOLIO Python library! If you'd like to contribute, please follow these steps:
 
 1. Fork the repository
 2. Create a new branch for your feature or bug fix
@@ -97,22 +97,22 @@ We welcome contributions to the SOLI Python library! If you'd like to contribute
 
 For more information, see our [contribution guidelines](CONTRIBUTING.md).
 
-## SOLI API
-A public, freely-accessible API is available for the SOLI ontology.
+## FOLIO API
+A public, freely-accessible API is available for the FOLIO ontology.
 
-The API is hosted at [https://soli.openlegalstandard.org/](https://soli.openlegalstandard.org/).
+The API is hosted at [https://folio.openlegalstandard.org/](https://folio.openlegalstandard.org/).
 
-The source code for the API is available on GitHub at [https://github.com/alea-institute/soli-api](https://github.com/alea-institute/soli-api).
+The source code for the API is available on GitHub at [https://github.com/alea-institute/folio-api](https://github.com/alea-institute/folio-api).
 
 
 ## License
 
-The SOLI Python library is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+The FOLIO Python library is released under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Support
 
-If you encounter any issues or have questions about using the SOLI Python library, please [open an issue](https://github.com/alea-institute/soli-python/issues) on GitHub.
+If you encounter any issues or have questions about using the FOLIO Python library, please [open an issue](https://github.com/alea-institute/folio-python/issues) on GitHub.
 
 ## Learn More
 
-To learn more about SOLI, its development, and how you can get involved, visit the [SOLI website](https://openlegalstandard.org/) or join the [SOLI community forum](https://discourse.openlegalstandard.org/).
+To learn more about FOLIO, its development, and how you can get involved, visit the [FOLIO website](https://openlegalstandard.org/) or join the [FOLIO community forum](https://discourse.openlegalstandard.org/).

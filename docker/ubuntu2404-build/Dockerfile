@@ -28,8 +28,8 @@ COPY pyproject.toml poetry.lock ./
 # build the poetry environment
 RUN bash -l -c "poetry install --no-root"
 
-# copy the rust code
-COPY soli soli
+# copy the python code
+COPY folio folio
 COPY tests tests
 
 # run command

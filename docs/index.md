@@ -1,37 +1,37 @@
-# Welcome to the SOLI Python Documentation
+# Welcome to the FOLIO Python Documentation
 
 ## Introduction
 
-SOLI (Standard for Open Legal Information) is an open, CC-BY licensed standard designed to represent universal elements of legal data, improving communication and data interoperability across the legal industry.
+FOLIO (Federated Open Legal Information Ontology) is an open, CC-BY licensed standard designed to represent universal elements of legal data, improving communication and data interoperability across the legal industry.
 
-The SOLI Python library provides an easy-to-use interface for working with the SOLI ontology, allowing users to load, parse, and query the SOLI knowledge graph.
+The FOLIO Python library provides an easy-to-use interface for working with the FOLIO ontology, allowing users to load, parse, and query the FOLIO knowledge graph.
 
-For more information about SOLI, visit the [official SOLI website](https://openlegalstandard.org/).
+For more information about FOLIO, visit the [official FOLIO website](https://openlegalstandard.org/).
 
-## What is SOLI?
+## What is FOLIO?
 
-SOLI is a comprehensive ontology that includes over 18,000 standardized concepts covering a wide range of legal terms, including both common and specialized concepts. It combines the power of ontology and taxonomy to create a comprehensive way to describe legal information.
+FOLIO is a comprehensive ontology that includes over 18,000 standardized concepts covering a wide range of legal terms, including both common and specialized concepts. It combines the power of ontology and taxonomy to create a comprehensive way to describe legal information.
 
-Key features of SOLI include:
+Key features of FOLIO include:
 - Unique identifiers for every concept
 - Multilingual support
 - Open development process
 
 ## Installation
 
-You can install the SOLI Python library using `pip` from the following sources:
+You can install the FOLIO Python library using `pip` from the following sources:
 
 
 ### GitHub (Development Version)
 
 ```bash
-pip install --upgrade https://github.com/alea-institute/soli-python/archive/refs/heads/main.zip
+pip install --upgrade https://github.com/alea-institute/folio-python/archive/refs/heads/main.zip
 ```
 
 ### PyPI
 
 ```bash
-pip install soli-python
+pip install folio-python
 ```
 
 #### Search Extras
@@ -40,7 +40,7 @@ pip install soli-python
 you should install the library with the `[search]` extra:**
 
 ```bash
-pip install soli-python[search]
+pip install folio-python[search]
 ```
 
 
@@ -48,19 +48,19 @@ pip install soli-python[search]
 
 ## Getting Started
 
-Loading the SOLI ontology is as simple as creating a new SOLI graph instance:
+Loading the FOLIO ontology is as simple as creating a new FOLIO graph instance:
 
 ```python
-from soli import SOLI
+from folio import FOLIO
 
-# Initialize the SOLI graph
+# Initialize the FOLIO graph
 # This will retrieve the OWL file from the default GitHub repository or
 # re-use an existing, cached copy if available.
 
-graph = SOLI()
+graph = FOLIO()
 ```
 
-Once you have initialized the graph, you can conveniently access the SOLI taxonomy or OWL classes.
+Once you have initialized the graph, you can conveniently access the FOLIO taxonomy or OWL classes.
 
 ```python
 print(graph["R8g9E8c4U6pZQefIjUNRuDd"].to_json())
@@ -68,14 +68,14 @@ print(graph["R8g9E8c4U6pZQefIjUNRuDd"].to_json())
 
 ```json
 {
-  "iri": "https://soli.openlegalstandard.org/R8g9E8c4U6pZQefIjUNRuDd",
+  "iri": "https://folio.openlegalstandard.org/R8g9E8c4U6pZQefIjUNRuDd",
   "label": "Bankruptcy, Insolvency, and Restructuring Law",
   "sub_class_of": [
-    "https://soli.openlegalstandard.org/RSYBzf149Mi5KE0YtmpUmr"
+    "https://folio.openlegalstandard.org/RSYBzf149Mi5KE0YtmpUmr"
   ],
   "parent_class_of": [
-    "https://soli.openlegalstandard.org/R8D2A8vpEW3oEpxLRVkaVDk",
-    "https://soli.openlegalstandard.org/RBGaYz0rr5Dh0Sjxu0Z6DHx"
+    "https://folio.openlegalstandard.org/R8D2A8vpEW3oEpxLRVkaVDk",
+    "https://folio.openlegalstandard.org/RBGaYz0rr5Dh0Sjxu0Z6DHx"
   ],
   "is_defined_by": null,
   "see_also": [],
@@ -116,14 +116,14 @@ print(graph["R8g9E8c4U6pZQefIjUNRuDd"].to_json())
 
 ### Listing taxonomies
 
-For example, you can list all areas of law in the SOLI ontology:
+For example, you can list all areas of law in the FOLIO ontology:
 
 ```python
 # Get all areas of law
 areas_of_law = graph.get_areas_of_law()
 print(areas_of_law[-1])
 
-# Output: OWLClass(label=Antitrust and Competition Law, iri=https://soli.openlegalstandard.org/RDFwOzDi3E8DQ0OxTKb6UEJ)
+# Output: OWLClass(label=Antitrust and Competition Law, iri=https://folio.openlegalstandard.org/RDFwOzDi3E8DQ0OxTKb6UEJ)
 ````
 
 It's also easy to limit the taxonomic depth:
@@ -148,11 +148,11 @@ print("Children", graph.get_children("R8g9E8c4U6pZQefIjUNRuDd"))
 ```
 
 ### IRIs
-Note that you can use the SOLI IRIs, legacy IRIs, or short-hand identifiers to access classes:
+Note that you can use the FOLIO IRIs, legacy IRIs, or short-hand identifiers to access classes:
 
 ```python
 # Get a class by formal IRI
-graph["https://soli.openlegalstandard.org/R8g9E8c4U6pZQefIjUNRuDd"] \
+graph["https://folio.openlegalstandard.org/R8g9E8c4U6pZQefIjUNRuDd"] \
     == graph["R8g9E8c4U6pZQefIjUNRuDd"] \
     == graph["http://lmss.sali.org/R8g9E8c4U6pZQefIjUNRuDd"]
 
@@ -177,7 +177,7 @@ More examples are available in the [examples](examples.md) section.
 
 ## Features
 
-- Load the SOLI ontology from GitHub or a custom HTTP URL
+- Load the FOLIO ontology from GitHub or a custom HTTP URL
 - Search for classes by label or definition
 - Get subclasses and parent classes
 - Access detailed information about each class, including labels, definitions, and examples
@@ -185,27 +185,27 @@ More examples are available in the [examples](examples.md) section.
 
 ## API Reference
 
-For detailed information about the SOLI Python library API, please refer to the API documentation (coming soon).
+For detailed information about the FOLIO Python library API, please refer to the API documentation (coming soon).
 
 ## Contributing
 
-Contributions to the SOLI Python library are welcome! Please see our [contribution guidelines](https://github.com/alea-institute/soli-python/blob/main/CONTRIBUTING.md) for more information.
+Contributions to the FOLIO Python library are welcome! Please see our [contribution guidelines](https://github.com/alea-institute/folio-python/blob/main/CONTRIBUTING.md) for more information.
 
 ## License
 
-The SOLI Python library is released under the MIT License. See the [LICENSE](https://github.com/alea-institute/soli-python/blob/main/LICENSE) file for details.
+The FOLIO Python library is released under the MIT License. See the [LICENSE](https://github.com/alea-institute/folio-python/blob/main/LICENSE) file for details.
 
-The SOLI standard itself is available under the Creative Commons Attribution (CC-BY) License.
+The FOLIO standard itself is available under the Creative Commons Attribution (CC-BY) License.
 
 ```{toctree}
 :maxdepth: 2
 :caption: Contents:
 
 examples
-soli/graph
-soli/models
-soli/config
-soli/logger
+folio/graph
+folio/models
+folio/config
+folio/logger
 contributing
 ```
 
@@ -217,4 +217,4 @@ contributing
 
 ## Learn More
 
-To learn more about SOLI, its development, and how you can get involved, visit the [SOLI website](https://openlegalstandard.org/) or join the [SOLI community forum](https://openlegalstandard.org/forum/).
+To learn more about FOLIO, its development, and how you can get involved, visit the [FOLIO website](https://openlegalstandard.org/) or join the [FOLIO community forum](https://openlegalstandard.org/forum/).

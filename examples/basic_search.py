@@ -1,18 +1,18 @@
-from soli import SOLI
+from folio import FOLIO
 
 if __name__ == "__main__":
-    # Initialize the SOLI client with default settings
-    soli = SOLI()
+    # Initialize the FOLIO client with default settings
+    folio = FOLIO()
 
     # Search for classes with "Contract" in the label
-    results = soli.search_by_label("SDNY", limit=3)
+    results = folio.search_by_label("SDNY", limit=3)
     print("** Labels **")
     for owl_class, score in results:
         print(f"Class: {owl_class.label}, Score: {score}")
     print()
 
     # Search for classes with "legal" in the definition
-    results = soli.search_by_definition("waterways", limit=3)
+    results = folio.search_by_definition("waterways", limit=3)
     print("** Definitions **")
     for owl_class, score in results:
         print(

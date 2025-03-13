@@ -22,7 +22,7 @@ sys.path.insert(0, str(PROJECT_PATH))
 print("sys.path", sys.path)
 
 # config
-project = "soli-python"
+project = "folio-python"
 copyright = "2024, ALEA Institute"
 author = "ALEA Institute (https://aleainstitute.ai)"
 release = "0.1.5"
@@ -58,7 +58,7 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # html_theme = 'alabaster'
 html_theme = "sphinx_book_theme"
 html_static_path = ["_static"]
-html_logo = "_static/soli-logo.png"
+html_logo = "_static/folio-logo.png"
 html_favicon = "_static/favicon-32x32.png"
 
 
@@ -67,7 +67,7 @@ html_theme_options = {
     "use_sidenotes": True,
     "collapse_navbar": True,
     "show_navbar_depth": 2,
-    "repository_url": "https://github.com/alea-institute/soli-python",
+    "repository_url": "https://github.com/alea-institute/folio-python",
     "repository_branch": "main",
     "path_to_docs": "sphinx",
     "use_issues_button": True,
@@ -76,9 +76,9 @@ html_theme_options = {
     "pygments_light_style": "default",
     "pygments_dark_style": "default",
     "logo": {
-        "dark": "soli-logo.png",
-        "light": "soli-logo.png",
+        "dark": "folio-logo.png",
+        "light": "folio-logo.png",
         "favicon": "favicon-32x32.png",
-        "alt_text": "SOLI",
+        "alt_text": "FOLIO",
     },
 }

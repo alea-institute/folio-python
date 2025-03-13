@@ -1,5 +1,5 @@
 """
-This module contains the OWLClass model and related pydantic models for the SOLI package.
+This module contains the OWLClass model and related pydantic models for the FOLIO package.
 """
 
 # pylint: disable=fixme,no-member,unsupported-assignment-operation,too-many-lines,too-many-public-methods
@@ -13,13 +13,13 @@ from pydantic import BaseModel, Field
 
 # Default values for configuration
 NSMAP = {
-    None: "https://soli.openlegalstandard.org/",
+    None: "https://folio.openlegalstandard.org/",
     "dc": "http://purl.org/dc/elements/1.1/",
     "v1": "http://www.loc.gov/mads/rdf/v1#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "soli": "https://soli.openlegalstandard.org/",
+    "folio": "https://folio.openlegalstandard.org/",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xml": "http://www.w3.org/XML/1998/namespace",
@@ -28,7 +28,7 @@ NSMAP = {
 
 class OWLClass(BaseModel):
     """
-    OWLClass model for the SOLI package, which represents an OWL class in the SOLI
+    OWLClass model for the FOLIO package, which represents an OWL class in the FOLIO
     ontology/taxonomy style.
 
     TODO: think about future-proofing for next-gen roadmap.
@@ -346,13 +346,13 @@ class OWLClass(BaseModel):
         # set up NSMAP -> @context
         jsonld_data: dict[str, Any] = {
             "@context": {
-                None: "https://soli.openlegalstandard.org/",
+                None: "https://folio.openlegalstandard.org/",
                 "dc": "http://purl.org/dc/elements/1.1/",
                 "v1": "http://www.loc.gov/mads/rdf/v1#",
                 "owl": "http://www.w3.org/2002/07/owl#",
                 "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
                 "xsd": "http://www.w3.org/2001/XMLSchema#",
-                "soli": "https://soli.openlegalstandard.org/",
+                "folio": "https://folio.openlegalstandard.org/",
                 "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
                 "skos": "http://www.w3.org/2004/02/skos/core#",
                 "xml": "http://www.w3.org/XML/1998/namespace",

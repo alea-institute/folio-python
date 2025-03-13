@@ -6,10 +6,10 @@
 poetry build
 
 # Test 22.04
-docker build -t soli-python-ubuntu2204-install -f docker/ubuntu2204-install/Dockerfile . \
+docker build -t folio-python-ubuntu2204-install -f docker/ubuntu2204-install/Dockerfile . \
   && \
-  docker run soli-python-ubuntu2204-install:latest \
+  docker run folio-python-ubuntu2204-install:latest \
   && \
-  docker build -t soli-python-ubuntu2404-install -f docker/ubuntu2404-install/Dockerfile . \
+  docker build -t folio-python-ubuntu2404-install -f docker/ubuntu2404-install/Dockerfile . \
   && \
-  docker run soli-python-ubuntu2404-install:latest
+  docker run folio-python-ubuntu2404-install:latest

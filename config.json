@@ -1,10 +1,10 @@
 {
-  "soli": {
+  "folio": {
     "source": "github",
     "repo_owner": "alea-institute",
-    "repo_name": "soli",
+    "repo_name": "folio",
     "branch": "1.0.0",
-    "path": "SOLI.owl",
+    "path": "FOLIO.owl",
     "use_cache": true
   }
 }

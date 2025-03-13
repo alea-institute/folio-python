@@ -1,5 +1,5 @@
 """
-This module contains the logger utility functions for the SOLI package.
+This module contains the logger utility functions for the FOLIO package.
 """
 
 # imports

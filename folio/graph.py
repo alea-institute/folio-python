@@ -1,9 +1,9 @@
 """
-soli/graph.py - SOLI (Standard for Open Legal Information) Python library
+folio/graph.py - FOLIO (Federated Open Legal Information Ontology) Python library
 
 https://openlegalstandard.org/
 
-This module provides a Python library for working with SOLI (Standard for Open Legal Information) data.
+This module provides a Python library for working with FOLIO (Federated Open Legal Information Ontology) data.
 
 TODO: implement token caching layer in system prompt for search; need upstream support in alea-llm-client first
 """
@@ -33,7 +33,7 @@ import lxml.etree
 from alea_llm_client import BaseAIModel
 
 # project imports
-from soli.config import (
+from folio.config import (
     DEFAULT_GITHUB_API_URL,
     DEFAULT_GITHUB_OBJECT_URL,
     DEFAULT_GITHUB_REPO_BRANCH,
@@ -42,13 +42,13 @@ from soli.config import (
     DEFAULT_HTTP_URL,
     DEFAULT_SOURCE_TYPE,
 )
-from soli.logger import get_logger
-from soli.models import OWLClass, NSMAP
+from folio.logger import get_logger
+from folio.models import OWLClass, NSMAP
 
 
-class SOLITypes(Enum):
+class FOLIOTypes(Enum):
     """
-    Enum for SOLI types.
+    Enum for FOLIO types.
     """
 
     ACTOR_PLAYER = "Actor / Player"
@@ -64,7 +64,7 @@ class SOLITypes(Enum):
     GOVERNMENTAL_BODY = "Governmental Body"
     INDUSTRY = "Industry"
     LANGUAGE = "Language"
-    SOLI_TYPE = "SOLI Type"
+    FOLIO_TYPE = "FOLIO Type"
     LEGAL_AUTHORITIES = "Legal Authorities"
     LEGAL_ENTITY = "Legal Entity"
     LOCATION = "Location"
@@ -77,37 +77,37 @@ class SOLITypes(Enum):
     SYSTEM_IDENTIFIERS = "System Identifiers"
 
 
-SOLI_TYPE_IRIS = {
-    SOLITypes.ACTOR_PLAYER: "R8CdMpOM0RmyrgCCvbpiLS0",
-    SOLITypes.AREA_OF_LAW: "RSYBzf149Mi5KE0YtmpUmr",
-    SOLITypes.ASSET_TYPE: "RCIwc6WJi6IT7xePURxsi4T",
-    SOLITypes.COMMUNICATION_MODALITY: "R8qItBwG2pRMFhUq1HQEMnb",
-    SOLITypes.CURRENCY: "R767niCLQVC5zIcO5WDQMSl",
-    SOLITypes.DATA_FORMAT: "R79aItNTJQwHgR002wuX3iC",
-    SOLITypes.DOCUMENT_ARTIFACT: "RDt4vQCYDfY0R9fZ5FNnTbj",
-    SOLITypes.ENGAGEMENT_TERMS: "R9kmGZf5FSmFdouXWQ1Nndm",
-    SOLITypes.EVENT: "R73hoH1RXYjBTYiGfolpsAF",
-    SOLITypes.FORUMS_VENUES: "RBjHwNNG2ASVmasLFU42otk",
-    SOLITypes.GOVERNMENTAL_BODY: "RBQGborh1CfXanGZipDL0Qo",
-    SOLITypes.INDUSTRY: "RDIwFaFcH4KY0gwEY0QlMTp",
-    SOLITypes.LANGUAGE: "RDOvAHsvY8TKJ1O1orXPM9o",
-    SOLITypes.SOLI_TYPE: "R8uI6AZ9vSgpAdKmfGZKfTZ",
-    SOLITypes.LEGAL_AUTHORITIES: "RC1CZydjfH8oiM4W3rCkma3",
-    SOLITypes.LEGAL_ENTITY: "R7L5eLIzH0CpOUE74uJvSjL",
-    SOLITypes.LOCATION: "R9aSzp9cEiBCzObnP92jYFX",
-    SOLITypes.MATTER_NARRATIVE: "R7ReDY2v13rer1U8AyOj55L",
-    SOLITypes.MATTER_NARRATIVE_FORMAT: "R8ONVC8pLVJC5dD4eKqCiZL",
-    SOLITypes.OBJECTIVES: "RlNFgB3TQfMzV26V4V7u4E",
-    SOLITypes.SERVICE: "RDK1QEdQg1T8B5HQqMK2pZN",
-    SOLITypes.STANDARDS_COMPATIBILITY: "RB4cFSLB4xvycDlKv73dOg6",
-    SOLITypes.STATUS: "Rx69EnEj3H3TpcgTfUSoYx",
-    SOLITypes.SYSTEM_IDENTIFIERS: "R8EoZh39tWmXCkmP2Xzjl6E",
+FOLIO_TYPE_IRIS = {
+    FOLIOTypes.ACTOR_PLAYER: "R8CdMpOM0RmyrgCCvbpiLS0",
+    FOLIOTypes.AREA_OF_LAW: "RSYBzf149Mi5KE0YtmpUmr",
+    FOLIOTypes.ASSET_TYPE: "RCIwc6WJi6IT7xePURxsi4T",
+    FOLIOTypes.COMMUNICATION_MODALITY: "R8qItBwG2pRMFhUq1HQEMnb",
+    FOLIOTypes.CURRENCY: "R767niCLQVC5zIcO5WDQMSl",
+    FOLIOTypes.DATA_FORMAT: "R79aItNTJQwHgR002wuX3iC",
+    FOLIOTypes.DOCUMENT_ARTIFACT: "RDt4vQCYDfY0R9fZ5FNnTbj",
+    FOLIOTypes.ENGAGEMENT_TERMS: "R9kmGZf5FSmFdouXWQ1Nndm",
+    FOLIOTypes.EVENT: "R73hoH1RXYjBTYiGfolpsAF",
+    FOLIOTypes.FORUMS_VENUES: "RBjHwNNG2ASVmasLFU42otk",
+    FOLIOTypes.GOVERNMENTAL_BODY: "RBQGborh1CfXanGZipDL0Qo",
+    FOLIOTypes.INDUSTRY: "RDIwFaFcH4KY0gwEY0QlMTp",
+    FOLIOTypes.LANGUAGE: "RDOvAHsvY8TKJ1O1orXPM9o",
+    FOLIOTypes.FOLIO_TYPE: "R8uI6AZ9vSgpAdKmfGZKfTZ",
+    FOLIOTypes.LEGAL_AUTHORITIES: "RC1CZydjfH8oiM4W3rCkma3",
+    FOLIOTypes.LEGAL_ENTITY: "R7L5eLIzH0CpOUE74uJvSjL",
+    FOLIOTypes.LOCATION: "R9aSzp9cEiBCzObnP92jYFX",
+    FOLIOTypes.MATTER_NARRATIVE: "R7ReDY2v13rer1U8AyOj55L",
+    FOLIOTypes.MATTER_NARRATIVE_FORMAT: "R8ONVC8pLVJC5dD4eKqCiZL",
+    FOLIOTypes.OBJECTIVES: "RlNFgB3TQfMzV26V4V7u4E",
+    FOLIOTypes.SERVICE: "RDK1QEdQg1T8B5HQqMK2pZN",
+    FOLIOTypes.STANDARDS_COMPATIBILITY: "RB4cFSLB4xvycDlKv73dOg6",
+    FOLIOTypes.STATUS: "Rx69EnEj3H3TpcgTfUSoYx",
+    FOLIOTypes.SYSTEM_IDENTIFIERS: "R8EoZh39tWmXCkmP2Xzjl6E",
 }
 
 OWL_THING = "http://www.w3.org/2002/07/owl#Thing"
 
 # Default cache directory for the ontology
-DEFAULT_CACHE_DIR: Path = Path.home() / ".soli" / "cache"
+DEFAULT_CACHE_DIR: Path = Path.home() / ".folio" / "cache"
 
 # Default maximum depth for subgraph traversal safety
 DEFAULT_MAX_DEPTH: int = 16
@@ -157,11 +157,11 @@ except ImportError as e:
 
 
 # pylint: disable=too-many-instance-attributes
-class SOLI:
+class FOLIO:
     """
-    SOLI (Standard for Open Legal Information) Python library
+    FOLIO (Federated Open Legal Information Ontology) Python library
 
-    This class provides a Python library for working with SOLI (Standard for Open Legal Information) data.
+    This class provides a Python library for working with FOLIO (Federated Open Legal Information Ontology) data.
     """
 
     # pylint: disable=too-many-positional-arguments
@@ -176,7 +176,7 @@ class SOLI:
         llm: Optional[BaseAIModel] = None,
     ) -> None:
         """
-        Initialize the SOLI ontology.
+        Initialize the FOLIO ontology.
 
         Args:
             source_type (str): The source type for loading the ontology. Either "github" or "http".
@@ -216,9 +216,9 @@ class SOLI:
         self.triples: List[Tuple[str, str, str]] = []
 
         # load the ontology
-        LOGGER.info("Loading SOLI ontology from %s...", source_type)
+        LOGGER.info("Loading FOLIO ontology from %s...", source_type)
         start_time = time.time()
-        owl_buffer = SOLI.load_owl(
+        owl_buffer = FOLIO.load_owl(
             source_type=source_type,
             http_url=http_url,
             github_repo_owner=github_repo_owner,
@@ -227,14 +227,14 @@ class SOLI:
             use_cache=use_cache,
         )
         end_time = time.time()
-        LOGGER.info("Loaded SOLI ontology in %.2f seconds", end_time - start_time)
+        LOGGER.info("Loaded FOLIO ontology in %.2f seconds", end_time - start_time)
 
         # parse the ontology
-        LOGGER.info("Parsing SOLI ontology...")
+        LOGGER.info("Parsing FOLIO ontology...")
         start_time = time.time()
         self.parse_owl(owl_buffer)
         end_time = time.time()
-        LOGGER.info("Parsed SOLI ontology in %.2f seconds", end_time - start_time)
+        LOGGER.info("Parsed FOLIO ontology in %.2f seconds", end_time - start_time)
 
         # try to initialize a model
         self.llm: Optional[BaseAIModel] = None
@@ -298,7 +298,7 @@ class SOLI:
         github_repo_branch: str = DEFAULT_GITHUB_REPO_BRANCH,
     ) -> Optional[str]:
         """
-        Load the SOLI ontology from a local cache.
+        Load the FOLIO ontology from a local cache.
 
         Args:
             cache_path (str | Path): The path to the cache directory.
@@ -355,7 +355,7 @@ class SOLI:
         github_repo_branch: str = DEFAULT_GITHUB_REPO_BRANCH,
     ) -> None:
         """
-        Save the SOLI ontology to a local cache.
+        Save the FOLIO ontology to a local cache.
 
         Args:
             buffer (str): The raw ontology buffer.
@@ -401,7 +401,7 @@ class SOLI:
         repo_branch: str = DEFAULT_GITHUB_REPO_BRANCH,
     ) -> str:
         """
-        Load the SOLI ontology in OWL format from a GitHub repository.
+        Load the FOLIO ontology in OWL format from a GitHub repository.
 
         Args:
             repo_owner (str): The owner of the GitHub repository.
@@ -409,7 +409,7 @@ class SOLI:
             repo_branch (str): The branch of the GitHub repository.
         """
         # GitHub URL for the ontology file
-        url = f"{DEFAULT_GITHUB_OBJECT_URL}/{repo_owner}/{repo_name}/{repo_branch}/SOLI.owl"
+        url = f"{DEFAULT_GITHUB_OBJECT_URL}/{repo_owner}/{repo_name}/{repo_branch}/FOLIO.owl"
 
         # Load the ontology from the GitHub URL
         try:
@@ -433,7 +433,7 @@ class SOLI:
     @staticmethod
     def load_owl_http(http_url: Optional[str] = DEFAULT_HTTP_URL) -> str:
         """
-        Load the SOLI ontology in OWL format from an HTTP URL.
+        Load the FOLIO ontology in OWL format from an HTTP URL.
 
         Args:
             http_url (str): The HTTP URL for the ontology.
@@ -463,7 +463,7 @@ class SOLI:
         use_cache: bool = True,
     ) -> str:
         """
-        Load the SOLI ontology in OWL format.
+        Load the FOLIO ontology in OWL format.
 
         Args:
             source_type (str): The source type for loading the ontology. Either "github" or "http".
@@ -476,7 +476,7 @@ class SOLI:
         owl_buffer: Optional[str] = None
         if use_cache:
             # Load the ontology from the cache
-            owl_buffer = SOLI.load_cache(
+            owl_buffer = FOLIO.load_cache(
                 source_type=source_type,
                 http_url=http_url,
                 github_repo_owner=github_repo_owner,
@@ -487,7 +487,7 @@ class SOLI:
         if not owl_buffer:
             if source_type == "github":
                 # Load the ontology from GitHub
-                owl_buffer = SOLI.load_owl_github(
+                owl_buffer = FOLIO.load_owl_github(
                     repo_owner=github_repo_owner,
                     repo_name=github_repo_name,
                     repo_branch=github_repo_branch,
@@ -499,7 +499,7 @@ class SOLI:
                     )
 
                 # Load the ontology from an HTTP URL
-                owl_buffer = SOLI.load_owl_http(http_url=http_url)
+                owl_buffer = FOLIO.load_owl_http(http_url=http_url)
             else:
                 raise ValueError(
                     "Invalid source type. Must be either 'github' or 'http'."
@@ -507,7 +507,7 @@ class SOLI:
 
         # Save the ontology to the cache
         if use_cache:
-            SOLI.save_cache(
+            FOLIO.save_cache(
                 buffer=owl_buffer,
                 source_type=source_type,
                 http_url=http_url,
@@ -540,7 +540,7 @@ class SOLI:
     # pylint: disable=too-many-branches,too-many-statements
     def parse_owl_class(self, node: lxml.etree._Element) -> None:
         """
-        Parse an OWL class in the SOLI ontology.
+        Parse an OWL class in the FOLIO ontology.
 
         Args:
             node (lxml.etree._Element): The node element.
@@ -721,7 +721,7 @@ class SOLI:
 
     def parse_owl_ontology(self, node: lxml.etree._Element) -> None:
         """
-        Parse an OWL ontology in the SOLI ontology.
+        Parse an OWL ontology in the FOLIO ontology.
 
         Args:
             node (lxml.etree._Element): The node element.
@@ -737,7 +737,7 @@ class SOLI:
 
     def parse_node(self, node: lxml.etree._Element) -> None:
         """
-        Parse a node in the SOLI ontology.
+        Parse a node in the FOLIO ontology.
 
         Switch on these types:
             - owl:Class
@@ -778,7 +778,7 @@ class SOLI:
 
     def parse_owl(self, buffer: str) -> None:
         """
-        Parse the SOLI ontology in OWL format.
+        Parse the FOLIO ontology in OWL format.
 
         Args:
             buffer (str): The raw ontology buffer.
@@ -833,14 +833,14 @@ class SOLI:
         self, iri: str, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Recursive function to get the subgraph of the SOLI ontology.
+        Recursive function to get the subgraph of the FOLIO ontology.
 
         Args:
             iri (str): The IRI of the OWL class to start from.
             max_depth (int): The maximum depth to traverse the graph.
 
         Returns:
-            List[OWLClass]: The subgraph of the SOLI ontology.
+            List[OWLClass]: The subgraph of the FOLIO ontology.
         """
         # get the index of the class
         index = self.iri_to_index.get(self.normalize_iri(iri), None)
@@ -864,7 +864,7 @@ class SOLI:
         self, iri: str, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the children of an OWL class in the SOLI ontology.
+        Get the children of an OWL class in the FOLIO ontology.
 
         Args:
             iri (str): The IRI of the OWL class to start from.
@@ -881,7 +881,7 @@ class SOLI:
         self, iri: str, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the parents of an OWL class in the SOLI ontology.
+        Get the parents of an OWL class in the FOLIO ontology.
 
         Args:
             iri (str): The IRI of the OWL class to start from.
@@ -912,7 +912,7 @@ class SOLI:
     @cache
     def normalize_iri(iri: str) -> str:
         """
-        Normalize an IRI by removing the SOLI prefix or by handling legacy IRIs.
+        Normalize an IRI by removing the FOLIO prefix or by handling legacy IRIs.
 
         Args:
             iri (str): The IRI to normalize.
@@ -920,9 +920,21 @@ class SOLI:
         Returns:
             str: The normalized IRI.
         """
-        if iri.startswith("https://soli.openlegalstandard.org/"):
+        if iri.startswith("https://folio.openlegalstandard.org/"):
             return iri
 
+        # Legacy support for SOLI URLs
+        # Legacy support - redirect old URLs
+        if iri.startswith("https://soli.openlegalstandard.org/"):
+            return iri.replace(
+                "https://soli.openlegalstandard.org/",
+                "https://folio.openlegalstandard.org/",
+            )
+
+        if iri.startswith("folio:"):
+            iri = iri[len("folio:") :]
+
+        # Legacy support for 'soli:' prefix
         if iri.startswith("soli:"):
             iri = iri[len("soli:") :]
 
@@ -933,13 +945,13 @@ class SOLI:
             iri = iri[len("http://lmss.sali.org/") :]
 
         if iri.count("/") == 0:
-            return f"https://soli.openlegalstandard.org/{iri}"
+            return f"https://folio.openlegalstandard.org/{iri}"
 
         return iri
 
     def __contains__(self, item: str) -> bool:
         """
-        Check if an OWL class is in the SOLI ontology.
+        Check if an OWL class is in the FOLIO ontology.
 
         Args:
             item (str): The IRI of the OWL class.
@@ -1016,7 +1028,7 @@ class SOLI:
 
     def refresh(self) -> None:
         """
-        Refresh the SOLI ontology.
+        Refresh the FOLIO ontology.
 
         Returns:
             None
@@ -1033,9 +1045,9 @@ class SOLI:
         self._cached_triples = ()
 
         # load the ontology
-        LOGGER.info("Refreshing SOLI ontology with use_cache=False...")
+        LOGGER.info("Refreshing FOLIO ontology with use_cache=False...")
         start_time = time.time()
-        owl_buffer = SOLI.load_owl(
+        owl_buffer = FOLIO.load_owl(
             source_type=self.source_type,
             http_url=self.http_url,
             github_repo_owner=self.github_repo_owner,
@@ -1044,14 +1056,14 @@ class SOLI:
             use_cache=False,
         )
         end_time = time.time()
-        LOGGER.info("Refreshed SOLI ontology in %.2f seconds", end_time - start_time)
+        LOGGER.info("Refreshed FOLIO ontology in %.2f seconds", end_time - start_time)
 
         # parse the ontology
-        LOGGER.info("Parsing SOLI ontology...")
+        LOGGER.info("Parsing FOLIO ontology...")
         start_time = time.time()
         self.parse_owl(owl_buffer)
         end_time = time.time()
-        LOGGER.info("Parsed SOLI ontology in %.2f seconds", end_time - start_time)
+        LOGGER.info("Parsed FOLIO ontology in %.2f seconds", end_time - start_time)
 
     def search_by_prefix(self, prefix: str) -> List[OWLClass]:
         """
@@ -1152,7 +1164,7 @@ class SOLI:
         # check if we can search
         if rapidfuzz is None:
             raise RuntimeError(
-                "search extra must be installed to use search functions: pip install soli-python[search]"
+                "search extra must be installed to use search functions: pip install folio-python[search]"
             )
 
         # get search labels
@@ -1199,7 +1211,7 @@ class SOLI:
         # check if we can search
         if rapidfuzz is None:
             raise RuntimeError(
-                "search extra must be installed to use search functions: pip install soli-python[search]"
+                "search extra must be installed to use search functions: pip install folio-python[search]"
             )
 
         # get definitions to search with zip pattern
@@ -1281,7 +1293,7 @@ class SOLI:
         # skip if we don't have llm
         if self.llm is None:
             raise RuntimeError(
-                "search extra must be installed to use llm search functions: pip install soli-python[search]"
+                "search extra must be installed to use llm search functions: pip install folio-python[search]"
             )
 
         # set up instructions based on args
@@ -1388,12 +1400,12 @@ class SOLI:
         # skip if we don't have llm
         if self.llm is None:
             raise RuntimeError(
-                "search extra must be installed to use llm search functions: pip install soli-python[search]"
+                "search extra must be installed to use llm search functions: pip install folio-python[search]"
             )
 
         # get the search sets
         if search_sets is None:
-            search_sets = list(self.get_soli_branches(max_depth=max_depth).values())
+            search_sets = list(self.get_folio_branches(max_depth=max_depth).values())
 
         # get the responses
         try:
@@ -1428,316 +1440,320 @@ class SOLI:
 
     def __len__(self) -> int:
         """
-        Get the number of classes in the SOLI ontology.
+        Get the number of classes in the FOLIO ontology.
 
         Returns:
-            int: The number of classes in the SOLI ontology.
+            int: The number of classes in the FOLIO ontology.
         """
         return len(self.classes)
 
     def __str__(self) -> str:
         """
-        Get the string representation of the SOLI ontology.
+        Get the string representation of the FOLIO ontology.
 
         Returns:
-            str: The string representation of the SOLI ontology.
+            str: The string representation of the FOLIO ontology.
         """
         if self.source_type == "github":
-            return f"SOLI <{self.source_type}/{self.github_repo_owner}/{self.github_repo_name}/{self.github_repo_branch}>"
+            return f"FOLIO <{self.source_type}/{self.github_repo_owner}/{self.github_repo_name}/{self.github_repo_branch}>"
 
         if self.source_type == "http":
-            return f"SOLI <{self.source_type}/{self.http_url}>"
+            return f"FOLIO <{self.source_type}/{self.http_url}>"
 
-        return "SOLI <unknown>"
+        return "FOLIO <unknown>"
 
     def get_player_actors(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the player actors in the SOLI ontology.
+        Get the player actors in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of player actors.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.ACTOR_PLAYER], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.ACTOR_PLAYER], max_depth=max_depth
         )
 
     def get_areas_of_law(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the areas of law in the SOLI ontology.
+        Get the areas of law in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of areas of law.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.AREA_OF_LAW], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.AREA_OF_LAW], max_depth=max_depth
         )
 
     def get_asset_types(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the asset types in the SOLI ontology.
+        Get the asset types in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of asset types.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.ASSET_TYPE], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.ASSET_TYPE], max_depth=max_depth
         )
 
     def get_communication_modalities(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the communication modalities in the SOLI ontology.
+        Get the communication modalities in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of communication modalities.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.COMMUNICATION_MODALITY], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.COMMUNICATION_MODALITY], max_depth=max_depth
         )
 
-    def get_soli_branches(
+    def get_folio_branches(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> Dict[str, List[OWLClass]]:
         """
-        Get the SOLI branches in the SOLI ontology.
+        Get the FOLIO branches in the FOLIO ontology.
 
         Returns:
-            List[OWLClass]: The list of SOLI branches.
+            List[OWLClass]: The list of FOLIO branches.
         """
         return {
-            soli_type: self.get_children(soli_type_iri, max_depth=max_depth)
-            for soli_type, soli_type_iri in SOLI_TYPE_IRIS.items()
+            folio_type: self.get_children(folio_type_iri, max_depth=max_depth)
+            for folio_type, folio_type_iri in FOLIO_TYPE_IRIS.items()
         }
 
     def get_currencies(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the currencies in the SOLI ontology.
+        Get the currencies in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of currencies.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.CURRENCY], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.CURRENCY], max_depth=max_depth
         )
 
     def get_data_formats(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the data formats in the SOLI ontology.
+        Get the data formats in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of data formats.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.DATA_FORMAT], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.DATA_FORMAT], max_depth=max_depth
         )
 
     def get_document_artifacts(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the document artifacts in the SOLI ontology.
+        Get the document artifacts in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of document artifacts.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.DOCUMENT_ARTIFACT], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.DOCUMENT_ARTIFACT], max_depth=max_depth
         )
 
     def get_engagement_terms(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the engagement terms in the SOLI ontology.
+        Get the engagement terms in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of engagement terms.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.ENGAGEMENT_TERMS], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.ENGAGEMENT_TERMS], max_depth=max_depth
         )
 
     def get_events(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the events in the SOLI ontology.
+        Get the events in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of events.
         """
-        return self.get_children(SOLI_TYPE_IRIS[SOLITypes.EVENT], max_depth=max_depth)
+        return self.get_children(FOLIO_TYPE_IRIS[FOLIOTypes.EVENT], max_depth=max_depth)
 
     def get_forum_venues(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the forum venues in the SOLI ontology.
+        Get the forum venues in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of forum venues.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.FORUMS_VENUES], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.FORUMS_VENUES], max_depth=max_depth
         )
 
     def get_governmental_bodies(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the governmental bodies in the SOLI ontology.
+        Get the governmental bodies in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of governmental bodies.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.GOVERNMENTAL_BODY], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.GOVERNMENTAL_BODY], max_depth=max_depth
         )
 
     def get_industries(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the industries in the SOLI ontology.
+        Get the industries in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of industries.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.INDUSTRY], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.INDUSTRY], max_depth=max_depth
         )
 
     def get_languages(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the languages in the SOLI ontology.
+        Get the languages in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of languages.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.LANGUAGE], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.LANGUAGE], max_depth=max_depth
         )
 
-    def get_soli_types(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
+    def get_folio_types(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the SOLI types in the SOLI ontology.
+        Get the FOLIO types in the FOLIO ontology.
 
         Returns:
-            List[OWLClass]: The list of SOLI types.
+            List[OWLClass]: The list of FOLIO types.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.SOLI_TYPE], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.FOLIO_TYPE], max_depth=max_depth
         )
 
     def get_legal_authorities(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the legal authorities in the SOLI ontology.
+        Get the legal authorities in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of legal authorities.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.LEGAL_AUTHORITIES], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.LEGAL_AUTHORITIES], max_depth=max_depth
         )
 
     def get_legal_entities(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the legal entities in the SOLI ontology.
+        Get the legal entities in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of legal entities.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.LEGAL_ENTITY], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.LEGAL_ENTITY], max_depth=max_depth
         )
 
     def get_locations(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the locations in the SOLI ontology.
+        Get the locations in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of locations.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.LOCATION], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.LOCATION], max_depth=max_depth
         )
 
     def get_matter_narratives(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the matter narratives in the SOLI ontology.
+        Get the matter narratives in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of matter narratives.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.MATTER_NARRATIVE], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.MATTER_NARRATIVE], max_depth=max_depth
         )
 
     def get_matter_narrative_formats(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the matter narrative formats in the SOLI ontology.
+        Get the matter narrative formats in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of matter narrative formats.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.MATTER_NARRATIVE_FORMAT], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.MATTER_NARRATIVE_FORMAT], max_depth=max_depth
         )
 
     def get_objectives(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the objectives in the SOLI ontology.
+        Get the objectives in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of objectives.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.OBJECTIVES], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.OBJECTIVES], max_depth=max_depth
         )
 
     def get_services(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the services in the SOLI ontology.
+        Get the services in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of services.
         """
-        return self.get_children(SOLI_TYPE_IRIS[SOLITypes.SERVICE], max_depth=max_depth)
+        return self.get_children(
+            FOLIO_TYPE_IRIS[FOLIOTypes.SERVICE], max_depth=max_depth
+        )
 
     def get_standards_compatibilities(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the standards compatibilities in the SOLI ontology.
+        Get the standards compatibilities in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of standards compatibilities.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.STANDARDS_COMPATIBILITY], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.STANDARDS_COMPATIBILITY], max_depth=max_depth
         )
 
     def get_statuses(self, max_depth: int = DEFAULT_MAX_DEPTH) -> List[OWLClass]:
         """
-        Get the statuses in the SOLI ontology.
+        Get the statuses in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of statuses.
         """
-        return self.get_children(SOLI_TYPE_IRIS[SOLITypes.STATUS], max_depth=max_depth)
+        return self.get_children(
+            FOLIO_TYPE_IRIS[FOLIOTypes.STATUS], max_depth=max_depth
+        )
 
     def get_system_identifiers(
         self, max_depth: int = DEFAULT_MAX_DEPTH
     ) -> List[OWLClass]:
         """
-        Get the system identifiers in the SOLI ontology.
+        Get the system identifiers in the FOLIO ontology.
 
         Returns:
             List[OWLClass]: The list of system identifiers.
         """
         return self.get_children(
-            SOLI_TYPE_IRIS[SOLITypes.SYSTEM_IDENTIFIERS], max_depth=max_depth
+            FOLIO_TYPE_IRIS[FOLIOTypes.SYSTEM_IDENTIFIERS], max_depth=max_depth
         )
 
     @staticmethod
@@ -1811,7 +1827,7 @@ class SOLI:
 
     def generate_iri(self) -> str:
         """
-        Generate a new IRI for the SOLI ontology.
+        Generate a new IRI for the FOLIO ontology.
 
         NOTE: This is designed to approximate the WebProtege IRI generation algorithm.
 
@@ -1838,6 +1854,6 @@ class SOLI:
             if base64_value in self.iri_to_index:
                 continue
 
-            return f"https://soli.openlegalstandard.org/{base64_value}"
+            return f"https://folio.openlegalstandard.org/{base64_value}"
 
         raise RuntimeError("Failed to generate a unique IRI.")

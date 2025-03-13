@@ -1,6 +1,6 @@
-# Contributing to the SOLI Python Library
+# Contributing to the FOLIO Python Library
 
-Thank you for your interest in contributing to the SOLI Python library! 
+Thank you for your interest in contributing to the FOLIO Python library! 
 
 We welcome contributions from the community and appreciate your help in making this project better.
 
@@ -8,7 +8,7 @@ We welcome contributions from the community and appreciate your help in making t
 
 ### How to Report Bugs
 
-If you find a bug in the project, please open an issue on our [GitHub Issues](https://github.com/alea-institute/soli-python/issues) page.
+If you find a bug in the project, please open an issue on our [GitHub Issues](https://github.com/alea-institute/folio-python/issues) page.
 
 When reporting a bug, please include:
  - A clear and descriptive title
@@ -20,7 +20,7 @@ When reporting a bug, please include:
 
 ## How to Suggest Enhancements
 
-If you have an idea for an enhancement to the project, please open an issue on our [GitHub Issues](https://github.com/alea-institute/soli-python/issues) page
+If you have an idea for an enhancement to the project, please open an issue on our [GitHub Issues](https://github.com/alea-institute/folio-python/issues) page
 with the prefix ENH, like this:
 `[ENH] Suggested feature`
 
@@ -72,10 +72,10 @@ By contributing to this project, you agree that your contributions will be licen
 
 ## Discussion Forums
 
-Additional discussions about the project can be found on the [SOLI Discourse community](https://discourse.openlegalstandard.org/).
+Additional discussions about the project can be found on the [FOLIO Discourse community](https://discourse.openlegalstandard.org/).
 
 ## Questions
 
 If you have any questions about contributing, please open an issue or contact the project maintainers.
 
-Thank you for your contributions to the SOLI Python library!
+Thank you for your contributions to the FOLIO Python library!
