@@ -1,6 +1,6 @@
 [project]
 name = "folio-python"
-version = "0.1.5"
+version = "0.1.6"
 description = "Python library for FOLIO, the Federated Open Legal Information Ontology"
 authors = [{ name = "ALEA Institute", email = "hello@aleainstitute.ai" }]
 requires-python = ">=3.10,<4.0.0"
@@ -32,9 +32,9 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "pydantic>=2.8.2,<3",
-    "lxml>=5.2.2,<6",
-    "httpx>=0.27.2,<0.28",
+    "pydantic>=2.8.2",
+    "lxml>=5.2.2",
+    "httpx>=0.27.2",
 ]
 
 [project.optional-dependencies]

@@ -1,6 +1,6 @@
 # FOLIO Python Library
 
-![FOLIO Logo](https://openlegalstandard.org/assets/images/folio-intro-logo.png)
+![FOLIO Logo](docs/_static/folio-logo.png)
 
 [![PyPI version](https://badge.fury.io/py/folio-python.svg)](https://badge.fury.io/py/folio-python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
