@@ -147,6 +147,29 @@ print("Parents:", graph.get_parents("R8g9E8c4U6pZQefIjUNRuDd"))
 print("Children", graph.get_children("R8g9E8c4U6pZQefIjUNRuDd"))
 ```
 
+### Working with Object Properties
+
+FOLIO also provides access to object properties, which define relationships between classes:
+
+```python
+# Get all object properties
+properties = graph.get_all_properties()
+print(f"Number of object properties: {len(properties)}")
+
+# Get a specific property
+drafted_prop = graph.get_property("https://folio.openlegalstandard.org/R1us3pQhG9zkEb39dZHByB")
+print(f"Property: {drafted_prop.label}")
+
+# Find semantic connections between classes
+connections = graph.find_connections(
+    subject_class="https://folio.openlegalstandard.org/R8CdMpOM0RmyrgCCvbpiLS0",  # Actor/Player
+    property_name="folio:drafted"
+)
+
+for subject, property_obj, object_class in connections:
+    print(f"{subject.label} {property_obj.label} {object_class.label}")
+```
+
 ### IRIs
 Note that you can use the FOLIO IRIs, legacy IRIs, or short-hand identifiers to access classes:
 
@@ -181,7 +204,10 @@ More examples are available in the [examples](examples.md) section.
 - Search for classes by label or definition
 - Get subclasses and parent classes
 - Access detailed information about each class, including labels, definitions, and examples
-- Convert classes to OWL XML or Markdown format
+- Explore semantic relationships through object properties
+- Find connections between entities using labeled relationships
+- Analyze property usage, domains, and ranges
+- Convert classes to OWL XML, JSON-LD, or Markdown format
 
 ## API Reference
 
@@ -206,7 +232,6 @@ folio/graph
 folio/models
 folio/config
 folio/logger
-contributing
 ```
 
 ## Indices and Tables

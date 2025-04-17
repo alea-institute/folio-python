@@ -1,3 +1,11 @@
+Version 0.2.0 (2024-04-17)
+---------------------------
+* Added support for OWL Object Properties, enabling semantic relationship exploration
+* Added methods to search and filter by property types, domains, and ranges
+* Added functionality to find connections between entities using labeled relationships
+* Improved handling of rdfs:seeAlso relationships, including those defined via owl:Restriction
+* Added new examples demonstrating property usage and semantic connections
+
 Version 0.1.5 (2024-11-08)
 ---------------------------
 * Adding support for LLM-backed (decoder) search, e.g., via OpenAI, Anthropic, VLLM, Together

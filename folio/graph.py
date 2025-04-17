@@ -43,7 +43,7 @@ from folio.config import (
     DEFAULT_SOURCE_TYPE,
 )
 from folio.logger import get_logger
-from folio.models import OWLClass, NSMAP
+from folio.models import OWLClass, OWLObjectProperty, NSMAP
 
 
 class FOLIOTypes(Enum):
@@ -206,9 +206,12 @@ class FOLIO:
         self.title: Optional[str] = None
         self.description: Optional[str] = None
         self.classes: List[OWLClass] = []
+        self.object_properties: List[OWLObjectProperty] = []
         self.iri_to_index: Dict[str, int] = {}
+        self.iri_to_property_index: Dict[str, int] = {}
         self.label_to_index: Dict[str, List[int]] = {}
         self.alt_label_to_index: Dict[str, List[int]] = {}
+        self.property_label_to_index: Dict[str, List[int]] = {}
         self.class_edges: Dict[str, List[str]] = {}
         self._cached_triples: Tuple[Tuple[str, str, str], ...] = ()
         self._label_trie: Optional[marisa_trie.Trie] = None
@@ -576,6 +579,43 @@ class FOLIO:
                     self.triples.append(
                         (owl_class.iri, "rdfs:subClassOf", parent_class)
                     )
+                # Check for owl:Restriction with seeAlso relation
+                else:
+                    for restriction in child.findall(
+                        f".//{{{NSMAP['owl']}}}Restriction"
+                    ):
+                        on_property = restriction.find(
+                            f".//{{{NSMAP['owl']}}}onProperty"
+                        )
+                        if on_property is not None:
+                            property_resource = on_property.attrib.get(
+                                self.get_ns_tag("rdf", "resource"), None
+                            )
+
+                            # Check if it's a seeAlso restriction
+                            if (
+                                property_resource
+                                == "http://www.w3.org/2000/01/rdf-schema#seeAlso"
+                            ):
+                                some_values_from = restriction.find(
+                                    f".//{{{NSMAP['owl']}}}someValuesFrom"
+                                )
+                                if some_values_from is not None:
+                                    target_resource = some_values_from.attrib.get(
+                                        self.get_ns_tag("rdf", "resource"), None
+                                    )
+                                    if target_resource:
+                                        # Add to regular seeAlso list instead of a separate restrictions list
+                                        owl_class.see_also.append(target_resource)
+
+                                        # Add triple for the restriction
+                                        self.triples.append(
+                                            (
+                                                owl_class.iri,
+                                                "rdfs:seeAlso",
+                                                target_resource,
+                                            )
+                                        )
             elif child.tag == self.get_ns_tag("rdfs", "isDefinedBy"):
                 # set defined by
                 defined_by = child.attrib.get(self.get_ns_tag("rdf", "resource"), None)
@@ -588,10 +628,15 @@ class FOLIO:
                 # set see also
                 see_also = child.attrib.get(self.get_ns_tag("rdf", "resource"), None)
                 if see_also:
-                    owl_class.see_also.append(child.text)
+                    owl_class.see_also.append(see_also)
 
                     # add triple
                     self.triples.append((owl_class.iri, "rdfs:seeAlso", see_also))
+                elif child.text:  # Handle case where seeAlso has text content
+                    owl_class.see_also.append(child.text)
+
+                    # add triple
+                    self.triples.append((owl_class.iri, "rdfs:seeAlso", child.text))
             elif child.tag == self.get_ns_tag("rdfs", "comment"):
                 # set comment
                 owl_class.comment = child.text
@@ -719,6 +764,129 @@ class FOLIO:
                 else:
                     self.alt_label_to_index[alt_label].append(index)
 
+    def parse_owl_object_property(self, node: lxml.etree._Element) -> None:
+        """
+        Parse an OWL object property in the FOLIO ontology.
+
+        Args:
+            node (lxml.etree._Element): The node element.
+
+        Returns:
+            None
+        """
+        # get the rdf:about
+        iri = node.attrib.get(self.get_ns_tag("rdf", "about"), None)
+        if iri is None:
+            LOGGER.info("Missing IRI for OWL object property: %s", node)
+            return
+
+        # initialize the OWL object property
+        owl_property = OWLObjectProperty(iri=iri)
+
+        for child in node.getchildren():
+            if child.tag == self.get_ns_tag("rdfs", "label"):
+                # set label
+                owl_property.label = child.text
+
+                # add triple
+                self.triples.append((owl_property.iri, "rdfs:label", child.text))
+            elif child.tag == self.get_ns_tag("rdfs", "subPropertyOf"):
+                # set parent property
+                parent_property = child.attrib.get(
+                    self.get_ns_tag("rdf", "resource"), None
+                )
+                if parent_property:
+                    owl_property.sub_property_of.append(parent_property)
+
+                    # add triple
+                    self.triples.append(
+                        (owl_property.iri, "rdfs:subPropertyOf", parent_property)
+                    )
+            elif child.tag == self.get_ns_tag("rdfs", "domain"):
+                # set domain
+                domain = child.attrib.get(self.get_ns_tag("rdf", "resource"), None)
+                if domain:
+                    owl_property.domain.append(domain)
+
+                    # add triple
+                    self.triples.append((owl_property.iri, "rdfs:domain", domain))
+            elif child.tag == self.get_ns_tag("rdfs", "range"):
+                # set range
+                range_value = child.attrib.get(self.get_ns_tag("rdf", "resource"), None)
+                if range_value:
+                    owl_property.range.append(range_value)
+
+                    # add triple
+                    self.triples.append((owl_property.iri, "rdfs:range", range_value))
+            elif child.tag == self.get_ns_tag("owl", "inverseOf"):
+                # set inverse of
+                inverse_of = child.attrib.get(self.get_ns_tag("rdf", "resource"), None)
+                if inverse_of:
+                    owl_property.inverse_of = inverse_of
+
+                    # add triple
+                    self.triples.append((owl_property.iri, "owl:inverseOf", inverse_of))
+                elif child.text:
+                    # Some inverseOf elements have text content instead of resource attribute
+                    owl_property.inverse_of = child.text
+
+                    # add triple
+                    self.triples.append((owl_property.iri, "owl:inverseOf", child.text))
+            elif child.tag == self.get_ns_tag("skos", "prefLabel"):
+                # set preferred label
+                owl_property.preferred_label = child.text
+
+                # add triple
+                self.triples.append((owl_property.iri, "skos:prefLabel", child.text))
+            elif child.tag == self.get_ns_tag("skos", "altLabel"):
+                # set alternative label
+                owl_property.alternative_labels.append(child.text)
+
+                # add triple
+                self.triples.append((owl_property.iri, "skos:altLabel", child.text))
+            elif child.tag == self.get_ns_tag("skos", "definition"):
+                # set definition
+                owl_property.definition = child.text
+
+                # add triple
+                self.triples.append((owl_property.iri, "skos:definition", child.text))
+            elif child.tag == self.get_ns_tag("skos", "example"):
+                # add example
+                owl_property.examples.append(child.text)
+
+                # add triple
+                self.triples.append((owl_property.iri, "skos:example", child.text))
+            else:
+                LOGGER.debug("Unknown tag in ObjectProperty: %s", child.tag)
+
+        # skip invalid properties
+        if not owl_property.is_valid():
+            LOGGER.info("Invalid OWL object property: %s", owl_property)
+            return
+
+        # append and update indices
+        self.object_properties.append(owl_property)
+
+        # update the indices
+        index = len(self.object_properties) - 1
+        self.iri_to_property_index[owl_property.iri] = index
+
+        # update the property label index
+        if owl_property.label:
+            if owl_property.label not in self.property_label_to_index:
+                self.property_label_to_index[owl_property.label] = [index]
+            else:
+                self.property_label_to_index[owl_property.label].append(index)
+
+            # Add an edge triple for every domain/range pair to support graph traversal
+            for domain in owl_property.domain:
+                for range_val in owl_property.range:
+                    # This creates a triple that can be used to infer edges between IRIs
+                    # Format: (domain_class, property_label, range_class)
+                    edge_triple = (domain, owl_property.label, range_val)
+                    if edge_triple not in self.triples:
+                        self.triples.append(edge_triple)
+
     def parse_owl_ontology(self, node: lxml.etree._Element) -> None:
         """
         Parse an OWL ontology in the FOLIO ontology.
@@ -759,8 +927,7 @@ class FOLIO:
         elif node.tag == self.get_ns_tag("owl", "Ontology"):
             self.parse_owl_ontology(node)
         elif node.tag == self.get_ns_tag("owl", "ObjectProperty"):
-            # TODO: parse object property
-            pass
+            self.parse_owl_object_property(node)
         elif node.tag == self.get_ns_tag("owl", "DatatypeProperty"):
             # TODO: parse datatype property
             pass
@@ -984,6 +1151,29 @@ class FOLIO:
         else:
             raise TypeError("Invalid item type. Must be str or int.")
 
+    def get_property(self, item: str | int) -> Optional[OWLObjectProperty]:
+        """
+        Get an OWL object property by index (int) or IRI (str).
+
+        Args:
+            item (str | int): The index or IRI of the OWL object property.
+
+        Returns:
+            OWLObjectProperty | None: The OWL object property, or None if not found.
+        """
+        if isinstance(item, int):
+            try:
+                return self.object_properties[item]
+            except IndexError:
+                return None
+        elif isinstance(item, str):
+            index = self.iri_to_property_index.get(self.normalize_iri(item), None)
+            if index is not None:
+                return self.object_properties[index]
+            return None
+        else:
+            raise TypeError("Invalid item type. Must be str or int.")
+
     def get_by_label(
         self, label: str, include_alt_labels: bool = False
     ) -> List[OWLClass]:
@@ -1004,6 +1194,22 @@ class FOLIO:
             )
 
         return classes  # type: ignore
+
+    def get_properties_by_label(self, label: str) -> List[OWLObjectProperty]:
+        """
+        Get OWL object properties by label.
+
+        Args:
+            label (str): The label of the OWL object property.
+
+        Returns:
+            List[OWLObjectProperty]: The list of OWL object properties with the given label.
+        """
+        properties = [
+            self.object_properties[index]
+            for index in self.property_label_to_index.get(label, [])
+        ]
+        return properties
 
     def get_by_alt_label(
         self, alt_label: str, include_hidden_labels: bool = True
@@ -1438,6 +1644,15 @@ class FOLIO:
             LOGGER.error("Error searching with LLM: %s", traceback.format_exc())
             raise RuntimeError("Error searching with LLM.") from e
 
+    def get_all_properties(self) -> List[OWLObjectProperty]:
+        """
+        Get all OWL object properties in the ontology.
+
+        Returns:
+            List[OWLObjectProperty]: A list of all OWL object properties.
+        """
+        return self.object_properties.copy()
+
     def __len__(self) -> int:
         """
         Get the number of classes in the FOLIO ontology.
@@ -1824,6 +2039,86 @@ class FOLIO:
             List[Tuple[str, str, str]]: The list of triples.
         """
         return self._filter_triples(self._cached_triples, obj, filter_by="object")
+
+    def find_connections(
+        self,
+        subject_class: str | OWLClass,
+        property_name: str | OWLObjectProperty | None = None,
+        object_class: str | OWLClass | None = None,
+    ) -> List[Tuple[OWLClass, OWLObjectProperty, OWLClass]]:
+        """
+        Find all instances where a property connects specific classes.
+
+        This method allows finding semantic connections between classes using object properties.
+        You can specify any combination of subject, property, and/or object to filter the results.
+
+        Args:
+            subject_class (str | OWLClass): The subject class IRI or OWLClass instance.
+            property_name (str | OWLObjectProperty | None): The property name, IRI, or OWLObjectProperty instance.
+                                                            If None, returns connections with any property.
+            object_class (str | OWLClass | None): The object class IRI or OWLClass instance.
+                                                  If None, returns connections to any object class.
+
+        Returns:
+            List[Tuple[OWLClass, OWLObjectProperty, OWLClass]]: List of triples containing the
+                                                                subject class, property, and object class.
+        """
+        # Normalize inputs to IRIs
+        subject_iri = (
+            subject_class.iri
+            if isinstance(subject_class, OWLClass)
+            else self.normalize_iri(subject_class)
+        )
+
+        # Get all relevant triples based on what was provided
+        if property_name is not None:
+            if isinstance(property_name, OWLObjectProperty):
+                property_label = property_name.label
+            elif isinstance(property_name, str):
+                # Check if it's an IRI or a label
+                prop = self.get_property(property_name)
+                if prop:
+                    property_label = prop.label
+                else:
+                    # Assume it's a label
+                    property_label = property_name
+            else:
+                raise TypeError("property_name must be a string or OWLObjectProperty")
+        else:
+            property_label = None
+
+        if object_class is not None:
+            object_iri = (
+                object_class.iri
+                if isinstance(object_class, OWLClass)
+                else self.normalize_iri(object_class)
+            )
+        else:
+            object_iri = None
+
+        # Find matching triples
+        connections = []
+        for triple in self._cached_triples:
+            if triple[0] == subject_iri:
+                if property_label is None or triple[1] == property_label:
+                    if object_iri is None or triple[2] == object_iri:
+                        # Get actual instances
+                        subject = self[triple[0]]
+                        if subject is None:
+                            continue
+
+                        # Find the property by label
+                        properties = self.get_properties_by_label(triple[1])
+                        if not properties:
+                            continue
+
+                        object_class = self[triple[2]]
+                        if object_class is None:
+                            continue
+
+                        connections.append((subject, properties[0], object_class))
+
+        return connections
 
     def generate_iri(self) -> str:
         """

@@ -16,7 +16,10 @@ FOLIO is an open, CC-BY licensed standard designed to represent universal elemen
 - Search for classes by label or definition
 - Get subclasses and parent classes
 - Access detailed information about each class, including labels, definitions, and examples
-- Convert classes to OWL XML or Markdown format
+- Explore semantic relationships through object properties
+- Find connections between entities using labeled relationships
+- Analyze property usage, domains, and ranges
+- Convert classes to OWL XML, JSON-LD, or Markdown format
 
 ## Changelog
 The changelog can be found at [CHANGES.md](CHANGES.md).
@@ -59,6 +62,25 @@ for owl_class, score in results:
 areas_of_law = folio.get_areas_of_law()
 for area in areas_of_law:
     print(area.label)
+
+# Working with object properties
+properties = folio.get_all_properties()
+print(f"Number of object properties: {len(properties)}")
+
+# Get properties by label
+drafted_properties = folio.get_properties_by_label("folio:drafted")
+for prop in drafted_properties:
+    print(f"Property: {prop.label}")
+    print(f"Domain: {[folio[d].label for d in prop.domain if folio[d]]}")
+    print(f"Range: {[folio[r].label for r in prop.range if folio[r]]}")
+
+# Find connections between entities
+connections = folio.find_connections(
+    subject_class="https://folio.openlegalstandard.org/R8CdMpOM0RmyrgCCvbpiLS0",  # Actor/Player
+    property_name="folio:drafted"
+)
+for subject, property_obj, object_class in connections:
+    print(f"{subject.label} {property_obj.label} {object_class.label}")
 ```
 
 ## Searching with an LLM

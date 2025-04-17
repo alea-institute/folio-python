@@ -150,6 +150,69 @@ for triple in object_triples:
     print(f"- {triple[0]} {triple[1]}")
 ```
 
+## Working with Object Properties
+
+Object properties represent relationships between classes in the ontology. FOLIO provides methods to explore these semantic relationships.
+
+```python
+# Get all object properties
+properties = folio.get_all_properties()
+print(f"Number of object properties in FOLIO: {len(properties)}")
+
+# Get a specific property by IRI
+drafted_prop = folio.get_property("https://folio.openlegalstandard.org/R1us3pQhG9zkEb39dZHByB")
+print(f"\nProperty: {drafted_prop.label}")
+print(f"Definition: {drafted_prop.definition[:100]}..." if drafted_prop.definition else "No definition")
+
+# Show domain and range (what classes this property connects)
+if drafted_prop.domain:
+    print(f"Domain classes: {[folio[d].label for d in drafted_prop.domain if folio[d]]}")
+if drafted_prop.range:
+    print(f"Range classes: {[folio[r].label for r in drafted_prop.range if folio[r]]}")
+
+# Get properties by label
+properties = folio.get_properties_by_label("folio:drafted")
+for prop in properties:
+    print(f"- {prop.label}")
+    print(f"  Alternative labels: {prop.alternative_labels}")
+```
+
+## Finding Semantic Connections
+
+You can use object properties to find connections between entities in the ontology.
+
+```python
+# Find connections from Actor/Player using the 'drafted' relationship
+connections = folio.find_connections(
+    subject_class="https://folio.openlegalstandard.org/R8CdMpOM0RmyrgCCvbpiLS0",  # Actor/Player
+    property_name="folio:drafted"
+)
+
+print("Connections found:")
+for subject, property_obj, object_class in connections:
+    print(f"{subject.label} {property_obj.label} {object_class.label}")
+
+# Find all connections from a specific class
+actor_player = folio["https://folio.openlegalstandard.org/R8CdMpOM0RmyrgCCvbpiLS0"]
+all_connections = folio.find_connections(
+    subject_class=actor_player
+)
+
+print("\nAll connections from Actor/Player:")
+for subject, property_obj, object_class in all_connections[:5]:  # First 5 connections
+    print(f"{subject.label} {property_obj.label} {object_class.label}")
+
+# Find connections to a specific class
+document_connections = folio.find_connections(
+    subject_class=actor_player,
+    object_class="https://folio.openlegalstandard.org/RDt4vQCYDfY0R9fZ5FNnTbj"  # Document/Artifact
+)
+
+print("\nConnections from Actor/Player to Document/Artifact:")
+for subject, property_obj, object_class in document_connections:
+    print(f"{property_obj.label}")
+```
+
 ## Advanced Usage
 
 ### Refreshing the Ontology

@@ -26,6 +26,59 @@ NSMAP = {
 }
 
 
+class OWLObjectProperty(BaseModel):
+    """
+    OWLObjectProperty model for the FOLIO package, which represents an OWL object property
+    that connects two instances/classes in the ontology.
+    """
+
+    iri: str = Field(..., description="{http://www.w3.org/2002/07/owl#}ObjectProperty")
+    label: Optional[str] = Field(
+        None, description="{http://www.w3.org/2000/01/rdf-schema#}label"
+    )
+    sub_property_of: List[str] = Field(
+        default_factory=list,
+        description="{http://www.w3.org/2000/01/rdf-schema#}subPropertyOf",
+    )
+    domain: List[str] = Field(
+        default_factory=list,
+        description="{http://www.w3.org/2000/01/rdf-schema#}domain",
+    )
+    range: List[str] = Field(
+        default_factory=list,
+        description="{http://www.w3.org/2000/01/rdf-schema#}range",
+    )
+    inverse_of: Optional[str] = Field(
+        None, description="{http://www.w3.org/2002/07/owl#}inverseOf"
+    )
+    preferred_label: Optional[str] = Field(
+        None, description="{http://www.w3.org/2004/02/skos/core#}prefLabel"
+    )
+    alternative_labels: List[str] = Field(
+        default_factory=list,
+        description="{http://www.w3.org/2004/02/skos/core#}altLabel",
+    )
+    definition: Optional[str] = Field(
+        None, description="{http://www.w3.org/2004/02/skos/core#}definition"
+    )
+    examples: List[str] = Field(
+        default_factory=list,
+        description="{http://www.w3.org/2004/02/skos/core#}example",
+    )
+
+    def is_valid(self) -> bool:
+        """
+        Check if the OWL property is valid.
+
+        Returns:
+            bool: True if the OWL property is valid, False otherwise.
+        """
+        return self.label is not None
+
+    def __str__(self) -> str:
+        return f"OWLObjectProperty(label={self.label}, iri={self.iri})"
+
+
 class OWLClass(BaseModel):
     """
     OWLClass model for the FOLIO package, which represents an OWL class in the FOLIO
@@ -146,6 +199,9 @@ class OWLClass(BaseModel):
             is_defined_by_element.set(f"{{{NSMAP['rdf']}}}resource", self.is_defined_by)
             owl_class.append(is_defined_by_element)
 
+        # We no longer need to handle seeAlso restrictions separately since all seeAlso
+        # relationships are now in the main see_also list
+
         # add the label element
         label_element = lxml.etree.Element(f"{{{NSMAP['rdfs']}}}label", nsmap=NSMAP)
         label_element.text = self.label
@@ -158,6 +214,18 @@ class OWLClass(BaseModel):
             )
             alt_label_element.text = alt_label
             owl_class.append(alt_label_element)
+
+        # add the seeAlso elements
+        for see_also in self.see_also:
+            see_also_element = lxml.etree.Element(
+                f"{{{NSMAP['rdfs']}}}seeAlso", nsmap=NSMAP
+            )
+            # If it looks like a URI, add it as a resource attribute
+            if see_also.startswith("http"):
+                see_also_element.set(f"{{{NSMAP['rdf']}}}resource", see_also)
+            else:
+                see_also_element.text = see_also
+            owl_class.append(see_also_element)
 
         # add translations with xml:lang attrib
         for lang, translation in sorted(self.translations.items()):
@@ -370,7 +438,10 @@ class OWLClass(BaseModel):
         if self.see_also:
             jsonld_data["rdfs:seeAlso"] = []
             for see_also in self.see_also:
-                jsonld_data["rdfs:seeAlso"].append(see_also)
+                if see_also.startswith("http"):
+                    jsonld_data["rdfs:seeAlso"].append({"@id": see_also})
+                else:
+                    jsonld_data["rdfs:seeAlso"].append(see_also)
 
         # add the comment
         if self.comment:
