@@ -756,6 +756,13 @@ class FOLIO:
             else:
                 self.label_to_index[owl_class.label].append(index)
 
+        # update the alt label index with preferred label
+        if owl_class.preferred_label:
+            if owl_class.preferred_label not in self.alt_label_to_index:
+                self.alt_label_to_index[owl_class.preferred_label] = [index]
+            else:
+                self.alt_label_to_index[owl_class.preferred_label].append(index)
+
         # update the label index with alt labels
         for alt_label in owl_class.alternative_labels:  # pylint: disable=not-an-iterable
             if alt_label:
@@ -877,6 +884,13 @@ class FOLIO:
                 self.property_label_to_index[owl_property.label] = [index]
             else:
                 self.property_label_to_index[owl_property.label].append(index)
+
+        # update the property label index with preferred label
+        if owl_property.preferred_label:
+            if owl_property.preferred_label not in self.property_label_to_index:
+                self.property_label_to_index[owl_property.preferred_label] = [index]
+            else:
+                self.property_label_to_index[owl_property.preferred_label].append(index)
 
             # Add an edge triple for every domain/range pair to support graph traversal
             for domain in owl_property.domain:
