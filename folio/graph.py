@@ -2101,7 +2101,10 @@ class FOLIO:
             # Try to resolve branch name to a FOLIOTypes enum
             branch_type = None
             for ft in FOLIOTypes:
-                if ft.name.lower() == branch.lower() or ft.value.lower() == branch.lower():
+                if (
+                    ft.name.lower() == branch.lower()
+                    or ft.value.lower() == branch.lower()
+                ):
                     branch_type = ft
                     break
             if branch_type is not None and branch_type in FOLIO_TYPE_IRIS:
@@ -2159,11 +2162,23 @@ class FOLIO:
 
             if label is not None and not _text_match(cls.label, label):
                 text_matched = False
-            if text_matched and definition is not None and not _text_match(cls.definition, definition):
+            if (
+                text_matched
+                and definition is not None
+                and not _text_match(cls.definition, definition)
+            ):
                 text_matched = False
-            if text_matched and alt_label is not None and not _list_match(cls.alternative_labels, alt_label):
+            if (
+                text_matched
+                and alt_label is not None
+                and not _list_match(cls.alternative_labels, alt_label)
+            ):
                 text_matched = False
-            if text_matched and example is not None and not _list_match(cls.examples, example):
+            if (
+                text_matched
+                and example is not None
+                and not _list_match(cls.examples, example)
+            ):
                 text_matched = False
             if text_matched and any_text is not None:
                 # Check all text fields
