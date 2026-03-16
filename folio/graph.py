@@ -30,7 +30,11 @@ from typing import Dict, List, Literal, Optional, Tuple
 # packages
 import httpx
 import lxml.etree
-from alea_llm_client import BaseAIModel
+
+try:
+    from alea_llm_client import BaseAIModel
+except ImportError:
+    BaseAIModel = None  # type: ignore[assignment,misc]
 
 # project imports
 from folio.config import (
