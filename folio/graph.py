@@ -262,7 +262,7 @@ class FOLIO:
         if alea_llm_client is not None:
             try:
                 if llm is None:
-                    self.llm = alea_llm_client.OpenAIModel(model="gpt-5.1-mini")
+                    self.llm = alea_llm_client.OpenAIModel(model="gpt-5.4")
                 else:
                     self.llm = llm
                 LOGGER.info("Initialized LLM model: %s", self.llm)

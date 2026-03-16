@@ -129,6 +129,24 @@ Match modes: `"substring"` (default), `"exact"`, `"regex"`, `"fuzzy"`
 ## Searching with an LLM
 
 ```python
+from folio import FOLIO
+
+# Default: uses gpt-5.1-mini via OpenAI
+folio = FOLIO()
+
+# Recommended: gpt-5.4 with low effort and flex tier (1.8s avg, best quality)
+folio = FOLIO(effort="low", tier="flex")
+
+# Best value: Grok 4 Fast (1.1s avg, $0.20/M input tokens)
+from alea_llm_client import GrokModel
+folio = FOLIO(llm=GrokModel(model="grok-4-fast-non-reasoning"))
+
+# Any provider works — effort/tier auto-translate to provider-specific params
+from alea_llm_client import GoogleModel
+folio = FOLIO(llm=GoogleModel(model="gemini-3-flash-preview"), effort="low")
+```
+
+```python
 # Search with an LLM
 async def search_example():
     for result in await folio.parallel_search_by_llm(
@@ -145,6 +163,19 @@ asyncio.run(search_example())
 ```
 
 LLM search uses the `alea_llm_client` to provide abstraction across multiple APIs and providers. Requires `pip install folio-python[search]`.
+
+### LLM Benchmark Results
+
+Tested on FOLIO ontology search across 5 legal queries (March 2026):
+
+| Config | Avg Latency | Avg Results | Cost/M input |
+|---|---|---|---|
+| **grok-4-fast-non-reasoning** | **1.1s** | **4.0** | **$0.20** |
+| **gpt-5.4 effort=low tier=flex** | **1.8s** | **3.8** | **$2.50** |
+| gemini-3-flash-preview effort=low | 3.6s | 4.8 | low |
+| gpt-4.1-mini | 1.7s | 4.0 | $0.40 |
+
+Avoid `effort: "high"` — benchmarks show 5x latency with no quality improvement for structured search tasks.
 
 > **Migrating from soli-python?** The `soli-python` package (v0.1.x) has been renamed to `folio-python`. Uninstall the old package (`pip uninstall soli-python`) and install `folio-python` to avoid dependency conflicts.
 
