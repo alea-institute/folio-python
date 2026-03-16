@@ -1584,7 +1584,6 @@ class FOLIO:
                 prompt,
                 system="You are a legal knowledge management platform searching for relevant items in a taxonomy.\n"
                 "Always respond in JSON according to SCHEMA.",
-                max_tokens=DEFAULT_MAX_TOKENS,
                 **self.llm_kwargs,
             )
             llm_response_data = llm_response.data
