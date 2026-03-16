@@ -147,6 +147,7 @@ try:
 
     if importlib.util.find_spec("alea_llm_client") is not None:
         import alea_llm_client
+        from alea_llm_client import get_llm_kwargs
         from alea_llm_client.llms.prompts.sections import (
             format_prompt,
             format_instructions,
@@ -154,6 +155,7 @@ try:
     else:
         LOGGER.warning("Disabling search functionality: alea_llm_client not found.")
         alea_llm_client = None
+        get_llm_kwargs = None
 except ImportError as e:
     LOGGER.warning("Failed to check for search functionality: %s", e)
     rapidfuzz = None
@@ -178,6 +180,9 @@ class FOLIO:
         github_repo_branch: str = DEFAULT_GITHUB_REPO_BRANCH,
         use_cache: bool = True,
         llm: Optional[BaseAIModel] = None,
+        llm_kwargs: Optional[dict] = None,
+        effort: Optional[str] = None,
+        tier: Optional[str] = None,
     ) -> None:
         """
         Initialize the FOLIO ontology.
@@ -190,6 +195,12 @@ class FOLIO:
             github_repo_branch (str): The branch of the GitHub repository.
             use_cache (bool): Whether to use the local cache
             llm (Optional[BaseAIModel]): an alea_llm_client BaseAIModel instance for searching via decoder
+            llm_kwargs (Optional[dict]): Extra kwargs passed to LLM calls (e.g. reasoning_effort, service_tier).
+                If effort/tier are also provided, they are merged (effort/tier take precedence).
+            effort (Optional[str]): Universal effort level ("low", "medium", "high").
+                Translates to provider-specific params via get_llm_kwargs.
+            tier (Optional[str]): Universal service tier ("flex", "standard", "priority").
+                Translates to provider-specific params via get_llm_kwargs.
 
         Returns:
             None
@@ -243,15 +254,26 @@ class FOLIO:
         end_time = time.time()
         LOGGER.info("Parsed FOLIO ontology in %.2f seconds", end_time - start_time)
 
+        # store llm kwargs for search calls
+        self.llm_kwargs: dict = llm_kwargs or {}
+
         # try to initialize a model
         self.llm: Optional[BaseAIModel] = None
         if alea_llm_client is not None:
             try:
                 if llm is None:
-                    self.llm = alea_llm_client.OpenAIModel(model="gpt-4o")
+                    self.llm = alea_llm_client.OpenAIModel(model="gpt-5.1-mini")
                 else:
                     self.llm = llm
                 LOGGER.info("Initialized LLM model: %s", self.llm)
+
+                # Merge effort/tier into llm_kwargs using provider detection
+                if (effort is not None or tier is not None) and get_llm_kwargs is not None:
+                    provider_kwargs = get_llm_kwargs(self.llm, effort=effort, tier=tier)
+                    # provider_kwargs is base, llm_kwargs overrides
+                    merged = {**provider_kwargs, **self.llm_kwargs}
+                    self.llm_kwargs = merged
+
             except Exception:  # pylint: disable=broad-except
                 LOGGER.warning(
                     "Failed to initialize LLM model: %s", traceback.format_exc()
@@ -1563,6 +1585,7 @@ class FOLIO:
                 system="You are a legal knowledge management platform searching for relevant items in a taxonomy.\n"
                 "Always respond in JSON according to SCHEMA.",
                 max_tokens=DEFAULT_MAX_TOKENS,
+                **self.llm_kwargs,
             )
             llm_response_data = llm_response.data
 

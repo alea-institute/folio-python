@@ -43,7 +43,7 @@ dependencies = [
 search = [
     "rapidfuzz>=3.10.0,<4",
     "marisa-trie>=1.2.0,<2",
-    "alea-llm-client>=0.3.0"
+    "alea-llm-client>=0.3.1"
 ]
 
 [project.urls]
@@ -71,7 +71,7 @@ dev = [
 search = [
     "rapidfuzz>=3.9.7,<4",
     "marisa-trie>=1.2.0,<2",
-    "alea-llm-client>=0.3.0",
+    "alea-llm-client>=0.3.1",
 ]
 
 [tool.uv]
