@@ -1,3 +1,16 @@
+Version 0.3.0 (2026-03-15)
+---------------------------
+* Added `FOLIO.query()` method for structured concept queries with composable text and structural filters
+* Added `FOLIO.query_properties()` method for structured property queries with domain/range/inverse filters
+* Both methods support four match modes: substring (default), exact, regex, and fuzzy
+* Query filters include: label, definition, alt_label, example, any_text, branch, parent_iri, has_children, deprecated, country
+* Property query filters include: label, definition, domain_iri, range_iri, has_inverse
+
+Version 0.2.1 (2026-03-15)
+---------------------------
+* Fixed: Index preferred_label (skos:prefLabel) for search — prefLabels are now included in search indices
+* Added PyPI publish workflow for automated releases via GitHub
+
 Version 0.2.0 (2024-04-17)
 ---------------------------
 * Added support for OWL Object Properties, enabling semantic relationship exploration
