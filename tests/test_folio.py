@@ -424,6 +424,47 @@ def test_see_also_relations(folio_graph):
     assert forums_iri in cross_border.see_also
 
 
+
+def test_preferred_label_indexed_for_classes(folio_graph):
+    """Preferred labels (skos:prefLabel) should be indexed and searchable.
+
+    Regression test for fix/index-preferred-label (v0.2.1).
+    U.S. Postal Service has preferred_label "United States Postal Service"
+    which differs from its rdfs:label.
+    """
+    cls = folio_graph["R001c1c1AB6bb45501c7624c"]  # U.S. Postal Service
+    assert cls is not None
+    assert cls.preferred_label == "United States Postal Service"
+
+    # preferred_label should be in alt_label_to_index
+    assert cls.preferred_label in folio_graph.alt_label_to_index
+
+    # search_by_label should find it via preferred_label
+    results = folio_graph.search_by_label("United States Postal Service", limit=5)
+    matched_iris = [r[0].iri for r in results]
+    assert cls.iri in matched_iris
+
+    # search_by_prefix should find it via preferred_label
+    prefix_results = folio_graph.search_by_prefix("United States Post")
+    matched_iris = [r.iri for r in prefix_results]
+    assert cls.iri in matched_iris
+
+
+def test_preferred_label_indexed_for_properties(folio_graph):
+    """Preferred labels on properties should also be indexed.
+
+    Regression test for fix/index-preferred-label (v0.2.1).
+    """
+    # Find a property with a preferred_label
+    prop_with_pref = None
+    for prop in folio_graph.object_properties:
+        if prop.preferred_label and prop.preferred_label != prop.label:
+            prop_with_pref = prop
+            break
+
+    assert prop_with_pref is not None, "No property with preferred_label found"
+    assert prop_with_pref.preferred_label in folio_graph.property_label_to_index
+
 def test_benchmark_load(benchmark):
     @benchmark
     def load_folio():
