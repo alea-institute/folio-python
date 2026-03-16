@@ -424,7 +424,6 @@ def test_see_also_relations(folio_graph):
     assert forums_iri in cross_border.see_also
 
 
-
 def test_preferred_label_indexed_for_classes(folio_graph):
     """Preferred labels (skos:prefLabel) should be indexed and searchable.
 
@@ -464,6 +463,152 @@ def test_preferred_label_indexed_for_properties(folio_graph):
 
     assert prop_with_pref is not None, "No property with preferred_label found"
     assert prop_with_pref.preferred_label in folio_graph.property_label_to_index
+
+
+def test_query_by_label(folio_graph):
+    """query() should find classes by label substring."""
+    results = folio_graph.query(label="bankruptcy", limit=10)
+    assert len(results) > 0
+    for cls in results:
+        assert "bankruptcy" in cls.label.lower()
+
+
+def test_query_by_branch(folio_graph):
+    """query() with branch filter should limit results to that branch."""
+    results = folio_graph.query(any_text="trust", branch="AREA_OF_LAW", limit=10)
+    assert len(results) > 0
+    # All results should be descendants of the Area of Law root
+    area_of_law_iris = {c.iri for c in folio_graph.get_areas_of_law()}
+    for cls in results:
+        assert cls.iri in area_of_law_iris
+
+
+def test_query_regex(folio_graph):
+    """query() with regex match mode should support regex patterns."""
+    results = folio_graph.query(label="^Contract", match_mode="regex", limit=10)
+    assert len(results) > 0
+    for cls in results:
+        assert cls.label.startswith("Contract")
+
+
+def test_query_has_children(folio_graph):
+    """query() with has_children=True should return only non-leaf classes."""
+    results = folio_graph.query(label="law", has_children=True, limit=10)
+    assert len(results) > 0
+    for cls in results:
+        assert len(cls.parent_class_of) > 0
+
+
+def test_query_no_results(folio_graph):
+    """query() with nonsense exact match should return empty list."""
+    results = folio_graph.query(label="xyzzy_nonexistent_zzzz", match_mode="exact")
+    assert results == []
+
+
+def test_query_invalid_branch(folio_graph):
+    """query() with unknown branch should return empty list."""
+    results = folio_graph.query(any_text="test", branch="NONEXISTENT_BRANCH")
+    assert results == []
+
+
+def test_query_by_definition(folio_graph):
+    """query() should find classes by definition substring."""
+    results = folio_graph.query(definition="financial obligation", limit=10)
+    assert len(results) > 0
+    for cls in results:
+        assert "financial" in cls.definition.lower() or "obligation" in cls.definition.lower()
+
+
+def test_query_by_alt_label(folio_graph):
+    """query() should find classes by alternative label."""
+    results = folio_graph.query(alt_label="CIVR", match_mode="exact", limit=5)
+    assert len(results) > 0
+
+
+def test_query_by_parent_iri(folio_graph):
+    """query() with parent_iri should return only descendants."""
+    aol_iri = "RSYBzf149Mi5KE0YtmpUmr"
+    results = folio_graph.query(parent_iri=aol_iri, limit=5)
+    assert len(results) > 0
+    area_of_law_iris = {c.iri for c in folio_graph.get_areas_of_law()}
+    for cls in results:
+        assert cls.iri in area_of_law_iris
+
+
+def test_query_deprecated_excluded_by_default(folio_graph):
+    """query() should exclude deprecated classes by default."""
+    all_results = folio_graph.query(limit=100)
+    for cls in all_results:
+        assert not cls.deprecated
+
+
+def test_query_combined_filters(folio_graph):
+    """query() with multiple filters should AND them together."""
+    results = folio_graph.query(
+        label="law",
+        branch="AREA_OF_LAW",
+        has_children=True,
+        limit=10,
+    )
+    assert len(results) > 0
+    area_of_law_iris = {c.iri for c in folio_graph.get_areas_of_law()}
+    for cls in results:
+        assert "law" in cls.label.lower()
+        assert cls.iri in area_of_law_iris
+        assert len(cls.parent_class_of) > 0
+
+
+def test_query_fuzzy_mode(folio_graph):
+    """query() with fuzzy match_mode should find approximate matches."""
+    results = folio_graph.query(label="bankrupcy", match_mode="fuzzy", limit=5)  # intentional typo
+    assert len(results) > 0
+
+
+def test_query_properties_by_label(folio_graph):
+    """query_properties() should find properties by label substring."""
+    results = folio_graph.query_properties(label="has", limit=10)
+    assert len(results) > 0
+    for prop in results:
+        assert "has" in prop.label.lower()
+
+
+def test_query_properties_by_definition(folio_graph):
+    """query_properties() should find properties by definition substring."""
+    results = folio_graph.query_properties(definition="relationship", limit=10)
+    assert len(results) > 0
+    for prop in results:
+        assert "relationship" in prop.definition.lower()
+
+
+def test_query_properties_by_domain(folio_graph):
+    """query_properties() with domain_iri should filter by domain."""
+    test_prop = None
+    for prop in folio_graph.object_properties:
+        if prop.domain:
+            test_prop = prop
+            break
+    assert test_prop is not None
+
+    results = folio_graph.query_properties(domain_iri=test_prop.domain[0], limit=50)
+    assert len(results) > 0
+    for prop in results:
+        assert test_prop.domain[0] in prop.domain
+
+
+def test_query_properties_has_inverse(folio_graph):
+    """query_properties() with has_inverse=True should only return properties with inverses."""
+    results = folio_graph.query_properties(has_inverse=True, limit=10)
+    for prop in results:
+        assert prop.inverse_of is not None
+
+
+def test_query_properties_no_inverse(folio_graph):
+    """query_properties() with has_inverse=False should only return properties without inverses."""
+    results = folio_graph.query_properties(has_inverse=False, limit=10)
+    assert len(results) > 0
+    for prop in results:
+        assert prop.inverse_of is None
+
 
 def test_benchmark_load(benchmark):
     @benchmark
