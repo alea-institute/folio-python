@@ -1,6 +1,6 @@
 [project]
 name = "folio-python"
-version = "0.3.1"
+version = "0.3.2"
 description = "Python library for FOLIO, the Federated Open Legal Information Ontology"
 authors = [{ name = "ALEA Institute", email = "hello@aleainstitute.ai" }]
 requires-python = ">=3.10,<4.0.0"
@@ -43,7 +43,7 @@ dependencies = [
 search = [
     "rapidfuzz>=3.10.0,<4",
     "marisa-trie>=1.2.0,<2",
-    "alea-llm-client>=0.3.1"
+    "alea-llm-client>=0.3.2"
 ]
 
 [project.urls]
@@ -71,7 +71,7 @@ dev = [
 search = [
     "rapidfuzz>=3.9.7,<4",
     "marisa-trie>=1.2.0,<2",
-    "alea-llm-client>=0.3.1",
+    "alea-llm-client>=0.3.2",
 ]
 
 [tool.uv]
