@@ -685,7 +685,8 @@ class FOLIO:
                 lang = child.attrib.get(self.get_ns_tag("xml", "lang"), None)
                 if lang:
                     owl_class.translations[lang] = child.text
-                else:
+                # Always add to alternative_labels for search indexing
+                if child.text not in owl_class.alternative_labels:
                     owl_class.alternative_labels.append(child.text)
 
                 # add triple
