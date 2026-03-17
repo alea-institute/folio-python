@@ -268,7 +268,9 @@ class FOLIO:
                 LOGGER.info("Initialized LLM model: %s", self.llm)
 
                 # Merge effort/tier into llm_kwargs using provider detection
-                if (effort is not None or tier is not None) and get_llm_kwargs is not None:
+                if (
+                    effort is not None or tier is not None
+                ) and get_llm_kwargs is not None:
                     provider_kwargs = get_llm_kwargs(self.llm, effort=effort, tier=tier)
                     # provider_kwargs is base, llm_kwargs overrides
                     merged = {**provider_kwargs, **self.llm_kwargs}

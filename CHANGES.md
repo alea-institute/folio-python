@@ -1,3 +1,20 @@
+Version 0.3.4 (2026-03-16)
+---------------------------
+* Fixed: Include lang-tagged altLabels in search index with deduplication — 90% of altLabels were previously invisible to `search_by_label()`
+
+Version 0.3.3 (2026-03-15)
+---------------------------
+* Fixed: Drop max_tokens from search_by_llm, bump alea-llm-client>=0.3.3
+
+Version 0.3.2 (2026-03-15)
+---------------------------
+* Fixed: Bump alea-llm-client>=0.3.2 for model-aware get_llm_kwargs
+
+Version 0.3.1 (2026-03-15)
+---------------------------
+* Added effort/tier params to FOLIO constructor for LLM search configuration
+* Updated LLM defaults
+
 Version 0.3.0 (2026-03-15)
 ---------------------------
 * Added `FOLIO.query()` method for structured concept queries with composable text and structural filters
