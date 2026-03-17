@@ -30,15 +30,15 @@ wheels = [
 
 [[package]]
 name = "alea-llm-client"
-version = "0.3.2"
+version = "0.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx", extra = ["http2"] },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cf/fa/cb0bd3b24bc1beb04f0b3a82d2b7c6b85eb144508880c435189a6418db06/alea_llm_client-0.3.2.tar.gz", hash = "sha256:0032cd61c1358b4651ebf1e633a61961a1334ab34316e53e34551ec8a2ae237a", size = 59181, upload-time = "2026-03-16T22:09:53.288Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/2d/79/e43775a1a3f6aba46d158aceb7989634070a6bf030febf863f942522a9ff/alea_llm_client-0.3.3.tar.gz", hash = "sha256:9da8ed66606d5b43b587fab62b58a519b50bc4e74f4ffa55a21cb467803fc0a6", size = 59222, upload-time = "2026-03-16T22:21:35.995Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/67/53/c6063c333afc9b000a504995708e6741611885b1c5013276daa431f06cf4/alea_llm_client-0.3.2-py3-none-any.whl", hash = "sha256:60c4c6399de85d6132525e1ed77bd1e5b802783eecbc524edf7182595b56b6c3", size = 74366, upload-time = "2026-03-16T22:09:51.776Z" },
+    { url = "https://files.pythonhosted.org/packages/c2/99/191ea17f418acdbb2ed3e20e95e727d821c72ca1d520eaea67766ed86d62/alea_llm_client-0.3.3-py3-none-any.whl", hash = "sha256:dc6b6e2c0cf7bb9dabea929492703f326e2f81b42ce67dcd7f772163b5b5e785", size = 74406, upload-time = "2026-03-16T22:21:34.896Z" },
 ]
 
 [[package]]
@@ -380,7 +380,7 @@ wheels = [
 
 [[package]]
 name = "folio-python"
-version = "0.3.2"
+version = "0.3.3"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
@@ -421,7 +421,7 @@ search = [
 
 [package.metadata]
 requires-dist = [
-    { name = "alea-llm-client", marker = "extra == 'search'", specifier = ">=0.3.2" },
+    { name = "alea-llm-client", marker = "extra == 'search'", specifier = ">=0.3.3" },
     { name = "httpx", specifier = ">=0.27.2" },
     { name = "lxml", specifier = ">=5.2.2" },
     { name = "marisa-trie", marker = "extra == 'search'", specifier = ">=1.2.0,<2" },
@@ -448,7 +448,7 @@ dev = [
     { name = "types-lxml", specifier = ">=2024.8.7,<2025" },
 ]
 search = [
-    { name = "alea-llm-client", specifier = ">=0.3.2" },
+    { name = "alea-llm-client", specifier = ">=0.3.3" },
     { name = "marisa-trie", specifier = ">=1.2.0,<2" },
     { name = "rapidfuzz", specifier = ">=3.9.7,<4" },
 ]
