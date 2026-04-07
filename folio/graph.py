@@ -1004,6 +1004,10 @@ class FOLIO:
         # freeze triple tuples
         self._cached_triples = tuple(self.triples)
 
+        # clear prefix caches (fixes staleness on refresh())
+        self._prefix_cache = {}
+        self._ci_prefix_cache = {}
+
         # now create the Trie for the labels in label_to_index and alt_label_to_index
         if marisa_trie is not None:
             all_labels = [
@@ -1013,6 +1017,17 @@ class FOLIO:
                 if len(label) >= MIN_PREFIX_LENGTH
             ]
             self._label_trie = marisa_trie.Trie(all_labels)
+
+            # build lowercase-to-original bridge dict and lowercase trie
+            self._lowercase_to_original = {}
+            for label in all_labels:
+                folded = label.casefold()
+                if folded not in self._lowercase_to_original:
+                    self._lowercase_to_original[folded] = []
+                self._lowercase_to_original[folded].append(label)
+            self._lowercase_label_trie = marisa_trie.Trie(
+                list(self._lowercase_to_original.keys())
+            )
 
     def get_subgraph(
         self, iri: str, max_depth: int = DEFAULT_MAX_DEPTH
