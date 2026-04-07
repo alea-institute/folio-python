@@ -215,7 +215,10 @@ class FOLIO:
         self.class_edges: Dict[str, List[str]] = {}
         self._cached_triples: Tuple[Tuple[str, str, str], ...] = ()
         self._label_trie: Optional[marisa_trie.Trie] = None
+        self._lowercase_label_trie: Optional[marisa_trie.Trie] = None
+        self._lowercase_to_original: Dict[str, List[str]] = {}
         self._prefix_cache: Dict[str, List[OWLClass]] = {}
+        self._ci_prefix_cache: Dict[str, List[OWLClass]] = {}
         self.triples: List[Tuple[str, str, str]] = []
 
         # load the ontology
