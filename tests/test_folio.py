@@ -5,6 +5,7 @@ import sys
 import pytest
 
 # project imports
+import folio.graph
 from folio import FOLIO, FOLIOTypes, FOLIO_TYPE_IRIS, OWLClass
 
 
@@ -254,10 +255,94 @@ def test_all_formatters(folio_graph):
 
 
 def test_search_prefix(folio_graph):
-    for c in folio_graph.search_by_prefix("Mich"):
+    """Original test: case-sensitive prefix search preserves prior behavior."""
+    for c in folio_graph.search_by_prefix("Mich", case_sensitive=True):
         assert c.label == "Michigan"
         assert "US+MI" in c.alternative_labels
         break
+
+
+def test_search_prefix_case_insensitive(folio_graph):
+    """Case-insensitive prefix search returns results for lowercase input."""
+    results = folio_graph.search_by_prefix("securit")
+    assert len(results) > 0
+    labels = [c.label for c in results]
+    assert any("Securit" in label for label in labels)
+
+
+def test_search_prefix_case_insensitive_acronym(folio_graph):
+    """Case-insensitive prefix search handles acronyms like DUI."""
+    results = folio_graph.search_by_prefix("dui")
+    assert len(results) > 0
+    labels = [c.label for c in results]
+    assert any("Driving Under the Influence" in label for label in labels)
+
+
+def test_search_prefix_case_sensitive_preserves_behavior(folio_graph):
+    """case_sensitive=True: lowercase input returns nothing, title-case works."""
+    assert len(folio_graph.search_by_prefix("securit", case_sensitive=True)) == 0
+    assert len(folio_graph.search_by_prefix("Securit", case_sensitive=True)) > 0
+
+
+def test_search_prefix_no_duplicates(folio_graph):
+    """Case-insensitive results contain no duplicate OWLClass objects."""
+    results = folio_graph.search_by_prefix("mich")
+    iris = [c.iri for c in results]
+    assert len(iris) == len(set(iris)), f"Duplicate IRIs found: {iris}"
+
+
+def test_search_prefix_case_sensitive_no_duplicates(folio_graph):
+    """Case-sensitive search returns no duplicate OWLClass entries."""
+    results = folio_graph.search_by_prefix("Mich", case_sensitive=True)
+    iris = [c.iri for c in results]
+    assert len(iris) == len(set(iris)), (
+        f"Duplicate IRIs in case-sensitive results: {iris}"
+    )
+
+
+def test_search_prefix_primary_label_ranks_first(folio_graph):
+    """Primary-label matches rank before alt-label matches for same prefix."""
+    # Use "Mich" where Michigan (primary label, 8 chars) should beat any
+    # alt-label-only match. Verify it appears before any alt-label-only result.
+    results = folio_graph.search_by_prefix("Mich", case_sensitive=True)
+    if not results:
+        return
+    # Michigan is a short primary label -- it should be first
+    assert results[0].label == "Michigan", (
+        f"Expected Michigan first, got {results[0].label!r}"
+    )
+    # All results should have no duplicate IRIs (dedup working)
+    iris = [c.iri for c in results]
+    assert len(iris) == len(set(iris))
+
+    # Case-insensitive path: "mich" should also put Michigan near top
+    results_ci = folio_graph.search_by_prefix("mich")
+    labels_ci = [c.label for c in results_ci]
+    if "Michigan" in labels_ci:
+        mi_idx = labels_ci.index("Michigan")
+        assert mi_idx < 5, (
+            f"Michigan at index {mi_idx} in CI results, expected near top"
+        )
+
+
+def test_search_prefix_fallback_parity(folio_graph, monkeypatch):
+    """Pure-Python fallback produces same IRI set as trie path."""
+    # get trie results first (uses marisa_trie path)
+    trie_results = folio_graph.search_by_prefix("securit")
+    trie_iris = sorted(c.iri for c in trie_results)
+
+    # clear cache so fallback path runs fresh
+    folio_graph._ci_prefix_cache = {}
+
+    # disable marisa_trie at module level to trigger pure-Python fallback
+    monkeypatch.setattr(folio.graph, "marisa_trie", None)
+
+    fallback_results = folio_graph.search_by_prefix("securit")
+    fallback_iris = sorted(c.iri for c in fallback_results)
+
+    assert trie_iris == fallback_iris, (
+        f"Trie ({len(trie_iris)}) and fallback ({len(fallback_iris)}) results differ"
+    )
 
 
 def test_search_label(folio_graph):

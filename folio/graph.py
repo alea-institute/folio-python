@@ -230,7 +230,10 @@ class FOLIO:
         self.class_edges: Dict[str, List[str]] = {}
         self._cached_triples: Tuple[Tuple[str, str, str], ...] = ()
         self._label_trie: Optional[marisa_trie.Trie] = None
+        self._lowercase_label_trie: Optional[marisa_trie.Trie] = None
+        self._lowercase_to_original: Dict[str, List[str]] = {}
         self._prefix_cache: Dict[str, List[OWLClass]] = {}
+        self._ci_prefix_cache: Dict[str, List[OWLClass]] = {}
         self.triples: List[Tuple[str, str, str]] = []
 
         # load the ontology
@@ -1029,6 +1032,10 @@ class FOLIO:
         # freeze triple tuples
         self._cached_triples = tuple(self.triples)
 
+        # clear prefix caches (fixes staleness on refresh())
+        self._prefix_cache = {}
+        self._ci_prefix_cache = {}
+
         # now create the Trie for the labels in label_to_index and alt_label_to_index
         if marisa_trie is not None:
             all_labels = [
@@ -1038,6 +1045,17 @@ class FOLIO:
                 if len(label) >= MIN_PREFIX_LENGTH
             ]
             self._label_trie = marisa_trie.Trie(all_labels)
+
+            # build lowercase-to-original bridge dict and lowercase trie
+            self._lowercase_to_original = {}
+            for label in all_labels:
+                folded = label.casefold()
+                if folded not in self._lowercase_to_original:
+                    self._lowercase_to_original[folded] = []
+                self._lowercase_to_original[folded].append(label)
+            self._lowercase_label_trie = marisa_trie.Trie(
+                list(self._lowercase_to_original.keys())
+            )
 
     def get_subgraph(
         self, iri: str, max_depth: int = DEFAULT_MAX_DEPTH
@@ -1314,29 +1332,38 @@ class FOLIO:
         end_time = time.time()
         LOGGER.info("Parsed FOLIO ontology in %.2f seconds", end_time - start_time)
 
-    def search_by_prefix(self, prefix: str) -> List[OWLClass]:
+    def search_by_prefix(
+        self, prefix: str, case_sensitive: bool = False
+    ) -> List[OWLClass]:
         """
-        Search for IRIs by prefix.
+        Search for OWL classes by label prefix.
 
         Args:
             prefix (str): The prefix to search for.
+            case_sensitive (bool): If True, match original-case labels exactly.
+                If False (default), match case-insensitively via a parallel
+                lowercase trie.
 
         Returns:
-            List[OWLClass]: The list of OWL classes with IRIs that start with the prefix.
+            List[OWLClass]: The list of OWL classes whose labels start with
+                the prefix, sorted by label length ascending.
         """
-        # check for cache
+        if case_sensitive:
+            return self._search_by_prefix_sensitive(prefix)
+        return self._search_by_prefix_insensitive(prefix)
+
+    def _search_by_prefix_sensitive(self, prefix: str) -> List[OWLClass]:
+        """Case-sensitive prefix search (original behavior)."""
         if prefix in self._prefix_cache:
             return self._prefix_cache[prefix]
 
-        # search in trie
+        # sort: primary-label keys first (False < True), then by length
         if marisa_trie is not None:
-            # return in sorted by length ascending list
             keys = sorted(
-                self._label_trie.keys(prefix),
-                key=len,
+                self._label_trie.keys(prefix),  # type: ignore[union-attr]
+                key=lambda k: (k not in self.label_to_index, len(k)),
             )
         else:
-            # search with pure python
             keys = sorted(
                 [
                     label
@@ -1344,20 +1371,76 @@ class FOLIO:
                     + list(self.alt_label_to_index.keys())
                     if label.startswith(prefix)
                 ],
-                key=len,
+                key=lambda k: (k not in self.label_to_index, len(k)),
             )
 
-        # get the list of IRIs
-        iri_list = []
+        # deduplicate by class index, label_to_index checked before alt_label_to_index
+        seen: set = set()
+        iri_list: list = []
         for key in keys:
-            iri_list.extend(self.label_to_index.get(key, []))
-            iri_list.extend(self.alt_label_to_index.get(key, []))
+            for idx in self.label_to_index.get(key, []):  # type: ignore[arg-type]
+                if idx not in seen:
+                    seen.add(idx)
+                    iri_list.append(idx)
+            for idx in self.alt_label_to_index.get(key, []):  # type: ignore[arg-type]
+                if idx not in seen:
+                    seen.add(idx)
+                    iri_list.append(idx)
 
-        # materialize and cache
         classes = [self[index] for index in iri_list]
-        self._prefix_cache[prefix] = classes
+        self._prefix_cache[prefix] = classes  # type: ignore[assignment]
+        return classes
 
-        # return the classes
+    def _search_by_prefix_insensitive(self, prefix: str) -> List[OWLClass]:
+        """Case-insensitive prefix search via parallel lowercase trie."""
+        folded = prefix.casefold()
+
+        if folded in self._ci_prefix_cache:
+            return self._ci_prefix_cache[folded]
+
+        if marisa_trie is not None and self._lowercase_label_trie is not None:
+            lowercase_keys = sorted(
+                self._lowercase_label_trie.keys(folded),  # type: ignore[union-attr]
+                key=len,
+            )
+            # resolve lowercase keys back to original-case labels;
+            # sort: primary-label keys first, then by length
+            original_keys = sorted(
+                [
+                    orig
+                    for lk in lowercase_keys
+                    for orig in self._lowercase_to_original.get(lk, [])
+                ],
+                key=lambda k: (k not in self.label_to_index, len(k)),
+            )
+        else:
+            # pure-Python fallback: case-insensitive prefix match
+            # sort: primary-label keys first, then by length
+            original_keys = sorted(
+                [
+                    label
+                    for label in list(self.label_to_index.keys())
+                    + list(self.alt_label_to_index.keys())
+                    if label.casefold().startswith(folded)
+                ],
+                key=lambda k: (k not in self.label_to_index, len(k)),
+            )
+
+        # resolve to OWLClass with deduplication by index
+        seen: set = set()
+        iri_list: list = []
+        for key in original_keys:
+            for idx in self.label_to_index.get(key, []):  # type: ignore[arg-type]
+                if idx not in seen:
+                    seen.add(idx)
+                    iri_list.append(idx)
+            for idx in self.alt_label_to_index.get(key, []):  # type: ignore[arg-type]
+                if idx not in seen:
+                    seen.add(idx)
+                    iri_list.append(idx)
+
+        classes = [self[index] for index in iri_list]
+        self._ci_prefix_cache[folded] = classes  # type: ignore[assignment]
         return classes
 
     @staticmethod
