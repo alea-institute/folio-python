@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 Phase: 1 of 4 (Data Structure Declarations)
 Plan: 0 of 0 in current phase
 Status: Ready to plan
-Last activity: 2026-04-07 -- Roadmap created
+Last activity: 2026-04-08 - Completed quick task 260408-9yz: Address PR #16 review feedback
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -54,6 +54,12 @@ None yet.
 
 - MIN_PREFIX_LENGTH=3 filters out 2-char queries like "IP" -- documented as v2 scope (LEN-01)
 - Pre-existing _prefix_cache staleness in refresh() -- will be fixed in Phase 2 (IDX-03)
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260408-9yz | Address PR #16 review feedback: mechanical cleanups, dedup-with-tiebreak on both paths, label-over-alt-label ranking tweak | 2026-04-08 | 4b8262a | [260408-9yz-address-pr-16-review-feedback-mechanical](./quick/260408-9yz-address-pr-16-review-feedback-mechanical/) |
 
 ## Session Continuity
 
