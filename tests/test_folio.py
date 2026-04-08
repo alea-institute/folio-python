@@ -5,6 +5,7 @@ import sys
 import pytest
 
 # project imports
+import folio.graph
 from folio import FOLIO, FOLIOTypes, FOLIO_TYPE_IRIS, OWLClass
 
 
@@ -292,27 +293,21 @@ def test_search_prefix_no_duplicates(folio_graph):
 
 def test_search_prefix_fallback_parity(folio_graph, monkeypatch):
     """Pure-Python fallback produces same results as trie path."""
-    # get trie results
+    # get trie results first (uses marisa_trie path)
     trie_results = folio_graph.search_by_prefix("securit")
     trie_iris = sorted(c.iri for c in trie_results)
 
-    # clear caches so fallback path runs fresh
+    # clear cache so fallback path runs fresh
     folio_graph._ci_prefix_cache = {}
 
-    # monkeypatch to simulate marisa_trie not available
-    import folio.graph as graph_module
+    # disable marisa_trie at module level to trigger pure-Python fallback
+    monkeypatch.setattr(folio.graph, "marisa_trie", None)
 
-    original_trie = folio_graph._lowercase_label_trie
-    folio_graph._lowercase_label_trie = None
-    try:
-        fallback_results = folio_graph.search_by_prefix("securit")
-        fallback_iris = sorted(c.iri for c in fallback_results)
-    finally:
-        folio_graph._lowercase_label_trie = original_trie
+    fallback_results = folio_graph.search_by_prefix("securit")
+    fallback_iris = sorted(c.iri for c in fallback_results)
 
     assert trie_iris == fallback_iris, (
-        f"Trie ({len(trie_iris)}) and fallback ({len(fallback_iris)}) "
-        f"results differ"
+        f"Trie ({len(trie_iris)}) and fallback ({len(fallback_iris)}) results differ"
     )
 
 
@@ -382,24 +377,26 @@ def test_triples(folio_graph):
         )
         > 0
     )
-    
-    
+
+
 def test_object_properties(folio_graph):
     """Test that object properties are properly parsed from the OWL file."""
     # Check that we have object properties
     assert len(folio_graph.object_properties) > 0
-    
+
     # Test getting a property by IRI
-    test_property = folio_graph.get_property("https://folio.openlegalstandard.org/R0q5hTo2yTMlnIAbmFnwCH")
+    test_property = folio_graph.get_property(
+        "https://folio.openlegalstandard.org/R0q5hTo2yTMlnIAbmFnwCH"
+    )
     assert test_property is not None
     assert test_property.label == "hasFigure"
-    
+
     # Test getting properties by label
     opposed_props = folio_graph.get_properties_by_label("folio:opposed")
     assert len(opposed_props) > 0
     for prop in opposed_props:
         assert "opposed" in prop.label or "opposed" in prop.alternative_labels
-        
+
     # Test that object properties have domain and range
     for prop in folio_graph.get_all_properties()[:10]:  # Sample first 10 properties
         if prop.domain and prop.range:
@@ -408,12 +405,12 @@ def test_object_properties(folio_graph):
                 domain_class = folio_graph[domain]
                 if domain_class:
                     assert domain_class.label is not None
-                    
+
             for range_val in prop.range:
                 range_class = folio_graph[range_val]
                 if range_class:
                     assert range_class.label is not None
-    
+
     # Test finding connections between classes using properties
     # Find a property with valid domain and range for testing
     test_prop = None
@@ -424,14 +421,13 @@ def test_object_properties(folio_graph):
             if domain_class and range_class:
                 test_prop = prop
                 break
-    
+
     if test_prop:
         # Test find_connections method with a valid property
         connections = folio_graph.find_connections(
-            subject_class=test_prop.domain[0],
-            property_name=test_prop.label
+            subject_class=test_prop.domain[0], property_name=test_prop.label
         )
-        
+
         # We might not have actual connections, but the method should run without errors
         assert isinstance(connections, list)
 
@@ -441,22 +437,32 @@ def test_see_also_relations(folio_graph):
     # Test seeAlso relations (both direct and via restrictions)
     seeAlso_triples = folio_graph.get_triples_by_predicate("rdfs:seeAlso")
     assert len(seeAlso_triples) > 0
-    
+
     # Check specific examples with owl:Restriction seeAlso relations
-    bank_holding_company = folio_graph["https://folio.openlegalstandard.org/DGNYyo0YT7OIzI5PfpTInQ"]
+    bank_holding_company = folio_graph[
+        "https://folio.openlegalstandard.org/DGNYyo0YT7OIzI5PfpTInQ"
+    ]
     assert bank_holding_company is not None
     assert len(bank_holding_company.see_also) > 0
-    
+
     # Verify the specific restriction target is included
     # (This is the restriction found in the OWL file)
-    assert "https://folio.openlegalstandard.org/R9WYIrIeT3fTYMxfW0xZldF" in bank_holding_company.see_also
-    
-    # Reinsurance Carriers example  
-    reinsurance_carriers = folio_graph["https://folio.openlegalstandard.org/Fr7Djl5US9i-GPKMBW4K7g"]
+    assert (
+        "https://folio.openlegalstandard.org/R9WYIrIeT3fTYMxfW0xZldF"
+        in bank_holding_company.see_also
+    )
+
+    # Reinsurance Carriers example
+    reinsurance_carriers = folio_graph[
+        "https://folio.openlegalstandard.org/Fr7Djl5US9i-GPKMBW4K7g"
+    ]
     assert reinsurance_carriers is not None
     assert len(reinsurance_carriers.see_also) > 0
-    assert "https://folio.openlegalstandard.org/R9bu7L3xOUfbWLaHRhimQa" in reinsurance_carriers.see_also
-    
+    assert (
+        "https://folio.openlegalstandard.org/R9bu7L3xOUfbWLaHRhimQa"
+        in reinsurance_carriers.see_also
+    )
+
     # Verify this appears in the triples
     subject_iri = "https://folio.openlegalstandard.org/Fr7Djl5US9i-GPKMBW4K7g"
     target_iri = "https://folio.openlegalstandard.org/R9bu7L3xOUfbWLaHRhimQa"
@@ -466,13 +472,15 @@ def test_see_also_relations(folio_graph):
             found = True
             break
     assert found, f"Triple ({subject_iri}, rdfs:seeAlso, {target_iri}) not found"
-    
+
     # Check Cross-Border Objective has exactly two seeAlso relationships
-    cross_border = folio_graph["https://folio.openlegalstandard.org/RBsiX2FSnOKhxvLGKoU9x1"]
+    cross_border = folio_graph[
+        "https://folio.openlegalstandard.org/RBsiX2FSnOKhxvLGKoU9x1"
+    ]
     assert cross_border is not None
     assert cross_border.label == "Cross-Border Objective"
     assert len(cross_border.see_also) == 2
-    
+
     # Verify it has the expected relationships to Location and Forums and Venues
     location_iri = "https://folio.openlegalstandard.org/R9aSzp9cEiBCzObnP92jYFX"
     forums_iri = "https://folio.openlegalstandard.org/RBjHwNNG2ASVmasLFU42otk"

@@ -1330,7 +1330,7 @@ class FOLIO:
             return self._prefix_cache[prefix]
 
         if marisa_trie is not None:
-            keys = sorted(self._label_trie.keys(prefix), key=len)
+            keys = sorted(self._label_trie.keys(prefix), key=len)  # type: ignore[union-attr]
         else:
             keys = sorted(
                 [
@@ -1344,11 +1344,11 @@ class FOLIO:
 
         iri_list = []
         for key in keys:
-            iri_list.extend(self.label_to_index.get(key, []))
-            iri_list.extend(self.alt_label_to_index.get(key, []))
+            iri_list.extend(self.label_to_index.get(key, []))  # type: ignore[arg-type]
+            iri_list.extend(self.alt_label_to_index.get(key, []))  # type: ignore[arg-type]
 
         classes = [self[index] for index in iri_list]
-        self._prefix_cache[prefix] = classes
+        self._prefix_cache[prefix] = classes  # type: ignore[assignment]
         return classes
 
     def _search_by_prefix_insensitive(self, prefix: str) -> List[OWLClass]:
@@ -1360,7 +1360,8 @@ class FOLIO:
 
         if marisa_trie is not None and self._lowercase_label_trie is not None:
             lowercase_keys = sorted(
-                self._lowercase_label_trie.keys(folded), key=len
+                self._lowercase_label_trie.keys(folded),
+                key=len,  # type: ignore[union-attr]
             )
             # resolve lowercase keys back to original-case labels, sorted by length
             original_keys = sorted(
@@ -1387,17 +1388,17 @@ class FOLIO:
         seen: set = set()
         iri_list: list = []
         for key in original_keys:
-            for idx in self.label_to_index.get(key, []):
+            for idx in self.label_to_index.get(key, []):  # type: ignore[arg-type]
                 if idx not in seen:
                     seen.add(idx)
                     iri_list.append(idx)
-            for idx in self.alt_label_to_index.get(key, []):
+            for idx in self.alt_label_to_index.get(key, []):  # type: ignore[arg-type]
                 if idx not in seen:
                     seen.add(idx)
                     iri_list.append(idx)
 
         classes = [self[index] for index in iri_list]
-        self._ci_prefix_cache[folded] = classes
+        self._ci_prefix_cache[folded] = classes  # type: ignore[assignment]
         return classes
 
     @staticmethod
