@@ -1,3 +1,12 @@
+Version 0.3.6 (2026-04-08)
+---------------------------
+* Docs: Migrated user-facing documentation to https://openlegalstandard.org/resources/folio-python-library — comprehensive 9-page reference covering install, search, query, taxonomy, properties, serialization, LLM integration, and a complete API surface (alea-institute/folio-python#14)
+* Removed: `docs/` directory (Sphinx site that targeted the broken folio-python.readthedocs.io)
+* Removed: `.readthedocs.yaml` (RTD config no longer needed)
+* Removed: `.github/workflows/publish.yml` (Trusted Publisher workflow that was never configured on PyPI; releases are published locally via `uv build && uvx twine upload`)
+* Updated: README documentation link now points at openlegalstandard.org; logo path moved from `docs/_static/folio-logo.png` to `assets/folio-logo.png`
+* Updated: CONTRIBUTING.md notes that user-facing docs live in the openlegalstandard.org repo and should be updated alongside any public-API changes
+
 Version 0.3.5 (2026-04-08)
 ---------------------------
 * Added: `case_sensitive` parameter (default `False`) on `search_by_prefix()` — lowercase and mixed-case queries now match labels via a parallel lowercase MARISA trie using `str.casefold()` for Unicode-safe folding
