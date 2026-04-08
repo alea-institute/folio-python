@@ -1,3 +1,33 @@
+Version 0.3.4 (2026-03-16)
+---------------------------
+* Fixed: Include lang-tagged altLabels in search index with deduplication — 90% of altLabels were previously invisible to `search_by_label()`
+
+Version 0.3.3 (2026-03-15)
+---------------------------
+* Fixed: Drop max_tokens from search_by_llm, bump alea-llm-client>=0.3.3
+
+Version 0.3.2 (2026-03-15)
+---------------------------
+* Fixed: Bump alea-llm-client>=0.3.2 for model-aware get_llm_kwargs
+
+Version 0.3.1 (2026-03-15)
+---------------------------
+* Added effort/tier params to FOLIO constructor for LLM search configuration
+* Updated LLM defaults
+
+Version 0.3.0 (2026-03-15)
+---------------------------
+* Added `FOLIO.query()` method for structured concept queries with composable text and structural filters
+* Added `FOLIO.query_properties()` method for structured property queries with domain/range/inverse filters
+* Both methods support four match modes: substring (default), exact, regex, and fuzzy
+* Query filters include: label, definition, alt_label, example, any_text, branch, parent_iri, has_children, deprecated, country
+* Property query filters include: label, definition, domain_iri, range_iri, has_inverse
+
+Version 0.2.1 (2026-03-15)
+---------------------------
+* Fixed: Index preferred_label (skos:prefLabel) for search — prefLabels are now included in search indices
+* Added PyPI publish workflow for automated releases via GitHub
+
 Version 0.2.0 (2024-04-17)
 ---------------------------
 * Added support for OWL Object Properties, enabling semantic relationship exploration

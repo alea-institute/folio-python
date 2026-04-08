@@ -30,7 +30,11 @@ from typing import Dict, List, Literal, Optional, Tuple
 # packages
 import httpx
 import lxml.etree
-from alea_llm_client import BaseAIModel
+
+try:
+    from alea_llm_client import BaseAIModel
+except ImportError:
+    BaseAIModel = None  # type: ignore[assignment,misc]
 
 # project imports
 from folio.config import (
@@ -143,6 +147,7 @@ try:
 
     if importlib.util.find_spec("alea_llm_client") is not None:
         import alea_llm_client
+        from alea_llm_client import get_llm_kwargs
         from alea_llm_client.llms.prompts.sections import (
             format_prompt,
             format_instructions,
@@ -150,6 +155,7 @@ try:
     else:
         LOGGER.warning("Disabling search functionality: alea_llm_client not found.")
         alea_llm_client = None
+        get_llm_kwargs = None
 except ImportError as e:
     LOGGER.warning("Failed to check for search functionality: %s", e)
     rapidfuzz = None
@@ -174,6 +180,9 @@ class FOLIO:
         github_repo_branch: str = DEFAULT_GITHUB_REPO_BRANCH,
         use_cache: bool = True,
         llm: Optional[BaseAIModel] = None,
+        llm_kwargs: Optional[dict] = None,
+        effort: Optional[str] = None,
+        tier: Optional[str] = None,
     ) -> None:
         """
         Initialize the FOLIO ontology.
@@ -186,6 +195,12 @@ class FOLIO:
             github_repo_branch (str): The branch of the GitHub repository.
             use_cache (bool): Whether to use the local cache
             llm (Optional[BaseAIModel]): an alea_llm_client BaseAIModel instance for searching via decoder
+            llm_kwargs (Optional[dict]): Extra kwargs passed to LLM calls (e.g. reasoning_effort, service_tier).
+                If effort/tier are also provided, they are merged (effort/tier take precedence).
+            effort (Optional[str]): Universal effort level ("low", "medium", "high").
+                Translates to provider-specific params via get_llm_kwargs.
+            tier (Optional[str]): Universal service tier ("flex", "standard", "priority").
+                Translates to provider-specific params via get_llm_kwargs.
 
         Returns:
             None
@@ -242,15 +257,28 @@ class FOLIO:
         end_time = time.time()
         LOGGER.info("Parsed FOLIO ontology in %.2f seconds", end_time - start_time)
 
+        # store llm kwargs for search calls
+        self.llm_kwargs: dict = llm_kwargs or {}
+
         # try to initialize a model
         self.llm: Optional[BaseAIModel] = None
         if alea_llm_client is not None:
             try:
                 if llm is None:
-                    self.llm = alea_llm_client.OpenAIModel(model="gpt-4o")
+                    self.llm = alea_llm_client.OpenAIModel(model="gpt-5.4")
                 else:
                     self.llm = llm
                 LOGGER.info("Initialized LLM model: %s", self.llm)
+
+                # Merge effort/tier into llm_kwargs using provider detection
+                if (
+                    effort is not None or tier is not None
+                ) and get_llm_kwargs is not None:
+                    provider_kwargs = get_llm_kwargs(self.llm, effort=effort, tier=tier)
+                    # provider_kwargs is base, llm_kwargs overrides
+                    merged = {**provider_kwargs, **self.llm_kwargs}
+                    self.llm_kwargs = merged
+
             except Exception:  # pylint: disable=broad-except
                 LOGGER.warning(
                     "Failed to initialize LLM model: %s", traceback.format_exc()
@@ -1642,7 +1670,7 @@ class FOLIO:
                 prompt,
                 system="You are a legal knowledge management platform searching for relevant items in a taxonomy.\n"
                 "Always respond in JSON according to SCHEMA.",
-                max_tokens=DEFAULT_MAX_TOKENS,
+                **self.llm_kwargs,
             )
             llm_response_data = llm_response.data
 
@@ -2137,6 +2165,229 @@ class FOLIO:
             List[Tuple[str, str, str]]: The list of triples.
         """
         return self._filter_triples(self._cached_triples, obj, filter_by="object")
+
+    def query(
+        self,
+        label: Optional[str] = None,
+        definition: Optional[str] = None,
+        alt_label: Optional[str] = None,
+        example: Optional[str] = None,
+        any_text: Optional[str] = None,
+        branch: Optional[str] = None,
+        parent_iri: Optional[str] = None,
+        has_children: Optional[bool] = None,
+        deprecated: bool = False,
+        country: Optional[str] = None,
+        match_mode: str = "substring",
+        limit: int = 20,
+    ) -> List[OWLClass]:
+        """
+        Query classes with composable text and structural filters.
+
+        Text filters (at least one should be specified):
+            label: Match against rdfs:label.
+            definition: Match against skos:definition.
+            alt_label: Match against skos:altLabel entries.
+            example: Match against skos:example entries.
+            any_text: Match against all text fields (label, definition, alt_labels, examples, notes, comment).
+
+        Structural filters:
+            branch: Limit results to a taxonomy branch (FOLIOTypes enum value or branch key).
+            parent_iri: Only classes that are descendants of this IRI (transitive subClassOf).
+            has_children: If True, only non-leaf classes. If False, only leaf classes.
+            deprecated: If True, include deprecated classes. Default False excludes them.
+            country: Match against mads:country field.
+
+        Control:
+            match_mode: "substring" (default), "exact", "regex", or "fuzzy".
+            limit: Maximum results to return (default 20).
+
+        Returns:
+            List[OWLClass]: Matching classes, ordered by label.
+        """
+        import re as _re
+
+        # Pre-compute branch set if branch filter specified
+        branch_iris: Optional[set] = None
+        if branch is not None:
+            # Try to resolve branch name to a FOLIOTypes enum
+            branch_type = None
+            for ft in FOLIOTypes:
+                if (
+                    ft.name.lower() == branch.lower()
+                    or ft.value.lower() == branch.lower()
+                ):
+                    branch_type = ft
+                    break
+            if branch_type is not None and branch_type in FOLIO_TYPE_IRIS:
+                branch_classes = self.get_children(
+                    FOLIO_TYPE_IRIS[branch_type], max_depth=DEFAULT_MAX_DEPTH
+                )
+                branch_iris = {c.iri for c in branch_classes}
+            else:
+                return []  # Unknown branch
+
+        # Pre-compute ancestor set if parent_iri filter specified
+        ancestor_iris: Optional[set] = None
+        if parent_iri is not None:
+            normalized = self.normalize_iri(parent_iri)
+            descendants = self.get_children(normalized, max_depth=DEFAULT_MAX_DEPTH)
+            ancestor_iris = {c.iri for c in descendants}
+
+        def _text_match(text: Optional[str], pattern: str) -> bool:
+            if text is None:
+                return False
+            if match_mode == "exact":
+                return text == pattern
+            elif match_mode == "substring":
+                return pattern.lower() in text.lower()
+            elif match_mode == "regex":
+                return bool(_re.search(pattern, text, _re.IGNORECASE))
+            elif match_mode == "fuzzy":
+                if rapidfuzz is None:
+                    raise RuntimeError("search extra required for fuzzy matching")
+                score = rapidfuzz.fuzz.partial_ratio(pattern.lower(), text.lower())
+                return score >= 70
+            return False
+
+        def _list_match(items: List[str], pattern: str) -> bool:
+            return any(_text_match(item, pattern) for item in items)
+
+        results = []
+        for cls in self.classes:
+            # Structural filters (fast rejection)
+            if not deprecated and cls.deprecated:
+                continue
+            if branch_iris is not None and cls.iri not in branch_iris:
+                continue
+            if ancestor_iris is not None and cls.iri not in ancestor_iris:
+                continue
+            if has_children is True and not cls.parent_class_of:
+                continue
+            if has_children is False and cls.parent_class_of:
+                continue
+            if country is not None and not _text_match(cls.country, country):
+                continue
+
+            # Text filters (any specified filter must match)
+            text_matched = True
+
+            if label is not None and not _text_match(cls.label, label):
+                text_matched = False
+            if (
+                text_matched
+                and definition is not None
+                and not _text_match(cls.definition, definition)
+            ):
+                text_matched = False
+            if (
+                text_matched
+                and alt_label is not None
+                and not _list_match(cls.alternative_labels, alt_label)
+            ):
+                text_matched = False
+            if (
+                text_matched
+                and example is not None
+                and not _list_match(cls.examples, example)
+            ):
+                text_matched = False
+            if text_matched and any_text is not None:
+                # Check all text fields
+                if not (
+                    _text_match(cls.label, any_text)
+                    or _text_match(cls.definition, any_text)
+                    or _list_match(cls.alternative_labels, any_text)
+                    or _list_match(cls.examples, any_text)
+                    or _list_match(cls.notes, any_text)
+                    or _text_match(cls.comment, any_text)
+                    or _text_match(cls.description, any_text)
+                ):
+                    text_matched = False
+
+            if not text_matched:
+                continue
+
+            results.append(cls)
+            if len(results) >= limit:
+                break
+
+        return results
+
+    def query_properties(
+        self,
+        label: Optional[str] = None,
+        definition: Optional[str] = None,
+        domain_iri: Optional[str] = None,
+        range_iri: Optional[str] = None,
+        has_inverse: Optional[bool] = None,
+        match_mode: str = "substring",
+        limit: int = 20,
+    ) -> List[OWLObjectProperty]:
+        """
+        Query object properties with composable text and structural filters.
+
+        Text filters:
+            label: Match against rdfs:label.
+            definition: Match against skos:definition.
+
+        Structural filters:
+            domain_iri: Only properties whose domain includes this class IRI.
+            range_iri: Only properties whose range includes this class IRI.
+            has_inverse: If True, only properties with inverses. If False, only without.
+
+        Control:
+            match_mode: "substring" (default), "exact", "regex", or "fuzzy".
+            limit: Maximum results to return (default 20).
+
+        Returns:
+            List[OWLObjectProperty]: Matching properties.
+        """
+        import re as _re
+
+        # Normalize IRIs
+        norm_domain = self.normalize_iri(domain_iri) if domain_iri else None
+        norm_range = self.normalize_iri(range_iri) if range_iri else None
+
+        def _text_match(text: Optional[str], pattern: str) -> bool:
+            if text is None:
+                return False
+            if match_mode == "exact":
+                return text == pattern
+            elif match_mode == "substring":
+                return pattern.lower() in text.lower()
+            elif match_mode == "regex":
+                return bool(_re.search(pattern, text, _re.IGNORECASE))
+            elif match_mode == "fuzzy":
+                if rapidfuzz is None:
+                    raise RuntimeError("search extra required for fuzzy matching")
+                score = rapidfuzz.fuzz.partial_ratio(pattern.lower(), text.lower())
+                return score >= 70
+            return False
+
+        results = []
+        for prop in self.object_properties:
+            # Structural filters
+            if norm_domain is not None and norm_domain not in prop.domain:
+                continue
+            if norm_range is not None and norm_range not in prop.range:
+                continue
+            if has_inverse is True and not prop.inverse_of:
+                continue
+            if has_inverse is False and prop.inverse_of:
+                continue
+
+            # Text filters
+            if label is not None and not _text_match(prop.label, label):
+                continue
+            if definition is not None and not _text_match(prop.definition, definition):
+                continue
+
+            results.append(prop)
+            if len(results) >= limit:
+                break
+
+        return results
 
     def find_connections(
         self,
