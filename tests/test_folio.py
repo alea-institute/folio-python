@@ -291,8 +291,42 @@ def test_search_prefix_no_duplicates(folio_graph):
     assert len(iris) == len(set(iris)), f"Duplicate IRIs found: {iris}"
 
 
+def test_search_prefix_case_sensitive_no_duplicates(folio_graph):
+    """Case-sensitive search returns no duplicate OWLClass entries."""
+    results = folio_graph.search_by_prefix("Mich", case_sensitive=True)
+    iris = [c.iri for c in results]
+    assert len(iris) == len(set(iris)), (
+        f"Duplicate IRIs in case-sensitive results: {iris}"
+    )
+
+
+def test_search_prefix_primary_label_ranks_first(folio_graph):
+    """Primary-label matches rank before alt-label matches for same prefix."""
+    # Use "Mich" where Michigan (primary label, 8 chars) should beat any
+    # alt-label-only match. Verify it appears before any alt-label-only result.
+    results = folio_graph.search_by_prefix("Mich", case_sensitive=True)
+    if not results:
+        return
+    # Michigan is a short primary label -- it should be first
+    assert results[0].label == "Michigan", (
+        f"Expected Michigan first, got {results[0].label!r}"
+    )
+    # All results should have no duplicate IRIs (dedup working)
+    iris = [c.iri for c in results]
+    assert len(iris) == len(set(iris))
+
+    # Case-insensitive path: "mich" should also put Michigan near top
+    results_ci = folio_graph.search_by_prefix("mich")
+    labels_ci = [c.label for c in results_ci]
+    if "Michigan" in labels_ci:
+        mi_idx = labels_ci.index("Michigan")
+        assert mi_idx < 5, (
+            f"Michigan at index {mi_idx} in CI results, expected near top"
+        )
+
+
 def test_search_prefix_fallback_parity(folio_graph, monkeypatch):
-    """Pure-Python fallback produces same results as trie path."""
+    """Pure-Python fallback produces same IRI set as trie path."""
     # get trie results first (uses marisa_trie path)
     trie_results = folio_graph.search_by_prefix("securit")
     trie_iris = sorted(c.iri for c in trie_results)
