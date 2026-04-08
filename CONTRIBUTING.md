@@ -54,6 +54,12 @@ To set up the project for development:
   - Test full build via docker (Ubuntu 24.04): `bash docker/build.sh`
   - Test clean install via docker (Ubuntu 22.04, Ubuntu 24.04): `bash docker/install.sh`
 
+## Documentation
+
+User-facing documentation lives in the [openlegalstandard.org](https://github.com/alea-institute/openlegalstandard.org) repository under [`src/pages/resources/folio-python-library/`](https://github.com/alea-institute/openlegalstandard.org/tree/main/src/pages/resources/folio-python-library), and is published at **[openlegalstandard.org/resources/folio-python-library](https://openlegalstandard.org/resources/folio-python-library)**.
+
+PRs that change public API (signatures, defaults, behavior) should also update the matching sub-page in that repo so the docs stay in sync. Every code snippet in the docs is validated against the published wheel via `uv run python`, so please run any new examples before submitting.
+
 ## Coding Style
 
 We generally follow the [PEP 8](https://pep8.org/) style guide for Python code, but the good news is that most style

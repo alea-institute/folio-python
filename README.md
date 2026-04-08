@@ -1,6 +1,6 @@
 # FOLIO Python Library
 
-![FOLIO Logo](docs/_static/folio-logo.png)
+![FOLIO Logo](assets/folio-logo.png)
 
 [![PyPI version](https://badge.fury.io/py/folio-python.svg)](https://badge.fury.io/py/folio-python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -181,7 +181,11 @@ Avoid `effort: "high"` — benchmarks show 5x latency with no quality improvemen
 
 ## Documentation
 
-For more detailed information about using the FOLIO Python library, please refer to our [full documentation](https://folio-python.readthedocs.io/).
+The full library reference lives on the FOLIO standards site:
+
+**[openlegalstandard.org/resources/folio-python-library](https://openlegalstandard.org/resources/folio-python-library)**
+
+It covers installation, initialization, fuzzy and prefix search, structured queries, taxonomy traversal, object properties and triples, serialization, LLM integration, and a complete API reference for `FOLIO`, `OWLClass`, `OWLObjectProperty`, and `FOLIOConfiguration`. Every code example is validated against the published wheel.
 
 ## Contributing
 
