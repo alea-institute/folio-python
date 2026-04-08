@@ -1329,8 +1329,12 @@ class FOLIO:
         if prefix in self._prefix_cache:
             return self._prefix_cache[prefix]
 
+        # sort: primary-label keys first (False < True), then by length
         if marisa_trie is not None:
-            keys = sorted(self._label_trie.keys(prefix), key=len)  # type: ignore[union-attr]
+            keys = sorted(
+                self._label_trie.keys(prefix),  # type: ignore[union-attr]
+                key=lambda k: (k not in self.label_to_index, len(k)),
+            )
         else:
             keys = sorted(
                 [
@@ -1339,13 +1343,21 @@ class FOLIO:
                     + list(self.alt_label_to_index.keys())
                     if label.startswith(prefix)
                 ],
-                key=len,
+                key=lambda k: (k not in self.label_to_index, len(k)),
             )
 
-        iri_list = []
+        # deduplicate by class index, label_to_index checked before alt_label_to_index
+        seen: set = set()
+        iri_list: list = []
         for key in keys:
-            iri_list.extend(self.label_to_index.get(key, []))  # type: ignore[arg-type]
-            iri_list.extend(self.alt_label_to_index.get(key, []))  # type: ignore[arg-type]
+            for idx in self.label_to_index.get(key, []):  # type: ignore[arg-type]
+                if idx not in seen:
+                    seen.add(idx)
+                    iri_list.append(idx)
+            for idx in self.alt_label_to_index.get(key, []):  # type: ignore[arg-type]
+                if idx not in seen:
+                    seen.add(idx)
+                    iri_list.append(idx)
 
         classes = [self[index] for index in iri_list]
         self._prefix_cache[prefix] = classes  # type: ignore[assignment]
@@ -1360,20 +1372,22 @@ class FOLIO:
 
         if marisa_trie is not None and self._lowercase_label_trie is not None:
             lowercase_keys = sorted(
-                self._lowercase_label_trie.keys(folded),
-                key=len,  # type: ignore[union-attr]
+                self._lowercase_label_trie.keys(folded),  # type: ignore[union-attr]
+                key=len,
             )
-            # resolve lowercase keys back to original-case labels, sorted by length
+            # resolve lowercase keys back to original-case labels;
+            # sort: primary-label keys first, then by length
             original_keys = sorted(
                 [
                     orig
                     for lk in lowercase_keys
                     for orig in self._lowercase_to_original.get(lk, [])
                 ],
-                key=len,
+                key=lambda k: (k not in self.label_to_index, len(k)),
             )
         else:
             # pure-Python fallback: case-insensitive prefix match
+            # sort: primary-label keys first, then by length
             original_keys = sorted(
                 [
                     label
@@ -1381,7 +1395,7 @@ class FOLIO:
                     + list(self.alt_label_to_index.keys())
                     if label.casefold().startswith(folded)
                 ],
-                key=len,
+                key=lambda k: (k not in self.label_to_index, len(k)),
             )
 
         # resolve to OWLClass with deduplication by index
