@@ -1,3 +1,11 @@
+Version 0.3.5 (2026-04-08)
+---------------------------
+* Added: `case_sensitive` parameter (default `False`) on `search_by_prefix()` — lowercase and mixed-case queries now match labels via a parallel lowercase MARISA trie using `str.casefold()` for Unicode-safe folding
+* Changed: `search_by_prefix()` now ranks primary-label matches before alt-label matches and deduplicates results by IRI; affects default ordering for queries like `Mich`, `Tax`, and `Cal`
+* Fixed: Case-sensitive `search_by_prefix()` no longer returns duplicate entries when a class matches a prefix via both its label and an alt-label
+* Fixed: Prefix caches are now cleared on `refresh()` to avoid stale results
+* Fixed: `folio.__version__` was stuck at `0.3.0` since v0.3.0; now tracks `pyproject.toml`
+
 Version 0.3.4 (2026-03-16)
 ---------------------------
 * Fixed: Include lang-tagged altLabels in search index with deduplication — 90% of altLabels were previously invisible to `search_by_label()`

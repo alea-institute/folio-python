@@ -5,7 +5,7 @@ Python library for FOLIO, the Federated Open Legal Information Ontology
 # SPDX-License-Identifier: MIT
 # (c) 2024 ALEA Institute.
 
-__version__ = "0.3.0"
+__version__ = "0.3.5"
 __author__ = "ALEA Institute"
 __license__ = "MIT"
 __description__ = (
