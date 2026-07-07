@@ -12,10 +12,10 @@ This roadmap delivers case-insensitive prefix search for folio-python's `search_
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Data Structure Declarations** - Declare new attributes on FOLIOGraph for lowercase trie, bridge dict, and CI cache
-- [ ] **Phase 2: Index Building** - Build the parallel lowercase trie and bridge dict during parse_owl()
-- [ ] **Phase 3: Search API and Fallback** - Wire case-insensitive search through both trie and pure-Python paths
-- [ ] **Phase 4: Test Suite** - Validate correctness, backward compatibility, and edge cases
+- [x] **Phase 1: Data Structure Declarations** - Declare new attributes on FOLIOGraph for lowercase trie, bridge dict, and CI cache
+- [x] **Phase 2: Index Building** - Build the parallel lowercase trie and bridge dict during parse_owl()
+- [x] **Phase 3: Search API and Fallback** - Wire case-insensitive search through both trie and pure-Python paths
+- [x] **Phase 4: Test Suite** - Validate correctness, backward compatibility, and edge cases
 
 ## Phase Details
 
@@ -73,7 +73,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Data Structure Declarations | 0/0 | Not started | - |
-| 2. Index Building | 0/0 | Not started | - |
-| 3. Search API and Fallback | 0/0 | Not started | - |
-| 4. Test Suite | 0/0 | Not started | - |
+| 1. Data Structure Declarations | 1/1 | Complete | 2026-04-08 |
+| 2. Index Building | 1/1 | Complete | 2026-04-08 |
+| 3. Search API and Fallback | 1/1 | Complete | 2026-04-08 |
+| 4. Test Suite | 1/1 | Complete | 2026-04-08 |
+
+**Milestone complete.** All 4 phases shipped on `feature/case-insensitive-prefix` (18 commits, incl. PR-16 review hardening: dedup-with-tiebreak + primary-label-first ranking). Full suite green (45 passed, 8 prefix tests covering TEST-01..06 + 2 extra). Merged to `main` and released as v0.3.0 (2026-07-07).

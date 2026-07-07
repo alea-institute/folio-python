@@ -1,3 +1,11 @@
+Version 0.3.0 (2026-07-07)
+---------------------------
+* Case-insensitive prefix search: `search_by_prefix()` now matches regardless of input casing via a parallel lowercase trie + bridge dict (e.g., `search_by_prefix("securit")` matches "Securities Fraud")
+* New `case_sensitive: bool = False` parameter on `search_by_prefix()` — pass `case_sensitive=True` to preserve the pre-0.3.0 exact-case behavior
+* No new dependencies — reuses the existing `marisa-trie`; a pure-Python fallback provides equivalent case-insensitive results when `marisa-trie` is unavailable
+* Results are de-duplicated by class with primary-label matches ranked before alt-label matches, then by length
+* Fixed pre-existing `refresh()` staleness — both the prefix cache and the new case-insensitive cache are now cleared when the ontology reloads
+
 Version 0.2.0 (2024-04-17)
 ---------------------------
 * Added support for OWL Object Properties, enabling semantic relationship exploration

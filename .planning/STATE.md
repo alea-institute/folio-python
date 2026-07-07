@@ -5,29 +5,32 @@
 See: .planning/PROJECT.md (updated 2026-04-07)
 
 **Core value:** Prefix search must return correct results regardless of input casing
-**Current focus:** Phase 1 - Data Structure Declarations
+**Current focus:** COMPLETE — all 4 phases shipped; merged to main; released v0.3.0
 
 ## Current Position
 
-Phase: 1 of 4 (Data Structure Declarations)
-Plan: 0 of 0 in current phase
-Status: Ready to plan
-Last activity: 2026-04-08 - Completed quick task 260408-9yz: Address PR #16 review feedback
+Phase: 4 of 4 (Test Suite) — COMPLETE
+Plan: 1 of 1 complete
+Status: Milestone complete — merged to `main`, released as v0.3.0 (2026-07-07). PyPI publish staged (GitHub Release), awaiting Damien's go.
+Last activity: 2026-07-07 - Reconciled planning with implemented trie; full suite green (45 passed); merged feature/case-insensitive-prefix to main; bumped version 0.3.0 (pyproject + __init__); CHANGES.md entry; staged PyPI release.
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
+- Total plans completed: 4 (+ 1 quick task)
 - Average duration: -
-- Total execution time: 0 hours
+- Total execution time: -
 
 **By Phase:**
 
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| - | - | - | - |
+| Phase | Plans | Status | Completed |
+|-------|-------|--------|-----------|
+| 1. Data Structure Declarations | 1/1 | Complete | 2026-04-08 |
+| 2. Index Building | 1/1 | Complete | 2026-04-08 |
+| 3. Search API and Fallback | 1/1 | Complete | 2026-04-08 |
+| 4. Test Suite | 1/1 | Complete | 2026-04-08 |
 
 **Recent Trend:**
 - Last 5 plans: -
@@ -52,8 +55,8 @@ None yet.
 
 ### Blockers/Concerns
 
-- MIN_PREFIX_LENGTH=3 filters out 2-char queries like "IP" -- documented as v2 scope (LEN-01)
-- Pre-existing _prefix_cache staleness in refresh() -- will be fixed in Phase 2 (IDX-03)
+- MIN_PREFIX_LENGTH=3 filters out 2-char queries like "IP" -- documented as v2 scope (LEN-01) — still open
+- ~~Pre-existing _prefix_cache staleness in refresh()~~ — RESOLVED in Phase 2 (IDX-03): both `_prefix_cache` and `_ci_prefix_cache` cleared on reload
 
 ### Quick Tasks Completed
 
@@ -63,6 +66,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07
-Stopped at: Roadmap creation complete
+Last session: 2026-07-07
+Stopped at: Milestone complete — merged to main, released v0.3.0. PyPI publish staged awaiting Damien's go (see briefs/STATUS-lane-5.md).
 Resume file: None
