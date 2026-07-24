@@ -23,6 +23,15 @@ FOLIO is an open, CC-BY licensed standard designed to represent universal elemen
 - Analyze property usage, domains, and ranges
 - Convert classes to OWL XML, JSON-LD, or Markdown format
 
+## Who it's for
+
+- **Legal-tech developers** who need a legal taxonomy in-process — no server, no SPARQL endpoint, just `pip install` and an `OWLClass`.
+- **Data and ML engineers** tagging documents, matters, or intake narratives against a standard concept set (this library is the ontology layer under folio-enrich, folio-insights, folio-resolve, folio-api, and alea-intake).
+- **Ontologists and researchers** exploring FOLIO's classes, object properties, and the triples that connect them.
+- **Firms and vendors mapping internal taxonomies** to a shared standard for interoperability.
+
+Typical use cases: resolve a free-text label to a FOLIO IRI; enumerate an Area of Law branch to populate a picker; walk `folio:drafted`-style object properties to find how two concepts relate; serialize a concept as JSON-LD for a knowledge graph; let an LLM pick the right concept from a candidate set.
+
 ## Changelog
 The changelog can be found at [CHANGES.md](CHANGES.md).
 
@@ -210,6 +219,8 @@ The source code for the API is available on GitHub at [https://github.com/alea-i
 ## License
 
 The FOLIO Python library is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+The **ontology data** this library fetches and redistributes at runtime is a separate work: FOLIO is licensed **CC-BY 4.0**, so any application built on this library must carry that attribution. Dependency licenses and the full attribution notice are in [THIRD-PARTY.md](THIRD-PARTY.md).
 
 ## Support
 

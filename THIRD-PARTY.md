@@ -27,7 +27,19 @@ FOLIO (Federated Open Legal Information Ontology) is maintained by the **ALEA In
 | Component | License | Notes |
 |-----------|---------|-------|
 | rapidfuzz | MIT | Fuzzy label matching (degrades gracefully if absent) |
-| marisa-trie | MIT / BSD-2-Clause (dual) | Trie-based prefix search |
+| marisa-trie | MIT AND (BSD-2-Clause OR LGPL-2.1-or-later) | Trie-based prefix search. The Python wrapper is MIT; the bundled `marisa` C++ library is dual-licensed and **we take it under BSD-2-Clause**, which carries no copyleft obligation. |
 | alea-llm-client | MIT | Client-agnostic LLM integration for semantic search |
 
-No copyleft (GPL/AGPL/LGPL/EPL) dependencies are present in the runtime or search dependency sets.
+### Dev dependencies
+
+| Component | License |
+|-----------|---------|
+| types-lxml, ruff, myst-parser | Apache-2.0 / MIT |
+| pytest, pytest-benchmark, pytest-cov | MIT |
+| pytest-asyncio | Apache-2.0 |
+| sphinx, sphinx-book-theme, sphinx-copybutton, sphinxext-opengraph, sphinxcontrib-mermaid, sphinx-plausible | BSD-2-Clause / MIT |
+| pylint | GPL-2.0-or-later — a dev-only linter, invoked as a separate process and never imported, linked, or redistributed with this library |
+
+No copyleft obligation attaches to the runtime or `search` dependency sets: the only
+dual-licensed component (marisa-trie's C++ core) is taken under its permissive BSD-2-Clause
+option, and no GPL/AGPL/EPL dependency is present.
