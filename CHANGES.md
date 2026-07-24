@@ -1,3 +1,10 @@
+Version 0.3.7 (2026-07-24)
+---------------------------
+* Security: Bumped `lxml` floor to `>=6.1.0` (locked 6.1.1) — CVE-2026-41066 / GHSA-vfmq-68hx-4jfw, XXE to local files via the default configuration of `iterparse()` and `ETCompatXMLParser()`
+* Security: Lockfile bumps for transitive dependencies — `idna` 3.11 -> 3.18 (CVE-2026-45409), `urllib3` 2.6.3 -> 2.7.0 (CVE-2026-44431, CVE-2026-44432), `soupsieve` 2.8.3 -> 2.9.1 (CVE-2026-49476, CVE-2026-49477)
+* Security: Dev toolchain bumps for CVE-2025-71176 (pytest tmpdir handling) — `pytest` `>=9.0.3,<10`, plus compatible `pytest-asyncio` `>=1.0.0,<2`, `pytest-benchmark` `>=5.1.0,<6`, `pytest-cov` `>=7.0.0,<8`
+* No public API changes; full test suite (64 tests) passes unchanged
+
 Version 0.3.6 (2026-04-08)
 ---------------------------
 * Docs: Migrated user-facing documentation to https://openlegalstandard.org/resources/folio-python-library — comprehensive 9-page reference covering install, search, query, taxonomy, properties, serialization, LLM integration, and a complete API surface (alea-institute/folio-python#14)
