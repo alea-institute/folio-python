@@ -786,6 +786,9 @@ def test_iri_generation(folio_graph):
         iri = folio_graph.generate_iri()
         assert iri is not None
         assert iri.startswith("https://folio.openlegalstandard.org/")
-        b64_token = iri.split("/")[-1]
-        assert b64_token.isalnum()
-        assert len(b64_token) > 16
+        token = iri.split("/")[-1]
+        assert token.isalnum()
+        assert len(token) > 16
+        # "R" + base62, matching the majority of published FOLIO concepts.
+        assert token.startswith("R")
+        assert iri not in folio_graph.iri_to_index

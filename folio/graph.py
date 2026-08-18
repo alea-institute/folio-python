@@ -15,13 +15,11 @@ from __future__ import annotations
 
 # imports
 import asyncio
-import base64
 import hashlib
 import importlib.util
 import json
 import time
 import traceback
-import uuid
 from enum import Enum
 from functools import cache
 from pathlib import Path
@@ -46,6 +44,7 @@ from folio.config import (
     DEFAULT_HTTP_URL,
     DEFAULT_SOURCE_TYPE,
 )
+from folio.iri import MAX_IRI_ATTEMPTS, generate_iri
 from folio.logger import get_logger
 from folio.models import OWLClass, OWLObjectProperty, NSMAP
 
@@ -115,9 +114,6 @@ DEFAULT_CACHE_DIR: Path = Path.home() / ".folio" / "cache"
 
 # Default maximum depth for subgraph traversal safety
 DEFAULT_MAX_DEPTH: int = 16
-
-# IRI max generation attempt for safety.
-MAX_IRI_ATTEMPTS: int = 16
 
 # default max tokens to return from LLM
 DEFAULT_MAX_TOKENS: int = 1024
@@ -2473,31 +2469,12 @@ class FOLIO:
         """
         Generate a new IRI for the FOLIO ontology.
 
-        NOTE: This is designed to approximate the WebProtege IRI generation algorithm.
+        The scheme is "R" followed by base62 of 127 random bits, which is what
+        the great majority of published FOLIO concepts already use. See
+        folio.iri for the derivation and for the note on the previous
+        base64url-derived scheme.
 
         Returns:
             str: The new IRI.
         """
-
-        for _ in range(MAX_IRI_ATTEMPTS):
-            # generate a new base uuid4 value
-            base_value = uuid.uuid4()
-
-            # only use alphanumeric characters from restricted b64 encdoding to
-            base64_value = "".join(
-                [
-                    c
-                    for c in base64.urlsafe_b64encode(base_value.bytes)
-                    .decode("utf-8")
-                    .rstrip("=")
-                    if c.isalnum()
-                ]
-            )
-
-            # ensure it's unique
-            if base64_value in self.iri_to_index:
-                continue
-
-            return f"https://folio.openlegalstandard.org/{base64_value}"
-
-        raise RuntimeError("Failed to generate a unique IRI.")
+        return generate_iri(self.iri_to_index, max_attempts=MAX_IRI_ATTEMPTS)
