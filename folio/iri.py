@@ -52,7 +52,7 @@ the package still initialises ``folio``, and therefore ``folio.graph``; making
 from __future__ import annotations
 
 import secrets
-from typing import Callable, Container, Optional
+from collections.abc import Callable, Container
 
 # The FOLIO namespace that concept IRIs are minted under.
 FOLIO_NAMESPACE: str = "https://folio.openlegalstandard.org/"
@@ -62,9 +62,7 @@ IRI_PREFIX: str = "R"
 
 # Base62 digits, least significant value first. Ordering matters: it is the
 # ordering already present in published IRIs.
-BASE62_ALPHABET: str = (
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-)
+BASE62_ALPHABET: str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 # Random bits per local name. Recovered from the published length distribution;
 # see the module docstring before changing this.
@@ -99,9 +97,7 @@ def encode_base62(value: int) -> str:
     return "".join(reversed(digits))
 
 
-def generate_local_name(
-    *, randbits: Callable[[int], int] = secrets.randbits
-) -> str:
+def generate_local_name(*, randbits: Callable[[int], int] = secrets.randbits) -> str:
     """
     Generate one local name, without checking it against anything.
 
@@ -116,7 +112,7 @@ def generate_local_name(
 
 
 def generate_iri(
-    existing: Optional[Container[str]] = None,
+    existing: Container[str] | None = None,
     *,
     max_attempts: int = MAX_IRI_ATTEMPTS,
     randbits: Callable[[int], int] = secrets.randbits,

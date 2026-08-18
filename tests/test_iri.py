@@ -97,7 +97,9 @@ def test_collision_check_accepts_bare_local_names() -> None:
     """An index keyed by bare local name is also honoured."""
     taken, free = 62**21 + 5, 62**21 + 7
     values = iter([taken, taken, free])
-    iri = generate_iri({f"R{encode_base62(taken)}"}, randbits=lambda _bits: next(values))
+    iri = generate_iri(
+        {f"R{encode_base62(taken)}"}, randbits=lambda _bits: next(values)
+    )
     assert iri == f"{FOLIO_NAMESPACE}R{encode_base62(free)}"
 
 
