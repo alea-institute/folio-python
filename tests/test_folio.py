@@ -345,6 +345,30 @@ def test_search_prefix_fallback_parity(folio_graph, monkeypatch):
     )
 
 
+def test_search_caches_are_bounded(folio_graph):
+    """Unique search queries must not grow process-lifetime caches without bound."""
+    FOLIO._basic_search.cache_clear()
+    folio_graph._prefix_cache = {}
+    folio_graph._ci_prefix_cache = {}
+
+    try:
+        for index in range(129):
+            query = f"no-match-{index}"
+            FOLIO._basic_search(query, ("alpha", "beta"), limit=1)
+            folio_graph.search_by_prefix(query, case_sensitive=True)
+            folio_graph.search_by_prefix(query)
+
+        cache_info = FOLIO._basic_search.cache_info()
+        assert cache_info.maxsize == 128
+        assert cache_info.currsize == 128
+        assert len(folio_graph._prefix_cache) == 128
+        assert len(folio_graph._ci_prefix_cache) == 128
+    finally:
+        FOLIO._basic_search.cache_clear()
+        folio_graph._prefix_cache = {}
+        folio_graph._ci_prefix_cache = {}
+
+
 def test_search_label(folio_graph):
     for c, score in folio_graph.search_by_label("Georgia"):
         assert "Georgia" in c.label
