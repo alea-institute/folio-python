@@ -21,7 +21,7 @@ import json
 import time
 import traceback
 from enum import Enum
-from functools import cache
+from functools import cache, lru_cache
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Tuple
 
@@ -124,8 +124,20 @@ DEFAULT_SEARCH_MAX_DEPTH = 2
 # minimum length for prefix search
 MIN_PREFIX_LENGTH: int = 3
 
+# Bound query-result caches so long-running processes cannot retain every unique search forever.
+DEFAULT_SEARCH_CACHE_SIZE: int = 128
+
 # Set up logger
 LOGGER = get_logger(__name__)
+
+
+def _store_prefix_cache(
+    cache_map: Dict[str, List[OWLClass]], key: str, classes: List[OWLClass]
+) -> None:
+    """Store one prefix-search result and evict the oldest entry at capacity."""
+    cache_map[key] = classes
+    while len(cache_map) > DEFAULT_SEARCH_CACHE_SIZE:
+        cache_map.pop(next(iter(cache_map)))
 
 # try to import rapidfuzz and marisa_trie with importlib; log if not able to.
 try:
@@ -1384,7 +1396,7 @@ class FOLIO:
                     iri_list.append(idx)
 
         classes = [self[index] for index in iri_list]
-        self._prefix_cache[prefix] = classes  # type: ignore[assignment]
+        _store_prefix_cache(self._prefix_cache, prefix, classes)
         return classes
 
     def _search_by_prefix_insensitive(self, prefix: str) -> List[OWLClass]:
@@ -1436,11 +1448,11 @@ class FOLIO:
                     iri_list.append(idx)
 
         classes = [self[index] for index in iri_list]
-        self._ci_prefix_cache[folded] = classes  # type: ignore[assignment]
+        _store_prefix_cache(self._ci_prefix_cache, folded, classes)
         return classes
 
     @staticmethod
-    @cache
+    @lru_cache(maxsize=DEFAULT_SEARCH_CACHE_SIZE)
     def _basic_search(
         query: str,
         search_list: Tuple[str],
