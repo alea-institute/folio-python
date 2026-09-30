@@ -1,3 +1,8 @@
+Version 0.4.1 (2026-09-30)
+---------------------------
+* Fixed: query-result caches are now bounded, so a long-running process no longer retains every unique search forever (#20). `search_by_prefix()` (both case-sensitive and case-insensitive paths) evicts its oldest entry once `DEFAULT_SEARCH_CACHE_SIZE` (128) results are cached, and the memoized `_basic_search` helper behind the fuzzy label and definition searches uses `lru_cache(maxsize=128)` in place of an unbounded `cache`
+* No public API changes; full test suite (80 tests) passes
+
 Version 0.4.0 (2026-08-17)
 ---------------------------
 * Changed: `FOLIO.generate_iri()` now mints `R` + base62 of 127 random bits (e.g. `R1cNH7TLMiSlSbIbdFsynUk`), matching the scheme used by 11,427 of the 18,325 published FOLIO concepts, instead of a base64url-derived token with no `R` prefix. Newly minted IRIs are now indistinguishable from their published siblings. No existing IRI changes; `generate_iri()` only mints new ones
