@@ -139,6 +139,7 @@ def _store_prefix_cache(
     while len(cache_map) > DEFAULT_SEARCH_CACHE_SIZE:
         cache_map.pop(next(iter(cache_map)))
 
+
 # try to import rapidfuzz and marisa_trie with importlib; log if not able to.
 try:
     if importlib.util.find_spec("rapidfuzz") is not None:
