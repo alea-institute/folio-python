@@ -1,0 +1,46 @@
+{
+  "dependencies": [
+    {
+      "name": "pydantic",
+      "version": "2.8.2",
+      "vulns": []
+    },
+    {
+      "name": "lxml",
+      "version": "6.1.0",
+      "vulns": []
+    },
+    {
+      "name": "httpx",
+      "version": "0.27.2",
+      "vulns": []
+    },
+    {
+      "name": "rapidfuzz",
+      "version": "3.10.0",
+      "vulns": []
+    },
+    {
+      "name": "marisa-trie",
+      "version": "1.2.0",
+      "vulns": []
+    },
+    {
+      "name": "alea-llm-client",
+      "version": "0.3.3",
+      "vulns": []
+    }
+  ],
+  "fixes": [],
+  "scope": "published-minimums",
+  "phase": "final",
+  "exit_code": 0,
+  "auditor": "pip-audit 2.9.0",
+  "service": "pypi",
+  "python": "3.12.12",
+  "platform": "Linux x86_64",
+  "timestamp_utc": "2026-10-26T17:21:51.632703+00:00",
+  "input_sha256": "ac91af66dc8efb5da5a852e319536b35fceec2be8b3e861cc83d60a17d00493e",
+  "unevaluated_requirements": [],
+  "hashed_input": false
+}

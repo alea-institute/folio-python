@@ -1,0 +1,42 @@
+name: Library hygiene
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.10', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install uv
+        run: python -m pip install uv==0.9.22
+      - name: Install locked development and published search extra
+        run: uv sync --frozen --no-default-groups --group dev --extra search --python '${{ matrix.python }}'
+      - name: Check lint, formatting and types
+        run: |
+          uv run --frozen ruff check folio/ tests/
+          uv run --frozen ruff format --check folio/ tests/
+          uv run --frozen ty check folio/
+      - name: Install core-only wheel separately
+        env:
+          UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/folio-core
+        run: uv sync --frozen --no-default-groups --no-editable --python '${{ matrix.python }}'
+      - name: Check deterministic coverage and core-only installation
+        env:
+          FOLIO_CORE_PYTHON: ${{ runner.temp }}/folio-core/bin/python
+        run: >-
+          uv run --frozen pytest tests/ --ignore=tests/test_folio.py
+          -o addopts='--cov=folio --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=58'

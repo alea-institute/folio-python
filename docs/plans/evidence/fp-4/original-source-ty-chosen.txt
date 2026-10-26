@@ -1,0 +1,47 @@
+folio/graph.py:152:16: error[unresolved-import] Cannot resolve imported module `marisa_trie`
+folio/graph.py:241:36: error[unresolved-attribute] Attribute `Trie` is not defined on `None` in union `Unknown | None`
+folio/graph.py:242:46: error[unresolved-attribute] Attribute `Trie` is not defined on `None` in union `Unknown | None`
+folio/graph.py:489:39: error[invalid-argument-type] Argument to bound method `Client.get` is incorrect: Expected `URL | str`, found `str | None`
+folio/graph.py:603:27: warning[deprecated] The function `getchildren` is deprecated: Since v2.0 (2008); use list(element) or iterate over element
+folio/graph.py:609:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["rdfs:label"], str | None]`
+folio/graph.py:685:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["rdfs:comment"], str | None]`
+folio/graph.py:701:21: error[invalid-assignment] Invalid subscript assignment with key of type `str & ~AlwaysFalsy` and value of type `str | None` on object of type `dict[str, str]`
+folio/graph.py:704:57: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `str`, found `str | None`
+folio/graph.py:707:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:altLabel"], str | None]`
+folio/graph.py:713:53: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `str`, found `str | None`
+folio/graph.py:716:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:hiddenLabel"], str | None]`
+folio/graph.py:722:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:definition"], str | None]`
+folio/graph.py:725:43: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `str`, found `str | None`
+folio/graph.py:728:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:example"], str | None]`
+folio/graph.py:731:40: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `str`, found `str | None`
+folio/graph.py:734:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:note"], str | None]`
+folio/graph.py:740:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:historyNote"], str | None]`
+folio/graph.py:746:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:editorialNote"], str | None]`
+folio/graph.py:752:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:inScheme"], str | None]`
+folio/graph.py:758:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["dc:identifier"], str | None]`
+folio/graph.py:764:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["dc:description"], str | None]`
+folio/graph.py:770:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["dc:source"], str | None]`
+folio/graph.py:776:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["v1:country"], str | None]`
+folio/graph.py:834:27: warning[deprecated] The function `getchildren` is deprecated: Since v2.0 (2008); use list(element) or iterate over element
+folio/graph.py:840:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["rdfs:label"], str | None]`
+folio/graph.py:888:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:prefLabel"], str | None]`
+folio/graph.py:891:56: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `str`, found `str | None`
+folio/graph.py:894:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:altLabel"], str | None]`
+folio/graph.py:900:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:definition"], str | None]`
+folio/graph.py:903:46: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `str`, found `str | None`
+folio/graph.py:906:37: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, Literal["skos:example"], str | None]`
+folio/graph.py:943:45: error[invalid-argument-type] Argument to bound method `list.append` is incorrect: Expected `tuple[str, str, str]`, found `tuple[str, str | None, str]`
+folio/graph.py:955:27: warning[deprecated] The function `getchildren` is deprecated: Since v2.0 (2008); use list(element) or iterate over element
+folio/graph.py:1372:17: error[unresolved-attribute] Attribute `keys` is not defined on `None` in union `Unknown | None`
+folio/graph.py:1400:57: error[invalid-argument-type] Argument to function `_store_prefix_cache` is incorrect: Expected `list[OWLClass]`, found `list[OWLClass | None]`
+folio/graph.py:1401:16: error[invalid-return-type] Return type does not match returned value: expected `list[OWLClass]`, found `list[OWLClass | None]`
+folio/graph.py:1452:60: error[invalid-argument-type] Argument to function `_store_prefix_cache` is incorrect: Expected `list[OWLClass]`, found `list[OWLClass | None]`
+folio/graph.py:1453:16: error[invalid-return-type] Return type does not match returned value: expected `list[OWLClass]`, found `list[OWLClass | None]`
+folio/graph.py:1480:24: error[unresolved-attribute] Attribute `fuzz` is not defined on `None` in union `<module 'rapidfuzz'> | None`
+folio/graph.py:1482:22: error[unresolved-attribute] Attribute `fuzz` is not defined on `None` in union `<module 'rapidfuzz'> | None`
+folio/graph.py:1483:27: error[unresolved-attribute] Attribute `utils` is not defined on `None` in union `<module 'rapidfuzz'> | None`
+folio/graph.py:1602:29: error[unresolved-attribute] Attribute `preferred_label` is not defined on `None` in union `OWLClass | None`
+folio/graph.py:1602:65: error[unresolved-attribute] Attribute `label` is not defined on `None` in union `OWLClass | None`
+folio/graph.py:1712:20: error[invalid-return-type] Return type does not match returned value: expected `list[tuple[OWLClass, float]]`, found `list[tuple[OWLClass | None, Any, Any] | tuple[OWLClass | None, Any]]`
+folio/graph.py:1870:16: error[invalid-return-type] Return type does not match returned value: expected `dict[str, list[OWLClass]]`, found `dict[str | FOLIOTypes, list[OWLClass]]`
+Found 46 diagnostics

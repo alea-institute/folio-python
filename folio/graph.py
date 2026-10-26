@@ -23,7 +23,7 @@ import traceback
 from enum import Enum
 from functools import cache, lru_cache
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Tuple
+from typing import Dict, List, Literal, Optional, Protocol, Tuple
 
 # packages
 import httpx
@@ -80,7 +80,7 @@ class FOLIOTypes(Enum):
     SYSTEM_IDENTIFIERS = "System Identifiers"
 
 
-FOLIO_TYPE_IRIS = {
+FOLIO_TYPE_IRIS: Dict[FOLIOTypes, str] = {
     FOLIOTypes.ACTOR_PLAYER: "R8CdMpOM0RmyrgCCvbpiLS0",
     FOLIOTypes.AREA_OF_LAW: "RSYBzf149Mi5KE0YtmpUmr",
     FOLIOTypes.ASSET_TYPE: "RCIwc6WJi6IT7xePURxsi4T",
@@ -149,7 +149,7 @@ try:
         rapidfuzz = None
 
     if importlib.util.find_spec("marisa_trie") is not None:
-        import marisa_trie
+        marisa_trie = importlib.import_module("marisa_trie")
     else:
         LOGGER.warning("Disabling search functionality: marisa_trie not found.")
         marisa_trie = None
@@ -169,6 +169,15 @@ except ImportError as e:
     LOGGER.warning("Failed to check for search functionality: %s", e)
     rapidfuzz = None
     marisa_trie = None
+
+
+class _PrefixTrie(Protocol):
+    """The prefix lookup surface used from the optional MARISA extension."""
+
+    def keys(self, prefix: str = "") -> List[str]: ...
+
+
+LLMSearchResult = Tuple[OWLClass, int | float] | Tuple[OWLClass, int | float, str]
 
 
 # pylint: disable=too-many-instance-attributes
@@ -238,8 +247,8 @@ class FOLIO:
         self.property_label_to_index: Dict[str, List[int]] = {}
         self.class_edges: Dict[str, List[str]] = {}
         self._cached_triples: Tuple[Tuple[str, str, str], ...] = ()
-        self._label_trie: Optional[marisa_trie.Trie] = None
-        self._lowercase_label_trie: Optional[marisa_trie.Trie] = None
+        self._label_trie: Optional[_PrefixTrie] = None
+        self._lowercase_label_trie: Optional[_PrefixTrie] = None
         self._lowercase_to_original: Dict[str, List[str]] = {}
         self._prefix_cache: Dict[str, List[OWLClass]] = {}
         self._ci_prefix_cache: Dict[str, List[OWLClass]] = {}
@@ -481,6 +490,9 @@ class FOLIO:
         Args:
             http_url (str): The HTTP URL for the ontology.
         """
+        if http_url is None:
+            raise TypeError("http_url must be a string")
+
         # Load the ontology from the HTTP URL
         try:
             # setup client in context handler and make the request
@@ -600,8 +612,8 @@ class FOLIO:
         # initialize the OWL class
         owl_class = OWLClass(iri=iri)
 
-        for child in node.getchildren():
-            if child.tag == self.get_ns_tag("rdfs", "label"):
+        for child in node:
+            if child.tag == self.get_ns_tag("rdfs", "label") and child.text is not None:
                 # set label
                 owl_class.label = child.text
 
@@ -677,7 +689,10 @@ class FOLIO:
 
                     # add triple
                     self.triples.append((owl_class.iri, "rdfs:seeAlso", child.text))
-            elif child.tag == self.get_ns_tag("rdfs", "comment"):
+            elif (
+                child.tag == self.get_ns_tag("rdfs", "comment")
+                and child.text is not None
+            ):
                 # set comment
                 owl_class.comment = child.text
 
@@ -689,12 +704,18 @@ class FOLIO:
 
                 # add triple
                 self.triples.append((owl_class.iri, "owl:deprecated", "true"))
-            elif child.tag == self.get_ns_tag("skos", "prefLabel"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "prefLabel")
+                and child.text is not None
+            ):
                 # set preferred label
                 owl_class.preferred_label = child.text
 
                 # add triple
-            elif child.tag == self.get_ns_tag("skos", "altLabel"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "altLabel")
+                and child.text is not None
+            ):
                 # set alternative label
                 lang = child.attrib.get(self.get_ns_tag("xml", "lang"), None)
                 if lang:
@@ -705,7 +726,10 @@ class FOLIO:
 
                 # add triple
                 self.triples.append((owl_class.iri, "skos:altLabel", child.text))
-            elif child.tag == self.get_ns_tag("skos", "hiddenLabel"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "hiddenLabel")
+                and child.text is not None
+            ):
                 # set hidden label
                 owl_class.hidden_label = child.text
 
@@ -714,61 +738,88 @@ class FOLIO:
 
                 # add triple
                 self.triples.append((owl_class.iri, "skos:hiddenLabel", child.text))
-            elif child.tag == self.get_ns_tag("skos", "definition"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "definition")
+                and child.text is not None
+            ):
                 # set definition
                 owl_class.definition = child.text
 
                 # add triple
                 self.triples.append((owl_class.iri, "skos:definition", child.text))
-            elif child.tag == self.get_ns_tag("skos", "example"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "example")
+                and child.text is not None
+            ):
                 # add example
                 owl_class.examples.append(child.text)
 
                 # add triple
                 self.triples.append((owl_class.iri, "skos:example", child.text))
-            elif child.tag == self.get_ns_tag("skos", "note"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "note") and child.text is not None
+            ):
                 # add note
                 owl_class.notes.append(child.text)
 
                 # add triple
                 self.triples.append((owl_class.iri, "skos:note", child.text))
-            elif child.tag == self.get_ns_tag("skos", "historyNote"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "historyNote")
+                and child.text is not None
+            ):
                 # set history note
                 owl_class.history_note = child.text
 
                 # add triple
                 self.triples.append((owl_class.iri, "skos:historyNote", child.text))
-            elif child.tag == self.get_ns_tag("skos", "editorialNote"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "editorialNote")
+                and child.text is not None
+            ):
                 # set editorial note
                 owl_class.editorial_note = child.text
 
                 # add triple
                 self.triples.append((owl_class.iri, "skos:editorialNote", child.text))
-            elif child.tag == self.get_ns_tag("skos", "inScheme"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "inScheme")
+                and child.text is not None
+            ):
                 # set in scheme
                 owl_class.in_scheme = child.text
 
                 # add triple
                 self.triples.append((owl_class.iri, "skos:inScheme", child.text))
-            elif child.tag == self.get_ns_tag("dc", "identifier"):
+            elif (
+                child.tag == self.get_ns_tag("dc", "identifier")
+                and child.text is not None
+            ):
                 # set identifier
                 owl_class.identifier = child.text
 
                 # add triple
                 self.triples.append((owl_class.iri, "dc:identifier", child.text))
-            elif child.tag == self.get_ns_tag("dc", "description"):
+            elif (
+                child.tag == self.get_ns_tag("dc", "description")
+                and child.text is not None
+            ):
                 # set description
                 owl_class.description = child.text
 
                 # add triple
                 self.triples.append((owl_class.iri, "dc:description", child.text))
-            elif child.tag == self.get_ns_tag("dc", "source"):
+            elif (
+                child.tag == self.get_ns_tag("dc", "source") and child.text is not None
+            ):
                 # set source
                 owl_class.source = child.text
 
                 # add triple
                 self.triples.append((owl_class.iri, "dc:source", child.text))
-            elif child.tag == self.get_ns_tag("v1", "country"):
+            elif (
+                child.tag == self.get_ns_tag("v1", "country") and child.text is not None
+            ):
                 # set country
                 owl_class.country = child.text
 
@@ -831,8 +882,8 @@ class FOLIO:
         # initialize the OWL object property
         owl_property = OWLObjectProperty(iri=iri)
 
-        for child in node.getchildren():
-            if child.tag == self.get_ns_tag("rdfs", "label"):
+        for child in node:
+            if child.tag == self.get_ns_tag("rdfs", "label") and child.text is not None:
                 # set label
                 owl_property.label = child.text
 
@@ -880,25 +931,37 @@ class FOLIO:
 
                     # add triple
                     self.triples.append((owl_property.iri, "owl:inverseOf", child.text))
-            elif child.tag == self.get_ns_tag("skos", "prefLabel"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "prefLabel")
+                and child.text is not None
+            ):
                 # set preferred label
                 owl_property.preferred_label = child.text
 
                 # add triple
                 self.triples.append((owl_property.iri, "skos:prefLabel", child.text))
-            elif child.tag == self.get_ns_tag("skos", "altLabel"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "altLabel")
+                and child.text is not None
+            ):
                 # set alternative label
                 owl_property.alternative_labels.append(child.text)
 
                 # add triple
                 self.triples.append((owl_property.iri, "skos:altLabel", child.text))
-            elif child.tag == self.get_ns_tag("skos", "definition"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "definition")
+                and child.text is not None
+            ):
                 # set definition
                 owl_property.definition = child.text
 
                 # add triple
                 self.triples.append((owl_property.iri, "skos:definition", child.text))
-            elif child.tag == self.get_ns_tag("skos", "example"):
+            elif (
+                child.tag == self.get_ns_tag("skos", "example")
+                and child.text is not None
+            ):
                 # add example
                 owl_property.examples.append(child.text)
 
@@ -908,7 +971,7 @@ class FOLIO:
                 LOGGER.debug("Unknown tag in ObjectProperty: %s", child.tag)
 
         # skip invalid properties
-        if not owl_property.is_valid():
+        if owl_property.label is None:
             LOGGER.info("Invalid OWL object property: %s", owl_property)
             return
 
@@ -952,7 +1015,7 @@ class FOLIO:
         Returns:
             None
         """
-        for child in node.getchildren():
+        for child in node:
             if child.tag == self.get_ns_tag("dc", "title"):
                 self.title = child.text
             elif child.tag == self.get_ns_tag("dc", "description"):
@@ -1367,9 +1430,9 @@ class FOLIO:
             return self._prefix_cache[prefix]
 
         # sort: primary-label keys first (False < True), then by length
-        if marisa_trie is not None:
+        if self._label_trie is not None:
             keys = sorted(
-                self._label_trie.keys(prefix),  # type: ignore[union-attr]
+                self._label_trie.keys(prefix),
                 key=lambda k: (k not in self.label_to_index, len(k)),
             )
         else:
@@ -1396,7 +1459,7 @@ class FOLIO:
                     seen.add(idx)
                     iri_list.append(idx)
 
-        classes = [self[index] for index in iri_list]
+        classes = [self.classes[index] for index in iri_list]
         _store_prefix_cache(self._prefix_cache, prefix, classes)
         return classes
 
@@ -1409,7 +1472,7 @@ class FOLIO:
 
         if marisa_trie is not None and self._lowercase_label_trie is not None:
             lowercase_keys = sorted(
-                self._lowercase_label_trie.keys(folded),  # type: ignore[union-attr]
+                self._lowercase_label_trie.keys(folded),
                 key=len,
             )
             # resolve lowercase keys back to original-case labels;
@@ -1448,7 +1511,7 @@ class FOLIO:
                     seen.add(idx)
                     iri_list.append(idx)
 
-        classes = [self[index] for index in iri_list]
+        classes = [self.classes[index] for index in iri_list]
         _store_prefix_cache(self._ci_prefix_cache, folded, classes)
         return classes
 
@@ -1456,7 +1519,7 @@ class FOLIO:
     @lru_cache(maxsize=DEFAULT_SEARCH_CACHE_SIZE)
     def _basic_search(
         query: str,
-        search_list: Tuple[str],
+        search_list: Tuple[str, ...],
         limit: int = 10,
         search_type: Literal["string", "token"] = "string",
     ) -> List[Tuple[str, int | float, int]]:
@@ -1473,8 +1536,12 @@ class FOLIO:
             List[Tuple[str, int | float, int]]: The list of search results with
                 the string, the search score, and the index.
         """
+        if rapidfuzz is None:
+            raise RuntimeError(
+                "search extra must be installed to use search functions: pip install folio-python[search]"
+            )
         return sorted(
-            rapidfuzz.process.extract(  # type: ignore
+            rapidfuzz.process.extract(
                 query,
                 search_list,
                 scorer=rapidfuzz.fuzz.WRatio
@@ -1555,14 +1622,14 @@ class FOLIO:
                 "search extra must be installed to use search functions: pip install folio-python[search]"
             )
 
-        # get definitions to search with zip pattern
-        class_index, class_definitions = zip(
-            *[
-                (i, c.definition)
-                for i, c in enumerate(self.classes)
-                if c.definition is not None
-            ]
-        )
+        definitions = [
+            (i, c.definition)
+            for i, c in enumerate(self.classes)
+            if c.definition is not None
+        ]
+        if not definitions:
+            return []
+        class_index, class_definitions = zip(*definitions)
 
         # use basic rapidfuzz convenience function for this
         results = []
@@ -1588,26 +1655,23 @@ class FOLIO:
         Returns:
             str: The formatted LLM input.
         """
-        return "\n".join(
-            json.dumps(
-                {
-                    k: v
-                    for k, v in {
-                        "iri": owl_class.iri,
-                        "label": owl_class.label,
-                        "preferred_label": owl_class.preferred_label,
-                        "definition": owl_class.definition,
-                        "alt_labels": owl_class.alternative_labels,
-                        "parents": [
-                            self[parent_iri].preferred_label or self[parent_iri].label
-                            for parent_iri in owl_class.sub_class_of
-                        ],
-                    }.items()
-                    if v
-                }
-            )
-            for owl_class in owl_classes
-        )
+        formatted_classes = []
+        for owl_class in owl_classes:
+            parents = [self[parent_iri] for parent_iri in owl_class.sub_class_of]
+            fields = {
+                "iri": owl_class.iri,
+                "label": owl_class.label,
+                "preferred_label": owl_class.preferred_label,
+                "definition": owl_class.definition,
+                "alt_labels": owl_class.alternative_labels,
+                "parents": [
+                    parent.preferred_label or parent.label
+                    for parent in parents
+                    if parent is not None
+                ],
+            }
+            formatted_classes.append(json.dumps({k: v for k, v in fields.items() if v}))
+        return "\n".join(formatted_classes)
 
     async def search_by_llm(
         self,
@@ -1616,7 +1680,7 @@ class FOLIO:
         limit: int = 10,
         scale: int = 10,
         include_reason: bool = False,
-    ) -> List[Tuple[OWLClass, int | float]]:
+    ) -> List[LLMSearchResult]:
         """
         Search for an OWL class by LLM.
 
@@ -1628,8 +1692,8 @@ class FOLIO:
             include_reason (bool): Whether to include the reason for the search.
 
         Returns:
-            List[Tuple[OWLClass, int | float]]: The list of search results with
-                the OWL class and the search score.
+            List[LLMSearchResult]: The list of search results with
+                the OWL class and score, plus the explanation when include_reason is True.
         """
         # skip if we don't have llm
         if self.llm is None:
@@ -1693,21 +1757,22 @@ class FOLIO:
 
             # filter and return the results
             seen_iris = set()
-            search_results = []
+            search_results: List[LLMSearchResult] = []
             for result in llm_results:
                 iri = result.get("iri", None)
                 if iri and iri not in seen_iris and iri in self.iri_to_index:
                     seen_iris.add(iri)
+                    owl_class = self.classes[self.iri_to_index[iri]]
                     if include_reason:
                         search_results.append(
                             (
-                                self[iri],
+                                owl_class,
                                 result.get("relevance", 0),
                                 result.get("explanation", ""),
                             )
                         )
                     else:
-                        search_results.append((self[iri], result.get("relevance", 0)))
+                        search_results.append((owl_class, result.get("relevance", 0)))
 
             return sorted(search_results, key=lambda x: -x[1])[:limit]
         except Exception as e:
@@ -1722,7 +1787,7 @@ class FOLIO:
         scale: int = 10,
         include_reason: bool = False,
         max_depth: int = DEFAULT_SEARCH_MAX_DEPTH,
-    ) -> List[Tuple[OWLClass, int | float]]:
+    ) -> List[LLMSearchResult]:
         """
         Parallel search using gather() pattern across one or more search sets.
 
@@ -1735,8 +1800,8 @@ class FOLIO:
             max_depth (int): The maximum depth to search for classes if search_sets is None.
 
         Returns:
-            List[Tuple[OWLClass, int | float]]: The list of search results with
-                the OWL class and the search score.
+            List[LLMSearchResult]: The list of search results with
+                the OWL class and score, plus the explanation when include_reason is True.
         """
         # skip if we don't have llm
         if self.llm is None:
@@ -1860,7 +1925,7 @@ class FOLIO:
 
     def get_folio_branches(
         self, max_depth: int = DEFAULT_MAX_DEPTH
-    ) -> Dict[str, List[OWLClass]]:
+    ) -> Dict[FOLIOTypes, List[OWLClass]]:
         """
         Get the FOLIO branches in the FOLIO ontology.
 

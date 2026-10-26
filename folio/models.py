@@ -12,7 +12,7 @@ import lxml.etree
 from pydantic import BaseModel, Field
 
 # Default values for configuration
-NSMAP = {
+NSMAP: Dict[Optional[str], str] = {
     None: "https://folio.openlegalstandard.org/",
     "dc": "http://purl.org/dc/elements/1.1/",
     "v1": "http://www.loc.gov/mads/rdf/v1#",
@@ -170,12 +170,12 @@ class OWLClass(BaseModel):
         return f"OWLClass(label={self.label}, iri={self.iri})"
 
     # pylint: disable=not-an-iterable
-    def to_owl_element(self) -> lxml.etree.Element:
+    def to_owl_element(self) -> lxml.etree._Element:
         """
         Convert the OWL class to an XML element.
 
         Returns:
-            lxml.etree.Element: The XML element representing the OWL class.
+            lxml.etree._Element: The XML element representing the OWL class.
         """
         # create the XML element
         owl_class = lxml.etree.Element(f"{{{NSMAP['owl']}}}Class", nsmap=NSMAP)
@@ -455,19 +455,11 @@ class OWLClass(BaseModel):
         if self.preferred_label:
             jsonld_data["skos:prefLabel"] = self.preferred_label
 
-        # add the altLabels
-        if self.alternative_labels:
-            jsonld_data["skos:altLabel"] = []
-            for alt_label in self.alternative_labels:
-                jsonld_data["skos:altLabel"].append(alt_label)
-
-        # add translations
-        if self.translations:
+        if self.alternative_labels or self.translations:
+            alt_labels: List[str | Dict[str, str]] = list(self.alternative_labels)
             for lang, translation in sorted(self.translations.items()):
-                jsonld_data["skos:altLabel"] = []
-                jsonld_data["skos:altLabel"].append(
-                    {"@value": translation, "@language": lang}
-                )
+                alt_labels.append({"@value": translation, "@language": lang})
+            jsonld_data["skos:altLabel"] = alt_labels
 
         # add the subClassOf
         if self.sub_class_of:
