@@ -2193,7 +2193,7 @@ class FOLIO:
         """
         Query classes with composable text and structural filters.
 
-        Text filters (at least one should be specified):
+        Text filters (optional; supplied filters must all match):
             label: Match against rdfs:label.
             definition: Match against skos:definition.
             alt_label: Match against skos:altLabel entries.
@@ -2212,7 +2212,7 @@ class FOLIO:
             limit: Maximum results to return (default 20).
 
         Returns:
-            List[OWLClass]: Matching classes, ordered by label.
+            List[OWLClass]: Matching classes in stored iteration order, up to limit.
         """
         import re as _re
 
