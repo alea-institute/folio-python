@@ -128,3 +128,4 @@ min-public-methods = 0
 
 [tool.pytest.ini_options]
 addopts = "--cov=folio --cov-report=term-missing --cov-report=xml --cov-report=html"
+markers = ["cache_pressure: opt-in sustained search-cache pressure measurements"]
