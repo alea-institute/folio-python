@@ -133,7 +133,102 @@ for p in props:
     print(f"{p.label} <-> {p.inverse_of}")
 ```
 
-Match modes: `"substring"` (default), `"exact"`, `"regex"`, `"fuzzy"`
+### Combine class selections with property filters
+
+[Structured-query recipes](examples/structured_queries.py) provide three small
+functions that accept an already loaded `FOLIO` graph:
+
+| Recipe | Inputs and result |
+| --- | --- |
+| `classes_in_branch` | A text substring and branch name select a list of `OWLClass` descendants. Text can match a label, definition, alternative label, example, note, comment, or description. |
+| `properties_between` | A property-label substring plus domain and range IRIs select a list of `OWLObjectProperty` objects. Full and short IRIs work. Optional `has_inverse=True` requires an inverse declaration; `False` excludes it; `None` accepts either. |
+| `connections_between_branches` | Source and target text/branch selections plus a property-label substring produce `(source class, property, target class)` tuples. A property matching several pairs appears once for each pair. |
+
+These are repository examples: clone the repository and run Python from its root,
+or copy the [recipe source](examples/structured_queries.py) into your project.
+Installing `folio-python` alone does not install the `examples` module. Importing
+the recipes does not load a graph. The `FOLIO()` construction above loads ontology
+data immediately and may download it or initialize an optional LLM client;
+`use_cache=False` does not make construction offline. The three recipes use
+substring matching and do not require the optional search dependencies or make
+LLM calls.
+
+For example, reuse the `folio` graph above to look for declared properties between
+trust-related areas of law and trustees:
+
+```python
+from examples.structured_queries import connections_between_branches
+
+connections = connections_between_branches(
+    folio,
+    source_text="trust",
+    source_branch="AREA_OF_LAW",
+    target_text="trustee",
+    target_branch="ACTOR_PLAYER",
+    property_text="has",
+)
+for source, prop, target in connections:
+    print(f"{source.label} -- {prop.label} --> {target.label}")
+```
+
+Results depend on the loaded ontology and may be empty. The
+[synthetic test fixture](tests/test_structured_query_examples.py) yields nine
+associations for this call; those fixture labels and counts are not promises
+about the live ontology. Each recipe returns `[]` when its filters have no common
+match. The composition also returns `[]` if either class selection is empty.
+
+### Interpret the results
+
+- **Filters intersect.** Each supplied filter must match. Within `any_text`, a
+  match in any supported class text field is enough. Text filters are optional;
+  structural filters can be used alone. `query_properties()` has no `branch` or
+  `any_text` argument, so the composed recipe passes selected class IRIs to it.
+- **Branches select descendants.** Branch enum names (such as `AREA_OF_LAW`) and
+  values (such as `Area of Law`) are case-insensitive strings. Branch and
+  `parent_iri` filters exclude the root and traverse descendants up to the current
+  maximum depth of 16. An unknown branch produces `[]`.
+- **Property endpoints are explicit declarations.** Both `domain_iri` and
+  `range_iri` must be present in the property's stored declarations. A declaration
+  on an ancestor does not automatically match a descendant. The composition
+  reports matching declarations; it does not infer applicability or assert a
+  relationship between instances.
+- **Match modes differ.** `"substring"` (the default) and `"regex"` ignore case;
+  `"exact"` is case-sensitive. `"fuzzy"` requires the optional search dependency.
+- **Limits select partial results.** Use positive limits. Both query methods
+  return the first matches in stored iteration order, without an alphabetical or
+  relevance-order guarantee. Each recipe's `limit` defaults to 20. The composed
+  recipe instead has independent `source_limit=5`, `target_limit=5`, and
+  `property_limit_per_pair=3` defaults: at most 75 rows, with the property limit
+  applied separately to every pair. This is a bounded selection, not an exhaustive
+  join; raising only the property limit cannot recover classes omitted by the
+  source or target limit.
+
+### Executable coverage
+
+Every query example in this section is backed by the named tests in
+[test_structured_query_examples.py](tests/test_structured_query_examples.py).
+They parse fixed RDF/XML, replace ontology loading, and disable optional search
+and LLM backends, so they require no ontology download or LLM call:
+
+```bash
+uv run pytest tests/test_structured_query_examples.py
+```
+
+| Example | Backing tests |
+| --- | --- |
+| Text plus branch snippet | `test_readme_text_and_branch` |
+| Regex labels snippet | `test_readme_regex_labels` |
+| Parent plus leaf snippet | `test_readme_leaf_descendants` |
+| Inverse-only properties snippet | `test_readme_inverse_properties` |
+| Import recipes without constructing a graph | `test_recipe_import_does_not_construct_graph` |
+| Class text and branch recipe | `test_classes_in_branch`, `test_class_filters_empty_intersection` |
+| Property text, domain, range, and inverse recipe | `test_properties_between`, `test_property_endpoints_are_explicit`, `test_property_filters_empty_intersection` |
+| Composed recipe and call above | `test_connections_between_branches`, `test_composition_empty_results`, `test_composition_limits` |
+
+The existing [integration tests](tests/test_folio.py) also cover query filters
+against a loaded ontology, including `test_query_combined_filters`,
+`test_query_regex`, `test_query_by_parent_iri`, `test_query_has_children`, and
+`test_query_properties_has_inverse`.
 
 ## Searching with an LLM
 
