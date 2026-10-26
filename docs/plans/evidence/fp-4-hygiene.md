@@ -37,7 +37,7 @@ All runs use coverage 7.13.4, fresh data, all six `folio` modules, branch measur
 | Final expanded offline selection, Python 3.12.12 | 62 | 747/1189 (62.83%) | 287/576 (49.83%) | 58.58% |
 | Final expanded offline selection, Python 3.10.19 | 62 | 747/1189 (62.83%) | 287/576 (49.83%) | 58.58% |
 | Final expanded offline selection, Python 3.14.4 | 62 | 747/1189 (62.83%) | 287/576 (49.83%) | 58.58% |
-| Final full suite, Python 3.12.12 | 127 | See `fp-4/final-full-coverage.json` | Includes live ontology checks and ten benchmarks | Passing |
+| Final full suite, Python 3.12.12 | 127 | 1100/1189 (92.51%) | 500/576 (86.81%) | 90.65% |
 
 The unchanged-selection percentage change is attributable to necessary fixes, not removed tests: the new HTTP URL guard, RapidFuzz narrowing guard, empty-corpus return and parent-formatting loop add eight graph branches; consolidating JSON-LD alias accumulation removes four model branches. Known-index prefix access no longer traverses the integer branch of `__getitem__`, accounting for one fewer covered branch in the unchanged tests. Statement coverage keeps exactly 431 covered statements while the denominator increases by twelve. Coverage's existing built-in protocol exclusion recognizes four new type-only lines; no custom exclusion or suppression was added. The expanded suite exceeds both original rates substantially. `fp-4/covered-boundaries.json` lists measured executed/missing branch destinations for the parser, formatting, search and serialization boundaries.
 
@@ -74,3 +74,14 @@ The audit commands in `CONTRIBUTING.md` reproduce the scopes using complete hash
 `.github/workflows/hygiene.yml` adds frozen uv installs, Ruff lint/format, ty targeting Python 3.10, separate core-only wheel environments, and deterministic coverage on Python 3.10/3.14. Its 58% combined coverage floor rounds down the measured 58.58% offline result. `CONTRIBUTING.md` records the same commands and audit limitations; `CLAUDE.md` now requires zero type diagnostics and describes the prefix fallback accurately. Existing full-suite and release workflows remain unchanged.
 
 No schema migration, data rewrite, version bump, release, outside service or frontend change. No screenshot applies. Publication, hosted checks and campaign acceptance remain with the controller.
+
+## Final quality and delivery
+
+- Final code review of `77a97e200992a34a101222563c4d9b476f366e68` against the starting commit returned **Ready to merge**, zero findings and complete local R1–R9/U1–U5 coverage. Seven local review lenses covered correctness, tests, project standards, maintainability, API contracts, reliability and adversarial checks. The checkout disables external cross-model review; the adversarial pass used a local reviewer. The sanitized durable result is `fp-4/review.json`.
+- Simplification reviewed reuse, quality, efficiency, test value and comments. Two redundant comments were removed; all proof tests stayed intact. No actionable findings remain. The plan, tests and receipt already preserve the maintenance reasoning, so no separate learning document was needed.
+- A final matching-environment check of the original source, exported from the starting commit and checked from its own root against the final development environment, exactly reproduced `fp-4/original-source-ty-chosen.txt` (46 diagnostics). Thus the five audited dependency updates did not change the diagnostic comparison; final source has zero diagnostics under the same environment.
+- Workflow YAML parsed locally; trigger, Python-matrix and read-only permission fields were checked. The recorded matrix environments passed Ruff and ty, and all 62 deterministic cases passed on Python 3.10/3.14. Hosted execution is not claimed.
+- Browser verification: skipped because the changed library, tests, CI and contributor documents expose no browser routes. No screenshot is required.
+- Work is committed locally on `drawdown/fp-4`. No remote was added and no push, PR, merge or deployment was attempted. The controller owns publication, hosted checks and the missing campaign excerpts. There is no held change or personal decision required.
+- Final `pyproject.toml` SHA-256: `2478a36f2e766e5c5e161ef22f5f1c5825b3a5f5f22280fc4396cbc2c85f4fd9`.
+- Final `uv.lock` SHA-256: `d726f587ff9bf7056f4fcb4061e962ab03f426691e9842e0b33f53f19e5eea58`.

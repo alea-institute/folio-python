@@ -1,0 +1,171 @@
+{
+  "status": "complete",
+  "verdict": "Ready to merge",
+  "verdict_reason": "No actionable defects or missing local plan work were found. This code-review verdict does not close controller-owned hosted CI or campaign acceptance.",
+  "scope": {
+    "base": "1828960305448deb24ccce25b30e4d6be0b3ef91",
+    "branch": "drawdown/fp-4",
+    "head_sha": "77a97e200992a34a101222563c4d9b476f366e68",
+    "pr_url": null,
+    "files_changed": 32
+  },
+  "intent": "Repair typed parser, model serialization and optional-search boundaries while preserving public dependency contracts and Python 3.10 support. Add meaningful deterministic coverage, reproducible maintenance checks and separate dependency audit evidence.",
+  "intent_confidence": "explicit",
+  "reviewers": [
+    "correctness",
+    "testing",
+    "project-standards",
+    "maintainability",
+    "api-contract",
+    "reliability",
+    "adversarial"
+  ],
+  "findings": [],
+  "actionable_findings": [],
+  "triage_groups": [],
+  "pre_existing_findings": [],
+  "requirements_completeness": {
+    "plan": "docs/plans/2026-10-26-1200-chore-fp-4-library-hygiene-plan.md",
+    "source": "explicit",
+    "status": "met for local implementation scope",
+    "requirements": [
+      {
+        "id": "R1",
+        "status": "met",
+        "evidence": "Baseline source/input digests, original audits and coverage, and both checker/stub diagnostic reports are retained."
+      },
+      {
+        "id": "R2",
+        "status": "met",
+        "evidence": "Typed parser and serializer boundaries preserve Python 3.10, published dependency ranges and optional search installation."
+      },
+      {
+        "id": "R3",
+        "status": "met",
+        "evidence": "New parser, model, optional-search and fake-LLM tests cover the planned boundaries; regressions.txt records failures before fixes."
+      },
+      {
+        "id": "R4",
+        "status": "met",
+        "evidence": "Existing tests and assertions are unchanged; the retained full-suite evidence reports 127 passes, including ten benchmarks."
+      },
+      {
+        "id": "R5",
+        "status": "met",
+        "evidence": "Original/final core, published search-extra and development audits retain inventory, hashes, advisories and marker limitations."
+      },
+      {
+        "id": "R6",
+        "status": "met",
+        "evidence": "CONTRIBUTING.md, hygiene workflow and evidence receipt reproduce checks and distinguish local results from unavailable hosted checks."
+      },
+      {
+        "id": "R7",
+        "status": "met",
+        "evidence": "Four focused local commits contain fp-4 work; publication remains controller-owned."
+      },
+      {
+        "id": "R8",
+        "status": "met",
+        "evidence": "No package-version, release workflow, migration, data-rewrite or outside-service change appears in the diff."
+      },
+      {
+        "id": "R9",
+        "status": "met",
+        "evidence": "Independent local work is complete; missing campaign excerpts and hosted execution remain explicit acceptance limitations."
+      }
+    ],
+    "implementation_units": [
+      {
+        "id": "U1",
+        "status": "met",
+        "evidence": "Baseline identity, tooling, coverage and audit artifacts are retained."
+      },
+      {
+        "id": "U2",
+        "status": "met",
+        "evidence": "Typed parser, optional-search and isolated core-install boundaries are implemented and tested."
+      },
+      {
+        "id": "U3",
+        "status": "met",
+        "evidence": "JSON-LD alias preservation, sparse serialization and empty-definition cases have deterministic coverage."
+      },
+      {
+        "id": "U4",
+        "status": "met",
+        "evidence": "Five compatible transitive lock updates address retained advisories; final scoped audits report no known findings."
+      },
+      {
+        "id": "U5",
+        "status": "met",
+        "evidence": "Frozen hygiene commands, Python 3.10/3.14 core probes and the measured 58% offline coverage floor are documented and configured."
+      }
+    ],
+    "unrequested_behavior_rules": [],
+    "acceptance_limits": [
+      "The chief campaign plan and common mandate excerpts remain unavailable; the controller must supply them for campaign acceptance.",
+      "Hosted CI and publication are explicitly assigned to the controller and were not verified by this review."
+    ]
+  },
+  "learnings": [],
+  "agent_native_gaps": [],
+  "deployment_notes": [],
+  "residual_risks": [],
+  "testing_gaps": [],
+  "coverage": {
+    "depth": "full",
+    "suppressed_by_confidence": {},
+    "mode_aware_demotions": 0,
+    "first_evidence_backfilled": 0,
+    "missing_first_evidence_demotions": 0,
+    "malformed_findings": 0,
+    "malformed_returns": 0,
+    "settlement_suppressed": 0,
+    "failed_reviewers": [],
+    "notes": [
+      "Full depth required by executable change volume and public serialization contracts.",
+      "Project standards use CLAUDE.md as instruction-file fallback.",
+      "No external campaign-plan contents or hosted CI results were available; campaign acceptance and publication remain controller-owned.",
+      "No browser pages changed; browser verification is not applicable.",
+      "Agent-native lens not selected: CLAUDE.md changes document maintenance commands rather than agent tools or product capabilities.",
+      "No applicable learnings corpus, migration, frontend, security-boundary, or material performance-policy changes.",
+      "cross-model pass: disabled by checkout config; adversarial lens covered by the in-process reviewer.",
+      "All seven selected local reviewers returned valid artifacts; none reported findings, residual risks, or testing gaps.",
+      "No findings were suppressed, demoted, merged, or rejected; first_evidence_backfilled=0 and missing-quote demotions=0.",
+      "Validator batch is empty: no surviving findings require validation and no cross-model shortcut was used."
+    ],
+    "validator": {
+      "outcome": "empty-batch",
+      "confirmed": 0,
+      "rejected": 0,
+      "unresolved": 0,
+      "malformed": 0,
+      "failed": 0,
+      "shortcut_skipped": 0,
+      "reason": "No findings selected for validation; no validator launch or corroboration shortcut was needed."
+    },
+    "reviewer_reasons": {
+      "correctness": "always-on",
+      "testing": "changed deterministic tests and isolated core installation harness",
+      "project-standards": "root CLAUDE.md fallback governs changed files",
+      "maintainability": "235 executable non-test changed lines and typed boundary changes",
+      "api-contract": "public serializers and package return signatures",
+      "reliability": "optional dependencies and missing-input error boundaries",
+      "adversarial": "silent-pass CI coverage and core-install verification mechanisms"
+    },
+    "evidence": {
+      "receipt": "docs/plans/evidence/fp-4-hygiene.md",
+      "recorded_full_suite_passed": 127,
+      "recorded_offline_suite_passed": 62,
+      "recorded_offline_combined_coverage_percent": 58.58,
+      "recorded_full_combined_coverage_percent": 90.65
+    }
+  },
+  "peer": {
+    "outcome": "in-process-fallback",
+    "coverage": "cross-model pass: disabled by checkout config; adversarial lens covered by the in-process reviewer."
+  },
+  "artifact_path": "docs/plans/evidence/fp-4/review.json",
+  "run_id": "fp4-00a8135f"
+}
