@@ -1,0 +1,1074 @@
+{
+  "folio/graph.py": {
+    "FOLIO.parse_owl_class": {
+      "summary": {
+        "covered_lines": 69,
+        "num_statements": 107,
+        "percent_covered": 64.1711229946524,
+        "percent_covered_display": "64",
+        "missing_lines": 38,
+        "excluded_lines": 0,
+        "percent_statements_covered": 64.48598130841121,
+        "percent_statements_covered_display": "64",
+        "num_branches": 80,
+        "num_partial_branches": 17,
+        "covered_branches": 51,
+        "missing_branches": 29,
+        "percent_branches_covered": 63.75,
+        "percent_branches_covered_display": "64"
+      },
+      "executed_branches": [
+        [
+          608,
+          609
+        ],
+        [
+          608,
+          613
+        ],
+        [
+          615,
+          616
+        ],
+        [
+          615,
+          833
+        ],
+        [
+          616,
+          618
+        ],
+        [
+          616,
+          622
+        ],
+        [
+          622,
+          624
+        ],
+        [
+          622,
+          671
+        ],
+        [
+          627,
+          628
+        ],
+        [
+          671,
+          673
+        ],
+        [
+          671,
+          679
+        ],
+        [
+          674,
+          675
+        ],
+        [
+          679,
+          681
+        ],
+        [
+          679,
+          692
+        ],
+        [
+          682,
+          683
+        ],
+        [
+          692,
+          701
+        ],
+        [
+          701,
+          707
+        ],
+        [
+          707,
+          712
+        ],
+        [
+          707,
+          715
+        ],
+        [
+          715,
+          720
+        ],
+        [
+          715,
+          729
+        ],
+        [
+          721,
+          722
+        ],
+        [
+          721,
+          724
+        ],
+        [
+          724,
+          725
+        ],
+        [
+          724,
+          728
+        ],
+        [
+          729,
+          741
+        ],
+        [
+          741,
+          746
+        ],
+        [
+          741,
+          750
+        ],
+        [
+          750,
+          755
+        ],
+        [
+          750,
+          759
+        ],
+        [
+          759,
+          763
+        ],
+        [
+          759,
+          767
+        ],
+        [
+          767,
+          776
+        ],
+        [
+          776,
+          785
+        ],
+        [
+          785,
+          794
+        ],
+        [
+          794,
+          803
+        ],
+        [
+          803,
+          812
+        ],
+        [
+          812,
+          820
+        ],
+        [
+          820,
+          830
+        ],
+        [
+          833,
+          834
+        ],
+        [
+          833,
+          838
+        ],
+        [
+          845,
+          846
+        ],
+        [
+          845,
+          852
+        ],
+        [
+          846,
+          847
+        ],
+        [
+          852,
+          853
+        ],
+        [
+          852,
+          859
+        ],
+        [
+          853,
+          854
+        ],
+        [
+          859,
+          -596
+        ],
+        [
+          859,
+          860
+        ],
+        [
+          860,
+          861
+        ],
+        [
+          861,
+          862
+        ]
+      ],
+      "missing_branches": [
+        [
+          627,
+          636
+        ],
+        [
+          636,
+          615
+        ],
+        [
+          636,
+          639
+        ],
+        [
+          642,
+          636
+        ],
+        [
+          642,
+          643
+        ],
+        [
+          648,
+          636
+        ],
+        [
+          648,
+          652
+        ],
+        [
+          655,
+          636
+        ],
+        [
+          655,
+          656
+        ],
+        [
+          659,
+          636
+        ],
+        [
+          659,
+          661
+        ],
+        [
+          674,
+          615
+        ],
+        [
+          682,
+          687
+        ],
+        [
+          687,
+          615
+        ],
+        [
+          687,
+          688
+        ],
+        [
+          692,
+          697
+        ],
+        [
+          701,
+          703
+        ],
+        [
+          729,
+          734
+        ],
+        [
+          767,
+          772
+        ],
+        [
+          776,
+          781
+        ],
+        [
+          785,
+          790
+        ],
+        [
+          794,
+          799
+        ],
+        [
+          803,
+          808
+        ],
+        [
+          812,
+          816
+        ],
+        [
+          820,
+          824
+        ],
+        [
+          846,
+          849
+        ],
+        [
+          853,
+          856
+        ],
+        [
+          860,
+          859
+        ],
+        [
+          861,
+          864
+        ]
+      ]
+    },
+    "FOLIO.parse_owl_object_property": {
+      "summary": {
+        "covered_lines": 57,
+        "num_statements": 64,
+        "percent_covered": 83.03571428571429,
+        "percent_covered_display": "83",
+        "missing_lines": 7,
+        "excluded_lines": 0,
+        "percent_statements_covered": 89.0625,
+        "percent_statements_covered_display": "89",
+        "num_branches": 48,
+        "num_partial_branches": 10,
+        "covered_branches": 36,
+        "missing_branches": 12,
+        "percent_branches_covered": 75.0,
+        "percent_branches_covered_display": "75"
+      },
+      "executed_branches": [
+        [
+          878,
+          879
+        ],
+        [
+          878,
+          883
+        ],
+        [
+          885,
+          886
+        ],
+        [
+          885,
+          974
+        ],
+        [
+          886,
+          888
+        ],
+        [
+          886,
+          892
+        ],
+        [
+          892,
+          894
+        ],
+        [
+          892,
+          904
+        ],
+        [
+          897,
+          898
+        ],
+        [
+          904,
+          906
+        ],
+        [
+          904,
+          912
+        ],
+        [
+          907,
+          908
+        ],
+        [
+          912,
+          914
+        ],
+        [
+          912,
+          920
+        ],
+        [
+          915,
+          916
+        ],
+        [
+          920,
+          922
+        ],
+        [
+          920,
+          934
+        ],
+        [
+          923,
+          924
+        ],
+        [
+          934,
+          939
+        ],
+        [
+          934,
+          943
+        ],
+        [
+          943,
+          948
+        ],
+        [
+          943,
+          952
+        ],
+        [
+          952,
+          961
+        ],
+        [
+          961,
+          966
+        ],
+        [
+          961,
+          971
+        ],
+        [
+          974,
+          975
+        ],
+        [
+          974,
+          979
+        ],
+        [
+          986,
+          987
+        ],
+        [
+          987,
+          988
+        ],
+        [
+          993,
+          994
+        ],
+        [
+          994,
+          995
+        ],
+        [
+          1000,
+          -866
+        ],
+        [
+          1000,
+          1001
+        ],
+        [
+          1001,
+          1000
+        ],
+        [
+          1001,
+          1004
+        ],
+        [
+          1005,
+          1006
+        ]
+      ],
+      "missing_branches": [
+        [
+          897,
+          885
+        ],
+        [
+          907,
+          885
+        ],
+        [
+          915,
+          885
+        ],
+        [
+          923,
+          928
+        ],
+        [
+          928,
+          885
+        ],
+        [
+          928,
+          930
+        ],
+        [
+          952,
+          957
+        ],
+        [
+          986,
+          993
+        ],
+        [
+          987,
+          990
+        ],
+        [
+          993,
+          -866
+        ],
+        [
+          994,
+          997
+        ],
+        [
+          1005,
+          1001
+        ]
+      ]
+    },
+    "FOLIO.format_classes_for_llm": {
+      "summary": {
+        "covered_lines": 6,
+        "num_statements": 6,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100",
+        "num_branches": 2,
+        "num_partial_branches": 0,
+        "covered_branches": 2,
+        "missing_branches": 0,
+        "percent_branches_covered": 100.0,
+        "percent_branches_covered_display": "100"
+      },
+      "executed_branches": [
+        [
+          1659,
+          1660
+        ],
+        [
+          1659,
+          1674
+        ]
+      ],
+      "missing_branches": []
+    },
+    "FOLIO.search_by_definition": {
+      "summary": {
+        "covered_lines": 12,
+        "num_statements": 12,
+        "percent_covered": 90.0,
+        "percent_covered_display": "90",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100",
+        "num_branches": 8,
+        "num_partial_branches": 2,
+        "covered_branches": 6,
+        "missing_branches": 2,
+        "percent_branches_covered": 75.0,
+        "percent_branches_covered_display": "75"
+      },
+      "executed_branches": [
+        [
+          1620,
+          1621
+        ],
+        [
+          1620,
+          1625
+        ],
+        [
+          1630,
+          1631
+        ],
+        [
+          1630,
+          1632
+        ],
+        [
+          1636,
+          1639
+        ],
+        [
+          1640,
+          1641
+        ]
+      ],
+      "missing_branches": [
+        [
+          1636,
+          1643
+        ],
+        [
+          1640,
+          1636
+        ]
+      ]
+    },
+    "FOLIO.search_by_llm": {
+      "summary": {
+        "covered_lines": 29,
+        "num_statements": 29,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100",
+        "num_branches": 14,
+        "num_partial_branches": 0,
+        "covered_branches": 14,
+        "missing_branches": 0,
+        "percent_branches_covered": 100.0,
+        "percent_branches_covered_display": "100"
+      },
+      "executed_branches": [
+        [
+          1699,
+          1700
+        ],
+        [
+          1699,
+          1705
+        ],
+        [
+          1719,
+          1720
+        ],
+        [
+          1719,
+          1722
+        ],
+        [
+          1751,
+          1752
+        ],
+        [
+          1751,
+          1753
+        ],
+        [
+          1753,
+          1754
+        ],
+        [
+          1753,
+          1756
+        ],
+        [
+          1761,
+          1762
+        ],
+        [
+          1761,
+          1777
+        ],
+        [
+          1763,
+          1761
+        ],
+        [
+          1763,
+          1764
+        ],
+        [
+          1766,
+          1767
+        ],
+        [
+          1766,
+          1775
+        ]
+      ],
+      "missing_branches": []
+    },
+    "FOLIO.parallel_search_by_llm": {
+      "summary": {
+        "covered_lines": 10,
+        "num_statements": 11,
+        "percent_covered": 86.66666666666667,
+        "percent_covered_display": "87",
+        "missing_lines": 1,
+        "excluded_lines": 0,
+        "percent_statements_covered": 90.9090909090909,
+        "percent_statements_covered_display": "91",
+        "num_branches": 4,
+        "num_partial_branches": 1,
+        "covered_branches": 3,
+        "missing_branches": 1,
+        "percent_branches_covered": 75.0,
+        "percent_branches_covered_display": "75"
+      },
+      "executed_branches": [
+        [
+          1807,
+          1808
+        ],
+        [
+          1807,
+          1813
+        ],
+        [
+          1813,
+          1817
+        ]
+      ],
+      "missing_branches": [
+        [
+          1813,
+          1814
+        ]
+      ]
+    }
+  },
+  "folio/models.py": {
+    "OWLClass.to_jsonld": {
+      "summary": {
+        "covered_lines": 51,
+        "num_statements": 51,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100",
+        "num_branches": 48,
+        "num_partial_branches": 0,
+        "covered_branches": 48,
+        "missing_branches": 0,
+        "percent_branches_covered": 100.0,
+        "percent_branches_covered_display": "100"
+      },
+      "executed_branches": [
+        [
+          434,
+          435
+        ],
+        [
+          434,
+          438
+        ],
+        [
+          438,
+          439
+        ],
+        [
+          438,
+          447
+        ],
+        [
+          440,
+          441
+        ],
+        [
+          440,
+          447
+        ],
+        [
+          441,
+          442
+        ],
+        [
+          441,
+          444
+        ],
+        [
+          447,
+          448
+        ],
+        [
+          447,
+          451
+        ],
+        [
+          451,
+          452
+        ],
+        [
+          451,
+          455
+        ],
+        [
+          455,
+          456
+        ],
+        [
+          455,
+          458
+        ],
+        [
+          458,
+          459
+        ],
+        [
+          458,
+          465
+        ],
+        [
+          460,
+          461
+        ],
+        [
+          460,
+          462
+        ],
+        [
+          465,
+          466
+        ],
+        [
+          465,
+          471
+        ],
+        [
+          467,
+          468
+        ],
+        [
+          467,
+          471
+        ],
+        [
+          471,
+          472
+        ],
+        [
+          471,
+          475
+        ],
+        [
+          475,
+          476
+        ],
+        [
+          475,
+          479
+        ],
+        [
+          479,
+          480
+        ],
+        [
+          479,
+          485
+        ],
+        [
+          481,
+          482
+        ],
+        [
+          481,
+          485
+        ],
+        [
+          485,
+          486
+        ],
+        [
+          485,
+          491
+        ],
+        [
+          487,
+          488
+        ],
+        [
+          487,
+          491
+        ],
+        [
+          491,
+          492
+        ],
+        [
+          491,
+          495
+        ],
+        [
+          495,
+          496
+        ],
+        [
+          495,
+          499
+        ],
+        [
+          499,
+          500
+        ],
+        [
+          499,
+          503
+        ],
+        [
+          503,
+          504
+        ],
+        [
+          503,
+          507
+        ],
+        [
+          507,
+          508
+        ],
+        [
+          507,
+          511
+        ],
+        [
+          511,
+          512
+        ],
+        [
+          511,
+          515
+        ],
+        [
+          515,
+          516
+        ],
+        [
+          515,
+          519
+        ]
+      ],
+      "missing_branches": []
+    },
+    "OWLClass.to_owl_element": {
+      "summary": {
+        "covered_lines": 45,
+        "num_statements": 45,
+        "percent_covered": 100.0,
+        "percent_covered_display": "100",
+        "missing_lines": 0,
+        "excluded_lines": 0,
+        "percent_statements_covered": 100.0,
+        "percent_statements_covered_display": "100",
+        "num_branches": 20,
+        "num_partial_branches": 0,
+        "covered_branches": 20,
+        "missing_branches": 0,
+        "percent_branches_covered": 100.0,
+        "percent_branches_covered_display": "100"
+      },
+      "executed_branches": [
+        [
+          187,
+          188
+        ],
+        [
+          187,
+          195
+        ],
+        [
+          195,
+          196
+        ],
+        [
+          195,
+          206
+        ],
+        [
+          211,
+          212
+        ],
+        [
+          211,
+          219
+        ],
+        [
+          219,
+          220
+        ],
+        [
+          219,
+          231
+        ],
+        [
+          224,
+          225
+        ],
+        [
+          224,
+          227
+        ],
+        [
+          231,
+          232
+        ],
+        [
+          231,
+          240
+        ],
+        [
+          240,
+          241
+        ],
+        [
+          240,
+          248
+        ],
+        [
+          248,
+          249
+        ],
+        [
+          248,
+          256
+        ],
+        [
+          256,
+          257
+        ],
+        [
+          256,
+          264
+        ],
+        [
+          264,
+          265
+        ],
+        [
+          264,
+          272
+        ]
+      ],
+      "missing_branches": []
+    }
+  }
+}

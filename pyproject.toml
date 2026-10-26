@@ -128,4 +128,7 @@ max-locals = 25
 min-public-methods = 0
 
 [tool.pytest.ini_options]
-addopts = "--cov=folio --cov-report=term-missing --cov-report=xml --cov-report=html"
+addopts = "--cov=folio --cov-branch --cov-report=term-missing --cov-report=xml --cov-report=html"
+
+[tool.ty.environment]
+python-version = "3.10"

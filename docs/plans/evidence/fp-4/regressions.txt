@@ -1,0 +1,13 @@
+Original source regressions, before implementation fixes:
+ ============================
+FAILED tests/test_parser_hygiene.py::test_sparse_class_text_and_relationships
+FAILED tests/test_parser_hygiene.py::test_sparse_property_retains_links_and_indexes
+FAILED tests/test_parser_hygiene.py::test_llm_formatting_omits_unresolved_parents[True]
+FAILED tests/test_parser_hygiene.py::test_llm_formatting_omits_unresolved_parents[False]
+FAILED tests/test_optional_search.py::test_empty_definition_corpus[] - ValueE...
+FAILED tests/test_optional_search.py::test_empty_definition_corpus[<owl:Class rdf:about="https://folio.openlegalstandard.org/Rcontract"><rdfs:label>Contract</rdfs:label></owl:Class>]
+========================= 6 failed, 5 passed in 0.26s ==========================
+
+Model worker observed two failing JSON-LD cases and eight passing cases before the serialization fix. Both failures retained only the final French translation. All ten model cases pass after the fix.
+
+Final whole-package type check: ty 0.0.92, types-lxml 2026.2.16, Python target 3.10: All checks passed.

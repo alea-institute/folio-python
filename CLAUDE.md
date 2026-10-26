@@ -7,7 +7,7 @@ folio-python is the Python library for FOLIO (Federated Open Legal Information O
 ## Setup
 
 ```bash
-uv sync          # installs dev + search extras
+uv sync --frozen # installs locked dev + search groups
 ```
 
 ## Commands
@@ -22,12 +22,12 @@ uv run pytest tests/ -k "not benchmark"  # skip benchmarks (faster)
 ### Linting and formatting
 
 ```bash
-ruff check --fix folio/ tests/  # lint + autofix
-ruff format folio/ tests/       # format
-ty check folio/                 # type check (47 pre-existing diagnostics from optional imports and lxml types)
+uv run --frozen ruff check --fix folio/ tests/  # lint + autofix
+uv run --frozen ruff format folio/ tests/       # format
+uv run --frozen ty check folio/ # targets Python 3.10; zero diagnostics required
 ```
 
-Run all three before committing. `ruff check` and `ruff format` should be clean. `ty check` has known pre-existing issues with optional `marisa_trie`/`rapidfuzz` imports and `lxml.etree` types — don't introduce new diagnostics.
+Run all three before committing; each must pass. The locked ty and types-lxml versions reproduce the zero-diagnostic baseline. See `CONTRIBUTING.md` for deterministic coverage, isolated core-only checks, and dependency audits; `docs/plans/evidence/fp-4-hygiene.md` records the measured results.
 
 ## Architecture
 
@@ -40,7 +40,7 @@ Run all three before committing. `ruff check` and `ruff format` should be clean.
 
 - `FOLIO[iri]` returns `OWLClass | None` — the primary lookup method
 - `folio.get_property(iri)` returns `OWLObjectProperty | None`
-- Search methods (`search_by_label`, `search_by_definition`, `search_by_prefix`) require `[search]` extra (rapidfuzz, marisa-trie)
+- Fuzzy search (`search_by_label`, `search_by_definition`) requires the `[search]` extra; `search_by_prefix` has a core-only Python fallback
 - `query()` and `query_properties()` do structured filtering with composable text + structural filters
 - Branch getters (`get_areas_of_law()`, etc.) all delegate to `get_children(root_iri, max_depth)`
 - Optional imports (`rapidfuzz`, `marisa_trie`, `alea_llm_client`) are guarded with try/except
