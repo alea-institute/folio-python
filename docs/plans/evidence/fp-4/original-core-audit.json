@@ -1,0 +1,105 @@
+{
+  "dependencies": [
+    {
+      "name": "annotated-types",
+      "version": "0.7.0",
+      "vulns": []
+    },
+    {
+      "name": "anyio",
+      "version": "4.12.1",
+      "vulns": [
+        {
+          "id": "PYSEC-2026-4025",
+          "fix_versions": [
+            "4.14.2"
+          ],
+          "aliases": [
+            "CVE-2026-63374",
+            "GHSA-82r6-8w77-94w6"
+          ]
+        },
+        {
+          "id": "PYSEC-2026-4024",
+          "fix_versions": [
+            "4.14.2"
+          ],
+          "aliases": [
+            "GHSA-5p39-cfhj-2xmp",
+            "CVE-2026-64847"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "certifi",
+      "version": "2026.2.25",
+      "vulns": [
+        {
+          "id": "PYSEC-2026-4320",
+          "fix_versions": [
+            "2026.10.19"
+          ],
+          "aliases": [
+            "GHSA-6q48-6c7w-9gw2"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "vulns": []
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9",
+      "vulns": []
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1",
+      "vulns": []
+    },
+    {
+      "name": "idna",
+      "version": "3.18",
+      "vulns": []
+    },
+    {
+      "name": "lxml",
+      "version": "6.1.1",
+      "vulns": []
+    },
+    {
+      "name": "pydantic",
+      "version": "2.12.5",
+      "vulns": []
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.41.5",
+      "vulns": []
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.15.0",
+      "vulns": []
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.2",
+      "vulns": []
+    }
+  ],
+  "fixes": [],
+  "scope": "core",
+  "phase": "original",
+  "exit_code": 1,
+  "auditor": "pip-audit 2.9.0",
+  "service": "pypi",
+  "date": "2026-10-26",
+  "python": "3.12.12",
+  "platform": "Linux x86_64",
+  "input_sha256": "a3854fcc74cff0fe062e7c2ee28d2a53d40d422938977fd9e7ce5c5379af12eb"
+}
