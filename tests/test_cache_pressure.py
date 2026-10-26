@@ -4,6 +4,8 @@ from collections import deque
 from dataclasses import asdict, dataclass
 import gc
 import json
+from pathlib import Path
+import sys
 import time
 import tracemalloc
 
@@ -458,3 +460,119 @@ def test_report_has_bounded_public_fields(graph_factory):
         "batch_timing",
         "traced_memory",
     }
+
+
+def validate_instrumentation(benchmark, config):
+    from coverage import Coverage
+
+    cov_plugin = config.pluginmanager.getplugin("_cov")
+    if (
+        not config.getoption("no_cov", default=False)
+        or Coverage.current() is not None
+        or (cov_plugin is not None and cov_plugin.cov_controller is not None)
+    ):
+        raise RuntimeError("cache pressure requires --no-cov and inactive coverage")
+    if benchmark.disabled or benchmark.cprofile:
+        raise RuntimeError(
+            "cache pressure requires enabled benchmarks without cProfile"
+        )
+    if benchmark._disable_gc or not gc.isenabled():
+        raise RuntimeError("cache pressure requires normal GC")
+    if sys.gettrace() is not None or sys.getprofile() is not None:
+        raise RuntimeError("cache pressure requires no trace/profile hook")
+    if tracemalloc.is_tracing():
+        raise RuntimeError("cache pressure requires ownership of tracemalloc")
+
+
+def benchmark_once(benchmark, config, target):
+    validate_instrumentation(benchmark, config)
+    calls = 0
+
+    def measured():
+        nonlocal calls
+        calls += 1
+        assert calls == 1, "pressure target invoked more than once"
+        return target()
+
+    result = benchmark.pedantic(measured, rounds=1, iterations=1, warmup_rounds=0)
+    assert calls == 1 and benchmark.stats is not None
+    return result
+
+
+@pytest.mark.cache_pressure
+@pytest.mark.parametrize("scenario", SCENARIOS)
+def test_long_cache_pressure(graph_factory, benchmark, request, scenario):
+    report = benchmark_once(
+        benchmark,
+        request.config,
+        lambda: measure_pressure(graph_factory, scenario),
+    )
+    benchmark.extra_info["cache_pressure"] = report
+
+
+@pytest.mark.parametrize("opt_in", [False, True])
+def test_only_pressure_marker_is_gated(pytester, opt_in):
+    pytester.makeconftest(Path(__file__).with_name("conftest.py").read_text())
+    pytester.makeini("[pytest]\nmarkers = cache_pressure: sustained pressure")
+    pytester.makepyfile("""
+        import pytest
+        @pytest.mark.cache_pressure
+        def test_pressure():
+            pass
+        def test_ordinary(benchmark):
+            assert benchmark(lambda: 42) == 42
+    """)
+    result = pytester.runpytest_subprocess(
+        *(["--run-cache-pressure"] if opt_in else [])
+    )
+    result.assert_outcomes(passed=2 if opt_in else 1, skipped=0 if opt_in else 1)
+
+
+@pytest.mark.parametrize(
+    "options,error",
+    [
+        (["--no-cov"], None),
+        (["--no-cov", "--benchmark-disable"], "enabled benchmarks"),
+        (["--no-cov", "--benchmark-cprofile=cumtime"], "without cProfile"),
+        (["--no-cov", "--benchmark-disable-gc"], "normal GC"),
+        (["--cov=folio"], "inactive coverage"),
+    ],
+)
+def test_installed_plugin_invocation_and_instrumentation(pytester, options, error):
+    # Use a child process so the parent's default coverage cannot mask the
+    # child's --no-cov behavior. Import the actual wrapper, not a replica.
+    pytester.makepyfile(f"""
+        import sys
+        sys.path.insert(0, {str(Path(__file__).parent)!r})
+        from test_cache_pressure import benchmark_once
+        def test_probe(benchmark, request):
+            calls = []
+            def target():
+                calls.append(1)
+                return 42
+            assert benchmark_once(benchmark, request.config, target) == 42
+            assert calls == [1]
+            cov = request.config.pluginmanager.getplugin('_cov')
+            assert cov is None or cov.cov_controller is None
+    """)
+    result = pytester.runpytest_subprocess("--cov=folio", *options)
+    result.assert_outcomes(passed=0 if error else 1, failed=1 if error else 0)
+    if error:
+        assert error in result.stdout.str()
+
+
+@pytest.mark.parametrize("hook", ["gettrace", "getprofile"])
+def test_trace_hooks_rejected_before_measurement(monkeypatch, hook):
+    from types import SimpleNamespace
+
+    config = SimpleNamespace(
+        getoption=lambda *args, **kwargs: True,
+        pluginmanager=SimpleNamespace(getplugin=lambda name: None),
+    )
+    from coverage import Coverage
+
+    monkeypatch.setattr(Coverage, "current", lambda: None)
+    monkeypatch.setattr(sys, hook, lambda: object())
+    benchmark = SimpleNamespace(disabled=False, cprofile=False, _disable_gc=False)
+    with pytest.raises(RuntimeError, match="no trace/profile hook"):
+        validate_instrumentation(benchmark, config)
