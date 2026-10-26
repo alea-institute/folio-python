@@ -1,0 +1,108 @@
+{
+  "dependencies": [
+    {
+      "name": "alea-llm-client",
+      "version": "0.3.3",
+      "vulns": []
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.7.0",
+      "vulns": []
+    },
+    {
+      "name": "anyio",
+      "version": "4.14.2",
+      "vulns": []
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.19",
+      "vulns": []
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "vulns": []
+    },
+    {
+      "name": "h2",
+      "version": "4.4.1",
+      "vulns": []
+    },
+    {
+      "name": "hpack",
+      "version": "4.2.0",
+      "vulns": []
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9",
+      "vulns": []
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1",
+      "vulns": []
+    },
+    {
+      "name": "hyperframe",
+      "version": "6.1.0",
+      "vulns": []
+    },
+    {
+      "name": "idna",
+      "version": "3.18",
+      "vulns": []
+    },
+    {
+      "name": "lxml",
+      "version": "6.1.1",
+      "vulns": []
+    },
+    {
+      "name": "marisa-trie",
+      "version": "1.4.0",
+      "vulns": []
+    },
+    {
+      "name": "pydantic",
+      "version": "2.12.5",
+      "vulns": []
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.41.5",
+      "vulns": []
+    },
+    {
+      "name": "rapidfuzz",
+      "version": "3.14.3",
+      "vulns": []
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.15.0",
+      "vulns": []
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.2",
+      "vulns": []
+    }
+  ],
+  "fixes": [],
+  "scope": "search",
+  "phase": "final",
+  "exit_code": 0,
+  "auditor": "pip-audit 2.9.0",
+  "service": "pypi",
+  "python": "3.12.12",
+  "platform": "Linux x86_64",
+  "timestamp_utc": "2026-10-26T17:18:16.424815+00:00",
+  "input_sha256": "d17813336dd9bc6a75fb3dee947cccc0640e75f159e8057dbc31e2c28e203e90",
+  "unevaluated_requirements": [
+    "exceptiongroup==1.3.1; python_full_version < \"3.11\""
+  ],
+  "hashed_input": true
+}

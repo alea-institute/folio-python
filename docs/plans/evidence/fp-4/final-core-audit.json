@@ -1,0 +1,78 @@
+{
+  "dependencies": [
+    {
+      "name": "annotated-types",
+      "version": "0.7.0",
+      "vulns": []
+    },
+    {
+      "name": "anyio",
+      "version": "4.14.2",
+      "vulns": []
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.19",
+      "vulns": []
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "vulns": []
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9",
+      "vulns": []
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1",
+      "vulns": []
+    },
+    {
+      "name": "idna",
+      "version": "3.18",
+      "vulns": []
+    },
+    {
+      "name": "lxml",
+      "version": "6.1.1",
+      "vulns": []
+    },
+    {
+      "name": "pydantic",
+      "version": "2.12.5",
+      "vulns": []
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.41.5",
+      "vulns": []
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.15.0",
+      "vulns": []
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.2",
+      "vulns": []
+    }
+  ],
+  "fixes": [],
+  "scope": "core",
+  "phase": "final",
+  "exit_code": 0,
+  "auditor": "pip-audit 2.9.0",
+  "service": "pypi",
+  "python": "3.12.12",
+  "platform": "Linux x86_64",
+  "timestamp_utc": "2026-10-26T17:18:16.327710+00:00",
+  "input_sha256": "a7ed64b850ae89e2a179336d800daf6a7f264bb636a288c1861e67bc254a223a",
+  "unevaluated_requirements": [
+    "exceptiongroup==1.3.1; python_full_version < \"3.11\""
+  ],
+  "hashed_input": true
+}
