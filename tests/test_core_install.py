@@ -15,6 +15,7 @@ for module, distribution in (
     ("rapidfuzz", "rapidfuzz"),
     ("marisa_trie", "marisa-trie"),
     ("alea_llm_client", "alea-llm-client"),
+    ("kaos_nlp_core", "kaos-nlp-core"),
 ):
     assert importlib.util.find_spec(module) is None, module
     try:

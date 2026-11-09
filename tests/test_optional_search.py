@@ -3,6 +3,7 @@
 import pytest
 
 import folio.graph
+import folio.kaos_search
 
 
 IRI = "https://folio.openlegalstandard.org/Rcontract"
@@ -38,6 +39,7 @@ def test_missing_rapidfuzz_errors_even_for_empty_corpus(
 ):
     graph = local_graph(contents)
     monkeypatch.setattr(folio.graph, "rapidfuzz", None)
+    monkeypatch.setattr(folio.kaos_search, "KAOS_AVAILABLE", False)
     for search in (graph.search_by_label, graph.search_by_definition):
         with pytest.raises(RuntimeError, match="search extra must be installed"):
             search("contract")

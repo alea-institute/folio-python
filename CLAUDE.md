@@ -35,6 +35,7 @@ Run all three before committing; each must pass. The locked ty and types-lxml ve
 - `folio/models.py` — `OWLClass` and `OWLObjectProperty` pydantic models
 - `folio/config.py` — Default configuration (GitHub repo, cache dir, etc.)
 - `folio/logger.py` — Logging setup
+- `folio/kaos_search.py` — Optional kaos-nlp-core BM25 backend for `search_by_label`/`search_by_definition` (lazy, thread-safe, cleared by `refresh()`)
 
 ## Key patterns
 
@@ -49,4 +50,5 @@ Run all three before committing; each must pass. The locked ty and types-lxml ve
 
 - **Core:** pydantic, lxml, httpx
 - **[search] extra:** rapidfuzz, marisa-trie, alea-llm-client
+- **[kaos] extra:** kaos-nlp-core (Python >= 3.13 only, via environment marker); when installed it replaces RapidFuzz for label/definition search. `FOLIO_SEARCH_BACKEND=rapidfuzz` forces the old path. Eval set + script: `benchmarks/search_eval/`
 - `alea_llm_client` is only needed for LLM-powered search (`search_by_llm`)

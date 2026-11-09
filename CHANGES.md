@@ -1,3 +1,10 @@
+Unreleased
+---------------------------
+* Added: optional `[kaos]` extra (`kaos-nlp-core`, Python >= 3.13 via environment marker). When installed, `search_by_label` uses a character-trigram BM25 index over labels (plus alt/preferred labels when `include_alt_labels=True`) with exact normalized matches ranked first, and `search_by_definition` uses a word BM25 index over definitions. Indices are built lazily once per `FOLIO` instance under a lock and dropped by `refresh()`; queries release the GIL. Without the extra, behaviour is unchanged. `FOLIO_SEARCH_BACKEND=rapidfuzz` forces the RapidFuzz path
+* Fixed (kaos path): `search_by_definition` no longer returns arbitrary ties — `partial_token_set_ratio` scored 100 for any shared token such as "of"; on the labelled eval set definition hit@5 goes from 0.00 to 0.89
+* Changed (kaos path): scores remain 0-100, higher is better, best first, but are BM25-derived (relative to the best hit, scaled by its trigram Dice / query-word coverage; exact label match = 100) rather than RapidFuzz ratios. Empty or punctuation-only queries return `[]`
+* Added: `benchmarks/search_eval/` — 56 label + 28 definition queries with expected FOLIO IRIs and `run_eval.py` (hit@1, hit@5, MRR, latency, event-loop stall)
+
 Version 0.4.1 (2026-09-30)
 ---------------------------
 * Fixed: query-result caches are now bounded, so a long-running process no longer retains every unique search forever (#20). `search_by_prefix()` (both case-sensitive and case-insensitive paths) evicts its oldest entry once `DEFAULT_SEARCH_CACHE_SIZE` (128) results are cached, and the memoized `_basic_search` helper behind the fuzzy label and definition searches uses `lru_cache(maxsize=128)` in place of an unbounded `cache`

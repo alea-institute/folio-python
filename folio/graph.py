@@ -45,6 +45,7 @@ from folio.config import (
     DEFAULT_SOURCE_TYPE,
 )
 from folio.iri import MAX_IRI_ATTEMPTS, generate_iri
+from folio import kaos_search
 from folio.logger import get_logger
 from folio.models import OWLClass, OWLObjectProperty, NSMAP
 
@@ -252,6 +253,7 @@ class FOLIO:
         self._lowercase_to_original: Dict[str, List[str]] = {}
         self._prefix_cache: Dict[str, List[OWLClass]] = {}
         self._ci_prefix_cache: Dict[str, List[OWLClass]] = {}
+        self._kaos_indices = kaos_search.KaosSearchIndices()
         self.triples: List[Tuple[str, str, str]] = []
 
         # load the ontology
@@ -1382,6 +1384,7 @@ class FOLIO:
         self.class_edges.clear()
         self.triples.clear()
         self._cached_triples = ()
+        self._kaos_indices.clear()
 
         # load the ontology
         LOGGER.info("Refreshing FOLIO ontology with use_cache=False...")
@@ -1567,8 +1570,17 @@ class FOLIO:
 
         Returns:
             List[Tuple[OWLClass, int | float]]: The list of search results with
-                the OWL class and the search score.
+                the OWL class and the search score (0-100, higher is better,
+                best first).
+
+        When the optional ``kaos`` extra (kaos-nlp-core, Python >= 3.13) is
+        installed, a GIL-releasing BM25 index is used instead of RapidFuzz;
+        see :mod:`folio.kaos_search`.
         """
+        # use the kaos-nlp-core trigram BM25 index when installed
+        if kaos_search.kaos_enabled():
+            return self._kaos_search_by_label(label, include_alt_labels, limit)
+
         # check if we can search
         if rapidfuzz is None:
             raise RuntimeError(
@@ -1614,8 +1626,17 @@ class FOLIO:
 
         Returns:
             List[Tuple[OWLClass, int | float]]: The list of search results with
-                the OWL class and the search score.
+                the OWL class and the search score (0-100, higher is better,
+                best first).
+
+        When the optional ``kaos`` extra (kaos-nlp-core, Python >= 3.13) is
+        installed, a GIL-releasing BM25 index is used instead of RapidFuzz;
+        see :mod:`folio.kaos_search`.
         """
+        # use the kaos-nlp-core BM25 index when installed
+        if kaos_search.kaos_enabled():
+            return self._kaos_search_by_definition(definition, limit)
+
         # check if we can search
         if rapidfuzz is None:
             raise RuntimeError(
@@ -1641,6 +1662,50 @@ class FOLIO:
                 break
 
         return results
+
+    def _kaos_search_by_label(
+        self, label: str, include_alt_labels: bool, limit: int
+    ) -> List[Tuple[OWLClass, int | float]]:
+        """Label search backed by the kaos-nlp-core trigram BM25 index."""
+
+        def source() -> List[str]:
+            if not include_alt_labels:
+                return list(self.label_to_index.keys())
+            return list(self.label_to_index.keys()) + list(
+                self.alt_label_to_index.keys()
+            )
+
+        index = self._kaos_indices.labels(include_alt_labels, source)
+        results: List[Tuple[OWLClass, int | float]] = []
+        seen_classes = set()
+        for search_label, score in index.search(label, kaos_search.overfetch(limit)):
+            for label_class in self.get_by_label(
+                search_label, include_alt_labels=include_alt_labels
+            ):
+                if label_class.iri not in seen_classes:
+                    seen_classes.add(label_class.iri)
+                    results.append((label_class, score))
+                if len(results) >= limit:
+                    return results
+        return results
+
+    def _kaos_search_by_definition(
+        self, definition: str, limit: int
+    ) -> List[Tuple[OWLClass, int | float]]:
+        """Definition search backed by the kaos-nlp-core word BM25 index."""
+
+        def source() -> List[Tuple[int, str]]:
+            return [
+                (i, c.definition)
+                for i, c in enumerate(self.classes)
+                if c.definition and c.definition.strip()
+            ]
+
+        index = self._kaos_indices.definitions(source)
+        return [
+            (self.classes[class_index], score)
+            for class_index, score in index.search(definition, limit)
+        ]
 
     def format_classes_for_llm(
         self,
