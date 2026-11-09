@@ -45,6 +45,9 @@ search = [
     "marisa-trie>=1.2.0,<2",
     "alea-llm-client>=0.3.3"
 ]
+kaos = [
+    "kaos-nlp-core>=0.1.15,<0.2; python_version >= '3.13'",
+]
 
 [project.urls]
 Homepage = "https://openlegalstandard.org/"
@@ -73,6 +76,7 @@ search = [
     "rapidfuzz>=3.9.7,<4",
     "marisa-trie>=1.2.0,<2",
     "alea-llm-client>=0.3.3",
+    "kaos-nlp-core>=0.1.15,<0.2; python_version >= '3.13'",
 ]
 
 [tool.uv]

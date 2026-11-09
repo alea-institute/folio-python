@@ -385,7 +385,7 @@ def test_search_label(folio_graph):
 
 def test_search_definitions(folio_graph):
     for c, score in folio_graph.search_by_definition("air"):
-        assert "air" in c.definition
+        assert "air" in c.definition.lower()
 
 
 def test_get_types(folio_graph):

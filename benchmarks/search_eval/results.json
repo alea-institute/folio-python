@@ -1,0 +1,2943 @@
+{
+  "kaos_available": true,
+  "rapidfuzz": {
+    "first_call_incl_index_build_ms": 241.5,
+    "label": {
+      "n": 56,
+      "hit@1": 0.875,
+      "hit@5": 0.929,
+      "mrr": 0.903,
+      "p50_ms": 153.2,
+      "p95_ms": 186.38,
+      "hit@5_by_category": {
+        "exact": "12/12",
+        "multi_word": "11/11",
+        "partial": "8/9",
+        "typo": "9/12",
+        "abbreviation": "8/8",
+        "jargon": "4/4"
+      },
+      "ranks": {
+        "Negligence": {
+          "rank": 1,
+          "top3": [
+            [
+              "Negligence",
+              100.0
+            ],
+            [
+              "ENT Negligence",
+              95.0
+            ],
+            [
+              "EMT Negligence",
+              95.0
+            ]
+          ]
+        },
+        "Habeas Corpus": {
+          "rank": 1,
+          "top3": [
+            [
+              "Habeas Corpus",
+              100.0
+            ],
+            [
+              "United States of America (Location)",
+              90.0
+            ],
+            [
+              "United States Government",
+              90.0
+            ]
+          ]
+        },
+        "Patent Law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Patent Law",
+              100.0
+            ],
+            [
+              "Lao People's Democratic Republic",
+              90.0
+            ],
+            [
+              "Louisiana State Courts",
+              90.0
+            ]
+          ]
+        },
+        "Trust": {
+          "rank": 1,
+          "top3": [
+            [
+              "Trust",
+              100.0
+            ],
+            [
+              "Business Trust",
+              90.0
+            ],
+            [
+              "Assistant U.S. Trustee",
+              90.0
+            ]
+          ]
+        },
+        "Landlord": {
+          "rank": 1,
+          "top3": [
+            [
+              "Landlord",
+              100.0
+            ],
+            [
+              "Lessor",
+              100.0
+            ],
+            [
+              "U.S. District Court - D. Oregon",
+              90.0
+            ]
+          ]
+        },
+        "Copyright Infringement": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Infringement",
+              100.0
+            ],
+            [
+              "Vicarious Copyright Infringement",
+              95.0
+            ],
+            [
+              "Copyright Law",
+              90.0
+            ]
+          ]
+        },
+        "Trademark Infringement": {
+          "rank": 1,
+          "top3": [
+            [
+              "Trademark Infringement",
+              100.0
+            ],
+            [
+              "Arkansas Supreme Court",
+              90.0
+            ],
+            [
+              "Information Industry",
+              90.0
+            ]
+          ]
+        },
+        "Insider Trading": {
+          "rank": 1,
+          "top3": [
+            [
+              "Insider Trading",
+              100.0
+            ],
+            [
+              "Insider Report",
+              95.0
+            ],
+            [
+              "Slovenia",
+              90.0
+            ]
+          ]
+        },
+        "Res Judicata": {
+          "rank": 1,
+          "top3": [
+            [
+              "Res Judicata",
+              100.0
+            ],
+            [
+              "Réunion",
+              90.0
+            ],
+            [
+              "California State Courts",
+              90.0
+            ]
+          ]
+        },
+        "Contract Law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Contract Law",
+              100.0
+            ],
+            [
+              "Colombia",
+              90.0
+            ],
+            [
+              "Colorado State Courts",
+              90.0
+            ]
+          ]
+        },
+        "Securities Fraud": {
+          "rank": 1,
+          "top3": [
+            [
+              "Securities Fraud",
+              100.0
+            ],
+            [
+              "Rhode Island State Courts",
+              90.0
+            ],
+            [
+              "Cuba",
+              90.0
+            ]
+          ]
+        },
+        "Medical Malpractice": {
+          "rank": 1,
+          "top3": [
+            [
+              "Medical Malpractice",
+              100.0
+            ],
+            [
+              "Negligence and Malpractice Law",
+              95.0
+            ],
+            [
+              "Medical Malpractice Claims",
+              95.0
+            ]
+          ]
+        },
+        "landlord tenant": {
+          "rank": 1,
+          "top3": [
+            [
+              "Landlord Tenant Law",
+              95.0
+            ],
+            [
+              "Landlord-Tenant Claims",
+              95.0
+            ],
+            [
+              "Nan",
+              90.0
+            ]
+          ]
+        },
+        "employment discrimination": {
+          "rank": 1,
+          "top3": [
+            [
+              "Employment Discrimination Law",
+              100.0
+            ],
+            [
+              "Employment Discrimination Claims",
+              95.0
+            ],
+            [
+              "Discrimination Law",
+              90.0
+            ]
+          ]
+        },
+        "breach of contract": {
+          "rank": 1,
+          "top3": [
+            [
+              "Breach of Contract",
+              100.0
+            ],
+            [
+              "Breach of Loan Contract",
+              95.0
+            ],
+            [
+              "Breach of Contract Claims",
+              95.0
+            ]
+          ]
+        },
+        "statute of limitations": {
+          "rank": 1,
+          "top3": [
+            [
+              "Statute of Limitations",
+              100.0
+            ],
+            [
+              "Ute",
+              90.0
+            ],
+            [
+              "International Trade Administration",
+              90.0
+            ]
+          ]
+        },
+        "wrongful termination": {
+          "rank": 1,
+          "top3": [
+            [
+              "Wrongful Discharge or Termination",
+              100.0
+            ],
+            [
+              "Romanian leu",
+              90.0
+            ],
+            [
+              "Term",
+              90.0
+            ]
+          ]
+        },
+        "real estate law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Real Property Law",
+              100.0
+            ],
+            [
+              "Real Estate Industry",
+              95.0
+            ],
+            [
+              "Real Estate Asset",
+              95.0
+            ]
+          ]
+        },
+        "intellectual property law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Intellectual Property Law",
+              100.0
+            ],
+            [
+              "Intellectual Property Assets",
+              95.0
+            ],
+            [
+              "Intellectual Property Clause",
+              90.56603773584906
+            ]
+          ]
+        },
+        "workers compensation claim": {
+          "rank": 1,
+          "top3": [
+            [
+              "Workers' Compensation Claim",
+              98.11320754716981
+            ],
+            [
+              "Workers Compensation Law",
+              92.0
+            ],
+            [
+              "Computing Infrastructure Providers, Data Processing, Web Hosting, and Related Services Industry",
+              90.0
+            ]
+          ]
+        },
+        "force majeure clause": {
+          "rank": 1,
+          "top3": [
+            [
+              "Force Majeure Clause",
+              100.0
+            ],
+            [
+              "Acts of God Clause",
+              95.0
+            ],
+            [
+              "Euro",
+              90.0
+            ]
+          ]
+        },
+        "child support": {
+          "rank": 1,
+          "top3": [
+            [
+              "Child Support",
+              100.0
+            ],
+            [
+              "Child Support Court",
+              95.0
+            ],
+            [
+              "Child Support Claim",
+              95.0
+            ]
+          ]
+        },
+        "infringement of copyright": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Infringement",
+              95.0
+            ],
+            [
+              "Copyright Law",
+              90.0
+            ],
+            [
+              "Right",
+              90.0
+            ]
+          ]
+        },
+        "power of attorney": {
+          "rank": 2,
+          "top3": [
+            [
+              "Lawyer",
+              90.0
+            ],
+            [
+              "Power of Attorney Document",
+              90.0
+            ],
+            [
+              "Durable Power of Attorney Document",
+              90.0
+            ]
+          ]
+        },
+        "wrongful death": {
+          "rank": 1,
+          "top3": [
+            [
+              "Wrongful Death Claim",
+              95.0
+            ],
+            [
+              "Germany",
+              90.0
+            ],
+            [
+              "Delaware State Courts",
+              90.0
+            ]
+          ]
+        },
+        "personal injury": {
+          "rank": 1,
+          "top3": [
+            [
+              "Personal Injury Claims",
+              95.0
+            ],
+            [
+              "Jury",
+              90.0
+            ],
+            [
+              "Personal Injury Ruleset",
+              90.0
+            ]
+          ]
+        },
+        "copyright": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Law",
+              95.0
+            ],
+            [
+              "Ig",
+              90.0
+            ],
+            [
+              "Copyright Work Types",
+              90.0
+            ]
+          ]
+        },
+        "bankruptcy": {
+          "rank": 3,
+          "top3": [
+            [
+              "Time Records - Bankruptcy",
+              100.0
+            ],
+            [
+              "Wages Motion",
+              100.0
+            ],
+            [
+              "Bankruptcy and Financial Restructuring Practice",
+              100.0
+            ]
+          ]
+        },
+        "class action": {
+          "rank": 1,
+          "top3": [
+            [
+              "Class Action [Certified Class]",
+              100.0
+            ],
+            [
+              "South Sudan",
+              90.0
+            ],
+            [
+              "Chile",
+              90.0
+            ]
+          ]
+        },
+        "antitrust": {
+          "rank": 1,
+          "top3": [
+            [
+              "Antitrust and Competition Law",
+              95.0
+            ],
+            [
+              "Antitrust - Vertical Claims",
+              90.0
+            ],
+            [
+              "Antitrust - Horizontal Claims",
+              90.0
+            ]
+          ]
+        },
+        "limine": {
+          "rank": 2,
+          "top3": [
+            [
+              "Liechtenstein",
+              90.0
+            ],
+            [
+              "Motion in Limine",
+              90.0
+            ],
+            [
+              "Motion in Limine to Exclude Report",
+              90.0
+            ]
+          ]
+        },
+        "fiduciary breach": {
+          "rank": null,
+          "top3": [
+            [
+              "Argentina",
+              90.0
+            ],
+            [
+              "Arkansas State Courts",
+              90.0
+            ],
+            [
+              "Augmented Reality",
+              90.0
+            ]
+          ]
+        },
+        "copyrite": {
+          "rank": 10,
+          "top3": [
+            [
+              "Regulatory Services (Non-Dispute)",
+              90.0
+            ],
+            [
+              "Transactional Practice",
+              90.0
+            ],
+            [
+              "Rhode Island State Courts",
+              90.0
+            ]
+          ]
+        },
+        "neglegence": {
+          "rank": 9,
+          "top3": [
+            [
+              "Egypt",
+              90.0
+            ],
+            [
+              "Niger",
+              90.0
+            ],
+            [
+              "Nebraska State Courts",
+              90.0
+            ]
+          ]
+        },
+        "tradmark infringement": {
+          "rank": 1,
+          "top3": [
+            [
+              "Trademark Infringement",
+              97.67441860465115
+            ],
+            [
+              "Arkansas Supreme Court",
+              90.0
+            ],
+            [
+              "Administrative Dispute Proceeding Practice",
+              90.0
+            ]
+          ]
+        },
+        "landlord tennant": {
+          "rank": null,
+          "top3": [
+            [
+              "Lao People's Democratic Republic",
+              90.0
+            ],
+            [
+              "Louisiana State Courts",
+              90.0
+            ],
+            [
+              "Namibia",
+              90.0
+            ]
+          ]
+        },
+        "habeus corpus": {
+          "rank": 1,
+          "top3": [
+            [
+              "Habeas Corpus",
+              92.3076923076923
+            ],
+            [
+              "United States of America (Location)",
+              90.0
+            ],
+            [
+              "United States Government",
+              90.0
+            ]
+          ]
+        },
+        "employmnt discrimination": {
+          "rank": 1,
+          "top3": [
+            [
+              "Employment Discrimination Law",
+              97.95918367346938
+            ],
+            [
+              "Seychelles rupee",
+              90.0
+            ],
+            [
+              "Mongolian tögrög",
+              90.0
+            ]
+          ]
+        },
+        "contarct law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Contract Law",
+              91.66666666666666
+            ],
+            [
+              "Argentina",
+              90.0
+            ],
+            [
+              "Arkansas State Courts",
+              90.0
+            ]
+          ]
+        },
+        "intelectual property law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Intellectual Property Law",
+              97.95918367346938
+            ],
+            [
+              "Electric Power Generation, Transmission and Distribution Industry",
+              90.0
+            ],
+            [
+              "Election Law",
+              90.0
+            ]
+          ]
+        },
+        "sumary judgment": {
+          "rank": 1,
+          "top3": [
+            [
+              "Summary Judgment",
+              96.7741935483871
+            ],
+            [
+              "Argentina",
+              90.0
+            ],
+            [
+              "Arkansas State Courts",
+              90.0
+            ]
+          ]
+        },
+        "embezzelment": {
+          "rank": 1,
+          "top3": [
+            [
+              "Embezzlement",
+              91.66666666666666
+            ],
+            [
+              "Belgium",
+              90.0
+            ],
+            [
+              "Montenegro",
+              90.0
+            ]
+          ]
+        },
+        "garnishmnet": {
+          "rank": 1,
+          "top3": [
+            [
+              "Garnishment",
+              90.9090909090909
+            ],
+            [
+              "Ga",
+              90.0
+            ],
+            [
+              "Argentina",
+              90.0
+            ]
+          ]
+        },
+        "defamaton": {
+          "rank": 1,
+          "top3": [
+            [
+              "Defamation",
+              94.73684210526316
+            ],
+            [
+              "Defamation Law",
+              94.73684210526316
+            ],
+            [
+              "Germany",
+              90.0
+            ]
+          ]
+        },
+        "NDA": {
+          "rank": 1,
+          "top3": [
+            [
+              "Nondisclosure Agreement",
+              100.0
+            ],
+            [
+              "Rwanda",
+              90.0
+            ],
+            [
+              "Luanda",
+              90.0
+            ]
+          ]
+        },
+        "LLC": {
+          "rank": 1,
+          "top3": [
+            [
+              "Limited Liability Company",
+              100.0
+            ],
+            [
+              "Saint Lucia",
+              90.0
+            ],
+            [
+              "Benefit Limited Liability Company",
+              90.0
+            ]
+          ]
+        },
+        "DUI": {
+          "rank": 1,
+          "top3": [
+            [
+              "Driving Under the Influence",
+              100.0
+            ],
+            [
+              "Dispute Service",
+              90.0
+            ],
+            [
+              "Hindu Religion",
+              90.0
+            ]
+          ]
+        },
+        "ERISA claim": {
+          "rank": 1,
+          "top3": [
+            [
+              "Employee Retirement Income Security Act Claim",
+              100.0
+            ],
+            [
+              "Rhode Island State Courts",
+              90.0
+            ],
+            [
+              "Chile",
+              90.0
+            ]
+          ]
+        },
+        "SaaS agreement": {
+          "rank": 1,
+          "top3": [
+            [
+              "Software as a Service Agreement",
+              100.0
+            ],
+            [
+              "Réunion",
+              90.0
+            ],
+            [
+              "Greece",
+              90.0
+            ]
+          ]
+        },
+        "CCB": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Claims Board",
+              100.0
+            ],
+            [
+              "Bankruptcy and Financial Restructuring Practice",
+              90.0
+            ],
+            [
+              "U.S. Court of Claims",
+              90.0
+            ]
+          ]
+        },
+        "IP law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Intellectual Property Law",
+              100.0
+            ],
+            [
+              "Advisory Service",
+              90.0
+            ],
+            [
+              "Lao People's Democratic Republic",
+              90.0
+            ]
+          ]
+        },
+        "chapter 11": {
+          "rank": 1,
+          "top3": [
+            [
+              "US Chapter 11 Bankruptcy",
+              100.0
+            ],
+            [
+              "Chapter 11 Bankruptcy Plan",
+              90.0
+            ],
+            [
+              "Bankruptcy Chapter 11 Claim",
+              90.0
+            ]
+          ]
+        },
+        "alimony": {
+          "rank": 1,
+          "top3": [
+            [
+              "Spousal Support",
+              100.0
+            ],
+            [
+              "Macao",
+              90.0
+            ],
+            [
+              "Missouri State Courts",
+              90.0
+            ]
+          ]
+        },
+        "bail": {
+          "rank": 1,
+          "top3": [
+            [
+              "Pretrial Release",
+              100.0
+            ],
+            [
+              "Bailments",
+              90.0
+            ],
+            [
+              "Bail Bondsman",
+              90.0
+            ]
+          ]
+        },
+        "estoppel": {
+          "rank": 1,
+          "top3": [
+            [
+              "Estoppel",
+              100.0
+            ],
+            [
+              "Est",
+              90.0
+            ],
+            [
+              "Est",
+              90.0
+            ]
+          ]
+        },
+        "pro bono": {
+          "rank": 1,
+          "top3": [
+            [
+              "Pro Bono",
+              100.0
+            ],
+            [
+              "Bankruptcy and Financial Restructuring Practice",
+              90.0
+            ],
+            [
+              "Regulatory Services (Non-Dispute)",
+              90.0
+            ]
+          ]
+        }
+      }
+    },
+    "definition": {
+      "n": 28,
+      "hit@1": 0.0,
+      "hit@5": 0.0,
+      "mrr": 0.0,
+      "p50_ms": 66.9,
+      "p95_ms": 102.09,
+      "hit@5_by_category": {
+        "natural_language": "0/28"
+      },
+      "ranks": {
+        "dissolution of a marriage": {
+          "rank": null,
+          "top3": [
+            [
+              "Fish and Seafood Merchant Wholesalers",
+              100.0
+            ],
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Confectionery Merchant Wholesalers",
+              100.0
+            ]
+          ]
+        },
+        "harm caused by failure to exercise reasonable care": {
+          "rank": null,
+          "top3": [
+            [
+              "Charter Bus Industry",
+              100.0
+            ],
+            [
+              "Deep Sea, Coastal, and Great Lakes Water Transportation",
+              100.0
+            ],
+            [
+              "Ophthalmic Goods Manufacturing",
+              100.0
+            ]
+          ]
+        },
+        "contract to rent property from its owner": {
+          "rank": null,
+          "top3": [
+            [
+              "Flour Milling",
+              100.0
+            ],
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Charter Bus Industry",
+              100.0
+            ]
+          ]
+        },
+        "exclusive rights rewarding authors and artists for creative works": {
+          "rank": null,
+          "top3": [
+            [
+              "Other Personal and Household Goods Repair and Maintenance",
+              100.0
+            ],
+            [
+              "Other Specialized Design Services",
+              100.0
+            ],
+            [
+              "Turkey Production",
+              100.0
+            ]
+          ]
+        },
+        "intentionally deceiving someone to gain an unfair advantage": {
+          "rank": null,
+          "top3": [
+            [
+              "Charter Bus Industry",
+              100.0
+            ],
+            [
+              "Deep Sea, Coastal, and Great Lakes Water Transportation",
+              100.0
+            ],
+            [
+              "Ophthalmic Goods Manufacturing",
+              100.0
+            ]
+          ]
+        },
+        "giving something of value to sway the judgment of an official": {
+          "rank": null,
+          "top3": [
+            [
+              "Fish and Seafood Merchant Wholesalers",
+              100.0
+            ],
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Confectionery Merchant Wholesalers",
+              100.0
+            ]
+          ]
+        },
+        "misappropriating money that was entrusted to your care": {
+          "rank": null,
+          "top3": [
+            [
+              "Charter Bus Industry",
+              100.0
+            ],
+            [
+              "Convenience Retailers and Vending Machine Operators",
+              100.0
+            ],
+            [
+              "Deep Sea, Coastal, and Great Lakes Water Transportation",
+              100.0
+            ]
+          ]
+        },
+        "false statement that harms someone's reputation": {
+          "rank": null,
+          "top3": [
+            [
+              "Chocolate and Confectionery Manufacturing from Cacao Beans",
+              100.0
+            ],
+            [
+              "All Other Grain Farming",
+              100.0
+            ],
+            [
+              "Commercial Bakeries",
+              100.0
+            ]
+          ]
+        },
+        "trustee fails to act in the best interest of the beneficiary": {
+          "rank": null,
+          "top3": [
+            [
+              "Other Gambling Industries",
+              100.0
+            ],
+            [
+              "Chocolate and Confectionery Manufacturing from Cacao Beans",
+              100.0
+            ],
+            [
+              "All Other Grain Farming",
+              100.0
+            ]
+          ]
+        },
+        "certain contracts must be in writing to be enforceable": {
+          "rank": null,
+          "top3": [
+            [
+              "Other Gambling Industries",
+              100.0
+            ],
+            [
+              "Chocolate and Confectionery Manufacturing from Cacao Beans",
+              100.0
+            ],
+            [
+              "All Other Grain Farming",
+              100.0
+            ]
+          ]
+        },
+        "power of a court over a particular defendant": {
+          "rank": null,
+          "top3": [
+            [
+              "Fish and Seafood Merchant Wholesalers",
+              100.0
+            ],
+            [
+              "Other Metal Valve and Pipe Fitting Manufacturing",
+              100.0
+            ],
+            [
+              "Confectionery Merchant Wholesalers",
+              100.0
+            ]
+          ]
+        },
+        "creditor collects a debt by seizing part of the debtor's wages": {
+          "rank": null,
+          "top3": [
+            [
+              "Fish and Seafood Merchant Wholesalers",
+              100.0
+            ],
+            [
+              "Chocolate and Confectionery Manufacturing from Cacao Beans",
+              100.0
+            ],
+            [
+              "All Other Grain Farming",
+              100.0
+            ]
+          ]
+        },
+        "document from a judge authorizing police to search a place": {
+          "rank": null,
+          "top3": [
+            [
+              "Flour Milling",
+              100.0
+            ],
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Convenience Retailers and Vending Machine Operators",
+              100.0
+            ]
+          ]
+        },
+        "unwelcome sexual advances creating a hostile work environment": {
+          "rank": null,
+          "top3": [
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Gypsum Product Manufacturing",
+              100.0
+            ],
+            [
+              "Convenience Retailers and Vending Machine Operators",
+              100.0
+            ]
+          ]
+        },
+        "parent pays money to support their child": {
+          "rank": null,
+          "top3": [
+            [
+              "Charter Bus Industry",
+              100.0
+            ],
+            [
+              "Deep Sea, Coastal, and Great Lakes Water Transportation",
+              100.0
+            ],
+            [
+              "Ophthalmic Goods Manufacturing",
+              100.0
+            ]
+          ]
+        },
+        "financial support paid to a former spouse after divorce": {
+          "rank": null,
+          "top3": [
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Charter Bus Industry",
+              100.0
+            ],
+            [
+              "Convenience Retailers and Vending Machine Operators",
+              100.0
+            ]
+          ]
+        },
+        "lender takes the house when the borrower stops paying the mortgage": {
+          "rank": null,
+          "top3": [
+            [
+              "Fish and Seafood Merchant Wholesalers",
+              100.0
+            ],
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Confectionery Merchant Wholesalers",
+              100.0
+            ]
+          ]
+        },
+        "court order requiring a party to stop doing something": {
+          "rank": null,
+          "top3": [
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Charter Bus Industry",
+              100.0
+            ],
+            [
+              "Convenience Retailers and Vending Machine Operators",
+              100.0
+            ]
+          ]
+        },
+        "written statement made under oath": {
+          "rank": null,
+          "top3": [
+            [
+              "Wood Office Furniture Manufacturing",
+              100.0
+            ],
+            [
+              "Mineral Wool Manufacturing",
+              100.0
+            ],
+            [
+              "Pulp Mills",
+              100.0
+            ]
+          ]
+        },
+        "a matter already decided by a court cannot be litigated again": {
+          "rank": null,
+          "top3": [
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Convenience Retailers and Vending Machine Operators",
+              100.0
+            ],
+            [
+              "Deep Sea, Coastal, and Great Lakes Water Transportation",
+              100.0
+            ]
+          ]
+        },
+        "time limit for bringing a lawsuit": {
+          "rank": null,
+          "top3": [
+            [
+              "Other Personal and Household Goods Repair and Maintenance",
+              100.0
+            ],
+            [
+              "Other Specialized Design Services",
+              100.0
+            ],
+            [
+              "Turkey Production",
+              100.0
+            ]
+          ]
+        },
+        "buying stock using material non-public information": {
+          "rank": null,
+          "top3": [
+            [
+              "All Other Transportation Equipment Manufacturing",
+              100.0
+            ],
+            [
+              "Credit Bureaus",
+              100.0
+            ],
+            [
+              "Nursery and Tree Production",
+              100.0
+            ]
+          ]
+        },
+        "contract to keep information confidential": {
+          "rank": null,
+          "top3": [
+            [
+              "Charter Bus Industry",
+              100.0
+            ],
+            [
+              "Deep Sea, Coastal, and Great Lakes Water Transportation",
+              100.0
+            ],
+            [
+              "Ophthalmic Goods Manufacturing",
+              100.0
+            ]
+          ]
+        },
+        "detained person challenges the legality of their imprisonment": {
+          "rank": null,
+          "top3": [
+            [
+              "Fish and Seafood Merchant Wholesalers",
+              100.0
+            ],
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Confectionery Merchant Wholesalers",
+              100.0
+            ]
+          ]
+        },
+        "landlord forces a tenant to leave the rented property": {
+          "rank": null,
+          "top3": [
+            [
+              "Fish and Seafood Merchant Wholesalers",
+              100.0
+            ],
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Confectionery Merchant Wholesalers",
+              100.0
+            ]
+          ]
+        },
+        "judge decides the case without a trial": {
+          "rank": null,
+          "top3": [
+            [
+              "Fish and Seafood Merchant Wholesalers",
+              100.0
+            ],
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Confectionery Merchant Wholesalers",
+              100.0
+            ]
+          ]
+        },
+        "unforeseeable events excuse a party from performing its contract obligations": {
+          "rank": null,
+          "top3": [
+            [
+              "Flour Milling",
+              100.0
+            ],
+            [
+              "Fruit and Tree Nut Farming",
+              100.0
+            ],
+            [
+              "Performing Arts Companies",
+              100.0
+            ]
+          ]
+        },
+        "investigating a company before a merger or acquisition": {
+          "rank": null,
+          "top3": [
+            [
+              "Fish and Seafood Merchant Wholesalers",
+              100.0
+            ],
+            [
+              "Other Gambling Industries",
+              100.0
+            ],
+            [
+              "All Other Grain Farming",
+              100.0
+            ]
+          ]
+        }
+      }
+    },
+    "stall_label_20_threads": {
+      "threads_total_ms": 3383.5,
+      "worst_stall_ms": 3382.2
+    },
+    "stall_definition_20_threads": {
+      "threads_total_ms": 1554.4,
+      "worst_stall_ms": 1553.3
+    }
+  },
+  "kaos": {
+    "first_call_incl_index_build_ms": 1238.0,
+    "label": {
+      "n": 56,
+      "hit@1": 0.982,
+      "hit@5": 1.0,
+      "mrr": 0.988,
+      "p50_ms": 4.17,
+      "p95_ms": 15.71,
+      "hit@5_by_category": {
+        "exact": "12/12",
+        "multi_word": "11/11",
+        "partial": "9/9",
+        "typo": "12/12",
+        "abbreviation": "8/8",
+        "jargon": "4/4"
+      },
+      "ranks": {
+        "Negligence": {
+          "rank": 1,
+          "top3": [
+            [
+              "Negligence",
+              100.0
+            ],
+            [
+              "EMT Negligence",
+              86.96
+            ],
+            [
+              "ENT Negligence",
+              86.96
+            ]
+          ]
+        },
+        "Habeas Corpus": {
+          "rank": 1,
+          "top3": [
+            [
+              "Habeas Corpus",
+              100.0
+            ],
+            [
+              "Writ of Habeas Corpus",
+              80.0
+            ],
+            [
+              "05_1 Prisoner Petitions: Habeas Corpus (PACER NoS)",
+              52.14
+            ]
+          ]
+        },
+        "Patent Law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Patent Law",
+              100.0
+            ],
+            [
+              "Patent Infringement - Plant Patents",
+              38.71
+            ],
+            [
+              "UTBMS Patent",
+              37.79
+            ]
+          ]
+        },
+        "Trust": {
+          "rank": 1,
+          "top3": [
+            [
+              "Trust",
+              100.0
+            ],
+            [
+              "Investment Fund Unit",
+              71.43
+            ],
+            [
+              "Fiduciary Duty",
+              71.43
+            ]
+          ]
+        },
+        "Landlord": {
+          "rank": 1,
+          "top3": [
+            [
+              "Landlord",
+              100.0
+            ],
+            [
+              "Lessor",
+              100.0
+            ],
+            [
+              "Landlord Tenant Law",
+              66.67
+            ]
+          ]
+        },
+        "Copyright Infringement": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Infringement",
+              100.0
+            ],
+            [
+              "Common Law Copyright Infringement",
+              84.0
+            ],
+            [
+              "Vicarious Copyright Infringement",
+              83.06
+            ]
+          ]
+        },
+        "Trademark Infringement": {
+          "rank": 1,
+          "top3": [
+            [
+              "Trademark Infringement",
+              100.0
+            ],
+            [
+              "Trade Dress Infringement",
+              74.42
+            ],
+            [
+              "Trade Secret Misappropriation",
+              72.81
+            ]
+          ]
+        },
+        "Insider Trading": {
+          "rank": 1,
+          "top3": [
+            [
+              "Insider Trading",
+              100.0
+            ],
+            [
+              "Insider Report",
+              82.35
+            ],
+            [
+              "Insider",
+              59.31
+            ]
+          ]
+        },
+        "Res Judicata": {
+          "rank": 1,
+          "top3": [
+            [
+              "Res Judicata",
+              100.0
+            ],
+            [
+              "Pre-Judgment Interest",
+              41.13
+            ],
+            [
+              "Court Costs",
+              41.06
+            ]
+          ]
+        },
+        "Contract Law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Contract Law",
+              100.0
+            ],
+            [
+              "Civil Contract Law",
+              81.48
+            ],
+            [
+              "Government Contracts Law",
+              70.05
+            ]
+          ]
+        },
+        "Securities Fraud": {
+          "rank": 1,
+          "top3": [
+            [
+              "Securities Fraud",
+              100.0
+            ],
+            [
+              "Broker-Dealer",
+              68.97
+            ],
+            [
+              "Bearer Securities",
+              65.44
+            ]
+          ]
+        },
+        "Medical Malpractice": {
+          "rank": 1,
+          "top3": [
+            [
+              "Medical Malpractice",
+              100.0
+            ],
+            [
+              "Negligence and Malpractice Law",
+              92.31
+            ],
+            [
+              "Medical Device Malpractice",
+              90.22
+            ]
+          ]
+        },
+        "landlord tenant": {
+          "rank": 1,
+          "top3": [
+            [
+              "Landlord Tenant Law",
+              93.33
+            ],
+            [
+              "Landlord-Tenant Claims",
+              85.04
+            ],
+            [
+              "Landlord",
+              73.56
+            ]
+          ]
+        },
+        "employment discrimination": {
+          "rank": 1,
+          "top3": [
+            [
+              "Employment Discrimination Law",
+              100.0
+            ],
+            [
+              "Employment Discrimination Claims",
+              88.81
+            ],
+            [
+              "Discrimination Law",
+              68.33
+            ]
+          ]
+        },
+        "breach of contract": {
+          "rank": 1,
+          "top3": [
+            [
+              "Breach of Contract",
+              100.0
+            ],
+            [
+              "Breach of Loan Contract",
+              88.89
+            ],
+            [
+              "Breach of Contract Claims",
+              84.95
+            ]
+          ]
+        },
+        "statute of limitations": {
+          "rank": 1,
+          "top3": [
+            [
+              "Statute of Limitations",
+              100.0
+            ],
+            [
+              "Limitations",
+              73.33
+            ],
+            [
+              "Citation to Statutes",
+              62.49
+            ]
+          ]
+        },
+        "wrongful termination": {
+          "rank": 1,
+          "top3": [
+            [
+              "Wrongful Discharge or Termination",
+              100.0
+            ],
+            [
+              "Wrongful Seduction",
+              66.84
+            ],
+            [
+              "Wrongful Conviction",
+              65.22
+            ]
+          ]
+        },
+        "real estate law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Real Property Law",
+              100.0
+            ],
+            [
+              "Real Estate Industry",
+              86.96
+            ],
+            [
+              "Real Estate Asset",
+              86.96
+            ]
+          ]
+        },
+        "intellectual property law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Intellectual Property Law",
+              100.0
+            ],
+            [
+              "Intellectual Property Assets",
+              93.02
+            ],
+            [
+              "P260 Intellectual Property",
+              85.13
+            ]
+          ]
+        },
+        "workers compensation claim": {
+          "rank": 1,
+          "top3": [
+            [
+              "Workers' Compensation Claim",
+              100.0
+            ],
+            [
+              "Workers Compensation Law",
+              82.61
+            ],
+            [
+              "Workers' Compensation Court",
+              80.13
+            ]
+          ]
+        },
+        "force majeure clause": {
+          "rank": 1,
+          "top3": [
+            [
+              "Force Majeure Clause",
+              100.0
+            ],
+            [
+              "Acts of God Clause",
+              94.74
+            ],
+            [
+              "Force Majeure",
+              89.03
+            ]
+          ]
+        },
+        "child support": {
+          "rank": 1,
+          "top3": [
+            [
+              "Child Support",
+              100.0
+            ],
+            [
+              "Child Support Court",
+              85.71
+            ],
+            [
+              "Child Support Claim",
+              83.82
+            ]
+          ]
+        },
+        "infringement of copyright": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Infringement",
+              95.45
+            ],
+            [
+              "Common Law Copyright Infringement",
+              80.19
+            ],
+            [
+              "Vicarious Copyright Infringement",
+              79.3
+            ]
+          ]
+        },
+        "power of attorney": {
+          "rank": 1,
+          "top3": [
+            [
+              "Power of Attorney Document",
+              78.95
+            ],
+            [
+              "Durable Power of Attorney Document",
+              68.55
+            ],
+            [
+              "Lawyer",
+              67.05
+            ]
+          ]
+        },
+        "wrongful death": {
+          "rank": 1,
+          "top3": [
+            [
+              "Wrongful Death Claim",
+              83.87
+            ],
+            [
+              "Wrongful Arrest",
+              63.19
+            ],
+            [
+              "Wrongful Birth Claim",
+              61.89
+            ]
+          ]
+        },
+        "personal injury": {
+          "rank": 1,
+          "top3": [
+            [
+              "Personal Injury Claims",
+              82.35
+            ],
+            [
+              "Personal Injury Ruleset",
+              80.49
+            ],
+            [
+              "Personal Injury and Tort Law",
+              78.71
+            ]
+          ]
+        },
+        "copyright": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Law",
+              85.71
+            ],
+            [
+              "Copyright Clause",
+              78.98
+            ],
+            [
+              "Copyright Assets",
+              78.98
+            ]
+          ]
+        },
+        "bankruptcy": {
+          "rank": 3,
+          "top3": [
+            [
+              "Time Records - Bankruptcy",
+              100.0
+            ],
+            [
+              "Wages Motion",
+              100.0
+            ],
+            [
+              "Bankruptcy and Financial Restructuring Practice",
+              100.0
+            ]
+          ]
+        },
+        "class action": {
+          "rank": 1,
+          "top3": [
+            [
+              "Class Action [Certified Class]",
+              100.0
+            ],
+            [
+              "Class Action Claim",
+              88.0
+            ],
+            [
+              "Class Action Notice",
+              80.81
+            ]
+          ]
+        },
+        "antitrust": {
+          "rank": 1,
+          "top3": [
+            [
+              "Antitrust and Competition Law",
+              85.71
+            ],
+            [
+              "Antitrust Claims",
+              78.98
+            ],
+            [
+              "Antitrust - Tying Claims",
+              69.83
+            ]
+          ]
+        },
+        "limine": {
+          "rank": 1,
+          "top3": [
+            [
+              "Motion in Limine",
+              60.0
+            ],
+            [
+              "Motion in Limine to Exclude Report",
+              42.75
+            ],
+            [
+              "Motion in Limine to Exclude Witness",
+              41.94
+            ]
+          ]
+        },
+        "fiduciary breach": {
+          "rank": 1,
+          "top3": [
+            [
+              "Breach of Fiduciary Duty",
+              83.33
+            ],
+            [
+              "\"'Breach' of fiduciary duties\" Language",
+              79.72
+            ],
+            [
+              "Fiduciary Breaching Duty",
+              76.58
+            ]
+          ]
+        },
+        "copyrite": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Law",
+              50.0
+            ],
+            [
+              "Copyright Assets",
+              46.07
+            ],
+            [
+              "Copyright Clause",
+              46.07
+            ]
+          ]
+        },
+        "neglegence": {
+          "rank": 1,
+          "top3": [
+            [
+              "Negligence",
+              70.0
+            ],
+            [
+              "EMS Negligence",
+              64.19
+            ],
+            [
+              "Negligence and Malpractice Law",
+              64.19
+            ]
+          ]
+        },
+        "tradmark infringement": {
+          "rank": 1,
+          "top3": [
+            [
+              "Trademark Infringement",
+              87.8
+            ],
+            [
+              "Trade Dress Infringement",
+              68.75
+            ],
+            [
+              "Trade Secret Misappropriation",
+              67.26
+            ]
+          ]
+        },
+        "landlord tennant": {
+          "rank": 1,
+          "top3": [
+            [
+              "Landlord Tenant Law",
+              83.87
+            ],
+            [
+              "Landlord-Tenant Claims",
+              76.28
+            ],
+            [
+              "Landlord",
+              71.61
+            ]
+          ]
+        },
+        "habeus corpus": {
+          "rank": 1,
+          "top3": [
+            [
+              "Habeas Corpus",
+              78.26
+            ],
+            [
+              "Writ of Habeas Corpus",
+              66.85
+            ],
+            [
+              "05_1 Prisoner Petitions: Habeas Corpus (PACER NoS)",
+              43.57
+            ]
+          ]
+        },
+        "employmnt discrimination": {
+          "rank": 1,
+          "top3": [
+            [
+              "Employment Discrimination Law",
+              89.36
+            ],
+            [
+              "Employment Discrimination Claims",
+              79.28
+            ],
+            [
+              "Discrimination Law",
+              68.28
+            ]
+          ]
+        },
+        "contarct law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Contract Law",
+              63.64
+            ],
+            [
+              "Civil Law System",
+              58.46
+            ],
+            [
+              "Antarctica",
+              56.52
+            ]
+          ]
+        },
+        "intelectual property law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Intellectual Property Law",
+              93.33
+            ],
+            [
+              "Intellectual Property Assets",
+              85.09
+            ],
+            [
+              "P260 Intellectual Property",
+              77.87
+            ]
+          ]
+        },
+        "sumary judgment": {
+          "rank": 1,
+          "top3": [
+            [
+              "Summary Judgment",
+              89.66
+            ],
+            [
+              "Motion for Summary Judgment",
+              72.55
+            ],
+            [
+              "Judgment",
+              67.15
+            ]
+          ]
+        },
+        "embezzelment": {
+          "rank": 1,
+          "top3": [
+            [
+              "Embezzlement",
+              66.67
+            ],
+            [
+              "National Lower House Legislator",
+              27.34
+            ],
+            [
+              "National Legislator",
+              27.34
+            ]
+          ]
+        },
+        "garnishmnet": {
+          "rank": 1,
+          "top3": [
+            [
+              "Garnishment",
+              63.64
+            ],
+            [
+              "Writ of Garnishment",
+              55.51
+            ],
+            [
+              "Garnishee",
+              54.43
+            ]
+          ]
+        },
+        "defamaton": {
+          "rank": 1,
+          "top3": [
+            [
+              "Defamation",
+              73.68
+            ],
+            [
+              "Defamation Law",
+              73.68
+            ],
+            [
+              "Defamation Per Se",
+              64.03
+            ]
+          ]
+        },
+        "NDA": {
+          "rank": 1,
+          "top3": [
+            [
+              "Nondisclosure Agreement",
+              100.0
+            ],
+            [
+              "North Dakota State Courts",
+              40.0
+            ],
+            [
+              "835 Patent – Abbreviated New Drug Application (PACER NoS)",
+              39.74
+            ]
+          ]
+        },
+        "LLC": {
+          "rank": 1,
+          "top3": [
+            [
+              "Limited Liability Company",
+              100.0
+            ],
+            [
+              "Benefit Limited Liability Company",
+              46.15
+            ],
+            [
+              "\"Profit/Loss\" Definition - LPA/LLC",
+              43.53
+            ]
+          ]
+        },
+        "DUI": {
+          "rank": 1,
+          "top3": [
+            [
+              "Driving Under the Influence",
+              100.0
+            ],
+            [
+              "Boating DUI/BUI",
+              46.15
+            ],
+            [
+              "Ownership of Work Product Clause",
+              18.36
+            ]
+          ]
+        },
+        "ERISA claim": {
+          "rank": 1,
+          "top3": [
+            [
+              "Employee Retirement Income Security Act Claim",
+              100.0
+            ],
+            [
+              "Fair Labor Standards Act Claim",
+              56.56
+            ],
+            [
+              "Death on High Seas Act Claim",
+              54.85
+            ]
+          ]
+        },
+        "SaaS agreement": {
+          "rank": 1,
+          "top3": [
+            [
+              "Software as a Service Agreement",
+              100.0
+            ],
+            [
+              "DUPE of `License `",
+              81.82
+            ],
+            [
+              "License (Agreement)",
+              81.82
+            ]
+          ]
+        },
+        "CCB": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Claims Board",
+              100.0
+            ],
+            [
+              "U.S. Bankruptcy Court - D. South Carolina",
+              33.33
+            ],
+            [
+              "U.S. Bankruptcy Court - District of Columbia",
+              33.33
+            ]
+          ]
+        },
+        "IP law": {
+          "rank": 1,
+          "top3": [
+            [
+              "Intellectual Property Law",
+              100.0
+            ],
+            [
+              "Mergers and Acquisitions Law",
+              60.0
+            ],
+            [
+              "Labor Law",
+              58.44
+            ]
+          ]
+        },
+        "chapter 11": {
+          "rank": 1,
+          "top3": [
+            [
+              "US Chapter 11 Bankruptcy",
+              100.0
+            ],
+            [
+              "US Chapter 7 Bankruptcy",
+              71.64
+            ],
+            [
+              "US Chapter 9 Bankruptcy",
+              71.64
+            ]
+          ]
+        },
+        "alimony": {
+          "rank": 1,
+          "top3": [
+            [
+              "Spousal Support",
+              100.0
+            ],
+            [
+              "Spousal Support Claim",
+              73.68
+            ],
+            [
+              "Short-term Spousal Support",
+              66.16
+            ]
+          ]
+        },
+        "bail": {
+          "rank": 1,
+          "top3": [
+            [
+              "Pretrial Release",
+              100.0
+            ],
+            [
+              "Bail Bondsman",
+              61.54
+            ],
+            [
+              "Motions for Bail",
+              53.26
+            ]
+          ]
+        },
+        "estoppel": {
+          "rank": 1,
+          "top3": [
+            [
+              "Estoppel",
+              100.0
+            ],
+            [
+              "Quasi-Estoppel",
+              76.19
+            ],
+            [
+              "Estoppel in Pais",
+              74.14
+            ]
+          ]
+        },
+        "pro bono": {
+          "rank": 1,
+          "top3": [
+            [
+              "Pro Bono",
+              100.0
+            ],
+            [
+              "Pro Bono Management",
+              58.33
+            ],
+            [
+              "With Holdback / Bonus",
+              42.84
+            ]
+          ]
+        }
+      }
+    },
+    "definition": {
+      "n": 28,
+      "hit@1": 0.679,
+      "hit@5": 0.893,
+      "mrr": 0.748,
+      "p50_ms": 2.25,
+      "p95_ms": 4.43,
+      "hit@5_by_category": {
+        "natural_language": "25/28"
+      },
+      "ranks": {
+        "dissolution of a marriage": {
+          "rank": null,
+          "top3": [
+            [
+              "Family Law Events",
+              75.0
+            ],
+            [
+              "Divorce Claims",
+              70.34
+            ],
+            [
+              "Community Property Claim",
+              64.18
+            ]
+          ]
+        },
+        "harm caused by failure to exercise reasonable care": {
+          "rank": 4,
+          "top3": [
+            [
+              "Negligence and Malpractice Law",
+              87.5
+            ],
+            [
+              "Waterpark Negligence",
+              85.82
+            ],
+            [
+              "Negligence Claims",
+              84.97
+            ]
+          ]
+        },
+        "contract to rent property from its owner": {
+          "rank": null,
+          "top3": [
+            [
+              "Additional Rent Clause",
+              57.14
+            ],
+            [
+              "Assignment of Rents Clause",
+              56.98
+            ],
+            [
+              "Right to Collect Rent",
+              56.41
+            ]
+          ]
+        },
+        "exclusive rights rewarding authors and artists for creative works": {
+          "rank": 1,
+          "top3": [
+            [
+              "Copyright Law",
+              66.67
+            ],
+            [
+              "Common Law Copyright Infringement",
+              29.85
+            ],
+            [
+              "Copyright Work Types",
+              27.07
+            ]
+          ]
+        },
+        "intentionally deceiving someone to gain an unfair advantage": {
+          "rank": 1,
+          "top3": [
+            [
+              "Fraud",
+              87.5
+            ],
+            [
+              "Deceit",
+              61.95
+            ],
+            [
+              "Legal Fraud",
+              46.23
+            ]
+          ]
+        },
+        "giving something of value to sway the judgment of an official": {
+          "rank": 1,
+          "top3": [
+            [
+              "Bribery",
+              70.0
+            ],
+            [
+              "Betting / Wagering",
+              44.53
+            ],
+            [
+              "Consideration - Cash",
+              38.56
+            ]
+          ]
+        },
+        "misappropriating money that was entrusted to your care": {
+          "rank": 1,
+          "top3": [
+            [
+              "Embezzlement",
+              50.0
+            ],
+            [
+              "Money Lent",
+              36.98
+            ],
+            [
+              "Fiduciary Relationship",
+              29.53
+            ]
+          ]
+        },
+        "false statement that harms someone's reputation": {
+          "rank": 3,
+          "top3": [
+            [
+              "Defamation by Implication",
+              85.71
+            ],
+            [
+              "Libel",
+              82.95
+            ],
+            [
+              "Defamation",
+              81.59
+            ]
+          ]
+        },
+        "trustee fails to act in the best interest of the beneficiary": {
+          "rank": 3,
+          "top3": [
+            [
+              "Fiduciary Breaching Duty",
+              80.0
+            ],
+            [
+              "Breach of Fiduciary Duty by Trustee",
+              78.19
+            ],
+            [
+              "Breach of Fiduciary Duty",
+              64.42
+            ]
+          ]
+        },
+        "certain contracts must be in writing to be enforceable": {
+          "rank": 1,
+          "top3": [
+            [
+              "Statute of Frauds",
+              87.5
+            ],
+            [
+              "Written Form Requirement Clause",
+              52.21
+            ],
+            [
+              "Right",
+              45.62
+            ]
+          ]
+        },
+        "power of a court over a particular defendant": {
+          "rank": 1,
+          "top3": [
+            [
+              "Personal Jurisdiction",
+              85.71
+            ],
+            [
+              "Personal Jurisdiction by Related Property Interests",
+              61.9
+            ],
+            [
+              "Motions for Bail",
+              52.53
+            ]
+          ]
+        },
+        "creditor collects a debt by seizing part of the debtor's wages": {
+          "rank": 1,
+          "top3": [
+            [
+              "Garnishment",
+              66.67
+            ],
+            [
+              "Setoff",
+              53.1
+            ],
+            [
+              "Writ of Garnishment",
+              47.21
+            ]
+          ]
+        },
+        "document from a judge authorizing police to search a place": {
+          "rank": 1,
+          "top3": [
+            [
+              "Search Warrant",
+              77.78
+            ],
+            [
+              "Warrant",
+              51.25
+            ],
+            [
+              "Arrest Warrant",
+              37.31
+            ]
+          ]
+        },
+        "unwelcome sexual advances creating a hostile work environment": {
+          "rank": 1,
+          "top3": [
+            [
+              "Sexual Harassment",
+              87.5
+            ],
+            [
+              "Work Environment Harassment",
+              71.96
+            ],
+            [
+              "Hostile Work Environment",
+              60.78
+            ]
+          ]
+        },
+        "parent pays money to support their child": {
+          "rank": 1,
+          "top3": [
+            [
+              "Child Support",
+              71.43
+            ],
+            [
+              "Child Support Claim",
+              62.66
+            ],
+            [
+              "Child Support Enforcement Claim",
+              59.7
+            ]
+          ]
+        },
+        "financial support paid to a former spouse after divorce": {
+          "rank": 1,
+          "top3": [
+            [
+              "Spousal Support",
+              66.67
+            ],
+            [
+              "Short-term Spousal Support",
+              64.72
+            ],
+            [
+              "Spousal Support Claim",
+              56.59
+            ]
+          ]
+        },
+        "lender takes the house when the borrower stops paying the mortgage": {
+          "rank": 5,
+          "top3": [
+            [
+              "Mortgage Foreclosure",
+              66.67
+            ],
+            [
+              "Mortgagee Failing to Cancel Redeemed Mortgage",
+              56.7
+            ],
+            [
+              "Mortgage Contingency Loan Exacting Illegal Commission",
+              51.85
+            ]
+          ]
+        },
+        "court order requiring a party to stop doing something": {
+          "rank": 2,
+          "top3": [
+            [
+              "Motion for Injunction",
+              77.78
+            ],
+            [
+              "Injunction",
+              59.6
+            ],
+            [
+              "Response to Show Cause",
+              51.86
+            ]
+          ]
+        },
+        "written statement made under oath": {
+          "rank": 3,
+          "top3": [
+            [
+              "Sworn Complaint",
+              100.0
+            ],
+            [
+              "Statement",
+              96.8
+            ],
+            [
+              "Affidavit",
+              91.49
+            ]
+          ]
+        },
+        "a matter already decided by a court cannot be litigated again": {
+          "rank": 1,
+          "top3": [
+            [
+              "Res Judicata",
+              80.0
+            ],
+            [
+              "Motion for Judgment on Partial Findings",
+              43.07
+            ],
+            [
+              "Collateral Estoppel",
+              36.63
+            ]
+          ]
+        },
+        "time limit for bringing a lawsuit": {
+          "rank": 1,
+          "top3": [
+            [
+              "Statute of Limitations",
+              100.0
+            ],
+            [
+              "Failure to Satisfy Conditions Precedent",
+              51.66
+            ],
+            [
+              "Rule of 60 Clause",
+              49.02
+            ]
+          ]
+        },
+        "buying stock using material non-public information": {
+          "rank": 1,
+          "top3": [
+            [
+              "Insider Trading",
+              71.43
+            ],
+            [
+              "Advertising, Public Relations, and Related Services",
+              38.81
+            ],
+            [
+              "Advertising, Public Relations, and Related Services Industry",
+              38.81
+            ]
+          ]
+        },
+        "contract to keep information confidential": {
+          "rank": null,
+          "top3": [
+            [
+              "Confidential Information Clause",
+              100.0
+            ],
+            [
+              "Breach of Confidential Relationship",
+              95.81
+            ],
+            [
+              "Confidentiality Clause",
+              93.24
+            ]
+          ]
+        },
+        "detained person challenges the legality of their imprisonment": {
+          "rank": 1,
+          "top3": [
+            [
+              "Habeas Corpus",
+              75.0
+            ],
+            [
+              "Detinue",
+              45.38
+            ],
+            [
+              "05_1 Prisoner Petitions: Habeas Corpus (PACER NoS)",
+              43.63
+            ]
+          ]
+        },
+        "landlord forces a tenant to leave the rented property": {
+          "rank": 1,
+          "top3": [
+            [
+              "Eviction (Event)",
+              100.0
+            ],
+            [
+              "Eviction for Nonpayment of Rent",
+              81.04
+            ],
+            [
+              "Holdover Tenant",
+              76.09
+            ]
+          ]
+        },
+        "judge decides the case without a trial": {
+          "rank": 1,
+          "top3": [
+            [
+              "Summary Judgment",
+              85.71
+            ],
+            [
+              "Peremptory Challenge of Judge",
+              79.08
+            ],
+            [
+              "Motions in Trial Courts",
+              75.58
+            ]
+          ]
+        },
+        "unforeseeable events excuse a party from performing its contract obligations": {
+          "rank": 1,
+          "top3": [
+            [
+              "Force Majeure",
+              70.0
+            ],
+            [
+              "Force Majeure Clause",
+              58.71
+            ],
+            [
+              "Frustration of Purpose Doctrine",
+              36.22
+            ]
+          ]
+        },
+        "investigating a company before a merger or acquisition": {
+          "rank": 1,
+          "top3": [
+            [
+              "Due Diligence",
+              85.71
+            ],
+            [
+              "Newco",
+              85.51
+            ],
+            [
+              "Merger/Acquisition No-Vote",
+              79.34
+            ]
+          ]
+        }
+      }
+    },
+    "stall_label_20_threads": {
+      "threads_total_ms": 39.9,
+      "worst_stall_ms": 9.0
+    },
+    "stall_definition_20_threads": {
+      "threads_total_ms": 12.8,
+      "worst_stall_ms": 3.5
+    }
+  }
+}

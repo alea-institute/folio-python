@@ -52,6 +52,12 @@ pip install folio-python[search]
 > **Note:** The base install includes only `pydantic`, `lxml`, and `httpx`.
 > Search features (`search_by_label`, `search_by_definition`, `search_by_prefix`, `query` with fuzzy mode, and LLM search) require the `[search]` extra, which adds `rapidfuzz`, `marisa-trie`, and `alea-llm-client`.
 
+On Python 3.13+, the optional `[kaos]` extra adds [kaos-nlp-core](https://pypi.org/project/kaos-nlp-core/) (Rust BM25 indices that release the GIL). `search_by_label` then uses a character-trigram BM25 index (typo- and word-order-tolerant) and `search_by_definition` a word BM25 index, instead of a RapidFuzz scan; scores stay on a 0-100 scale. On older Pythons the extra installs nothing and RapidFuzz is used unchanged. Set `FOLIO_SEARCH_BACKEND=rapidfuzz` to force the RapidFuzz path.
+
+```bash
+pip install "folio-python[search,kaos]"
+```
+
 For the latest development version, you can install directly from GitHub:
 
 ```bash

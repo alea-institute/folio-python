@@ -1,0 +1,891 @@
+{
+  "description": "Labelled FOLIO concept-search evaluation set. Each query lists the acceptable expected concepts (any one counts as a hit). Built against FOLIO main (github alea-institute/FOLIO).",
+  "label_queries": [
+    {
+      "query": "Negligence",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7nqxxlAfhYqqSA2UQ5UxpX",
+          "label": "Negligence"
+        }
+      ]
+    },
+    {
+      "query": "Habeas Corpus",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RBgBfpeyncVHi12taLMVIIi",
+          "label": "Habeas Corpus"
+        }
+      ]
+    },
+    {
+      "query": "Patent Law",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R2e3mdhrPrjPbiYOMYQU0g",
+          "label": "Patent Law"
+        }
+      ]
+    },
+    {
+      "query": "Trust",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R9KvzcwdZ3asqh9BPZRGWR7",
+          "label": "Trust"
+        }
+      ]
+    },
+    {
+      "query": "Landlord",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R872e3e5kIyoshDoSHVM94B",
+          "label": "Landlord"
+        }
+      ]
+    },
+    {
+      "query": "Copyright Infringement",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8xzICx2jmaNf0lhp5OGKx",
+          "label": "Copyright Infringement"
+        }
+      ]
+    },
+    {
+      "query": "Trademark Infringement",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RBQCFqSF0Q0sCqCcEwv2pgz",
+          "label": "Trademark Infringement"
+        }
+      ]
+    },
+    {
+      "query": "Insider Trading",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R9vzE33TyrWCJovQdYnU5Mv",
+          "label": "Insider Trading"
+        }
+      ]
+    },
+    {
+      "query": "Res Judicata",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8OsGCPOsihiJLtbFkIbRfx",
+          "label": "Res Judicata"
+        }
+      ]
+    },
+    {
+      "query": "Contract Law",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RCIPwpgRpMs1eVz4vPid0pV",
+          "label": "Contract Law"
+        }
+      ]
+    },
+    {
+      "query": "Securities Fraud",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RC3iZlQIPU8tP1phFuy6oXX",
+          "label": "Securities Fraud"
+        }
+      ]
+    },
+    {
+      "query": "Medical Malpractice",
+      "category": "exact",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7athlXhsUuRtg7LvK0uUaF",
+          "label": "Medical Malpractice"
+        }
+      ]
+    },
+    {
+      "query": "landlord tenant",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RBjYepK2dGo0eMf20eWQmI3",
+          "label": "Landlord Tenant Law"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/R97svnIdQhrkKZw6i3Nn88z",
+          "label": "Landlord-Tenant Claims"
+        }
+      ]
+    },
+    {
+      "query": "employment discrimination",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8f088bmlfkWDbXdJj9nQD9",
+          "label": "Employment Discrimination Law"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/RDQKIyqoXbr8tQZdgClywRf",
+          "label": "Employment Discrimination Claims"
+        }
+      ]
+    },
+    {
+      "query": "breach of contract",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RC2fjcpsEbrVvVymvt4oASx",
+          "label": "Breach of Contract"
+        }
+      ]
+    },
+    {
+      "query": "statute of limitations",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDKJ7nEqeDxNDRxI2Wqil1N",
+          "label": "Statute of Limitations"
+        }
+      ]
+    },
+    {
+      "query": "wrongful termination",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDJYLQ3woaBs6FkT7wMbB4U",
+          "label": "Wrongful Discharge or Termination"
+        }
+      ]
+    },
+    {
+      "query": "real estate law",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDb8aZxNJsmCvQGbfiFyfI7",
+          "label": "Real Property Law"
+        }
+      ]
+    },
+    {
+      "query": "intellectual property law",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDdMucRftztKt4Ag7WzUxX",
+          "label": "Intellectual Property Law"
+        }
+      ]
+    },
+    {
+      "query": "workers compensation claim",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RD22PX6hiObnrRSM3c6bXdR",
+          "label": "Workers' Compensation Claim"
+        }
+      ]
+    },
+    {
+      "query": "force majeure clause",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7mT3oM7UJnGCUIq15FYip5",
+          "label": "Force Majeure Clause"
+        }
+      ]
+    },
+    {
+      "query": "child support",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R9JcsdtYN2CUc5CfCTULHYC",
+          "label": "Child Support"
+        }
+      ]
+    },
+    {
+      "query": "infringement of copyright",
+      "category": "multi_word",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8xzICx2jmaNf0lhp5OGKx",
+          "label": "Copyright Infringement"
+        }
+      ]
+    },
+    {
+      "query": "power of attorney",
+      "category": "partial",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RCmBrUNqCGl93SbCO8RvGis",
+          "label": "Power of Attorney Document"
+        }
+      ]
+    },
+    {
+      "query": "wrongful death",
+      "category": "partial",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R3wLqupQlOkBDRXPF6bOYr",
+          "label": "Wrongful Death Claim"
+        }
+      ]
+    },
+    {
+      "query": "personal injury",
+      "category": "partial",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8alUnZrt8GVEzHYhh1KTva",
+          "label": "Personal Injury Claims"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/R7MK1XmyjtYxZKg8Iw4ZN4K",
+          "label": "Personal Injury and Tort Law"
+        }
+      ]
+    },
+    {
+      "query": "copyright",
+      "category": "partial",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RCtZI50lx0N3BZKzUVkIDIR",
+          "label": "Copyright Law"
+        }
+      ]
+    },
+    {
+      "query": "bankruptcy",
+      "category": "partial",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7LI3BONqNkXbKHKa0t3jyI",
+          "label": "Bankruptcy and Financial Restructuring Practice"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/R7vBjMmDitSBmBKZvNugCLG",
+          "label": "Bankruptcy Claims"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/RDA2qkrY89e7siU1y0sXnVM",
+          "label": "Bankruptcy Court"
+        }
+      ]
+    },
+    {
+      "query": "class action",
+      "category": "partial",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RBe9qlr1zTrQ59S23u1iMKZ",
+          "label": "Class Action Claim"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/RCg7sZurj0WriXwfKokeRyD",
+          "label": "Class Action [Certified Class]"
+        }
+      ]
+    },
+    {
+      "query": "antitrust",
+      "category": "partial",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDFwOzDi3E8DQ0OxTKb6UEJ",
+          "label": "Antitrust and Competition Law"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/RCFPWMbdFLbplboOqvI77Jh",
+          "label": "Antitrust Claims"
+        }
+      ]
+    },
+    {
+      "query": "limine",
+      "category": "partial",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/Rlkdw4J9BQDzBNl3DjAHFI",
+          "label": "Motion in Limine"
+        }
+      ]
+    },
+    {
+      "query": "fiduciary breach",
+      "category": "partial",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RtmRdqzdG4lddVrtCToiL1",
+          "label": "Breach of Fiduciary Duty"
+        }
+      ]
+    },
+    {
+      "query": "copyrite",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RCtZI50lx0N3BZKzUVkIDIR",
+          "label": "Copyright Law"
+        }
+      ]
+    },
+    {
+      "query": "neglegence",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7nqxxlAfhYqqSA2UQ5UxpX",
+          "label": "Negligence"
+        }
+      ]
+    },
+    {
+      "query": "tradmark infringement",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RBQCFqSF0Q0sCqCcEwv2pgz",
+          "label": "Trademark Infringement"
+        }
+      ]
+    },
+    {
+      "query": "landlord tennant",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RBjYepK2dGo0eMf20eWQmI3",
+          "label": "Landlord Tenant Law"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/R97svnIdQhrkKZw6i3Nn88z",
+          "label": "Landlord-Tenant Claims"
+        }
+      ]
+    },
+    {
+      "query": "habeus corpus",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RBgBfpeyncVHi12taLMVIIi",
+          "label": "Habeas Corpus"
+        }
+      ]
+    },
+    {
+      "query": "employmnt discrimination",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8f088bmlfkWDbXdJj9nQD9",
+          "label": "Employment Discrimination Law"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/RDQKIyqoXbr8tQZdgClywRf",
+          "label": "Employment Discrimination Claims"
+        }
+      ]
+    },
+    {
+      "query": "contarct law",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RCIPwpgRpMs1eVz4vPid0pV",
+          "label": "Contract Law"
+        }
+      ]
+    },
+    {
+      "query": "intelectual property law",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDdMucRftztKt4Ag7WzUxX",
+          "label": "Intellectual Property Law"
+        }
+      ]
+    },
+    {
+      "query": "sumary judgment",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8K6VFq9c39kbQouame6Onf",
+          "label": "Summary Judgment"
+        }
+      ]
+    },
+    {
+      "query": "embezzelment",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/Re6TE7XBmm2L7vx1sAY9Gs",
+          "label": "Embezzlement"
+        }
+      ]
+    },
+    {
+      "query": "garnishmnet",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7OJQHant3Dx172WXuPbWgx",
+          "label": "Garnishment"
+        }
+      ]
+    },
+    {
+      "query": "defamaton",
+      "category": "typo",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7JKVOM2aFkvG1yiLzF7ndA",
+          "label": "Defamation"
+        }
+      ]
+    },
+    {
+      "query": "NDA",
+      "category": "abbreviation",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8KyMVnE8XDipRREHWb4UYH",
+          "label": "Nondisclosure Agreement"
+        }
+      ]
+    },
+    {
+      "query": "LLC",
+      "category": "abbreviation",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R98E2kVwPFwTnP6oxYUt9HR",
+          "label": "Limited Liability Company"
+        }
+      ]
+    },
+    {
+      "query": "DUI",
+      "category": "abbreviation",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RB0QemTkd6XZOLDEO42pdIw",
+          "label": "Driving Under the Influence"
+        }
+      ]
+    },
+    {
+      "query": "ERISA claim",
+      "category": "abbreviation",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R9XpcvelpyX9N8m29zHaNZp",
+          "label": "Employee Retirement Income Security Act Claim"
+        }
+      ]
+    },
+    {
+      "query": "SaaS agreement",
+      "category": "abbreviation",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8mchuGv5Xvl9V7trgYx6YB",
+          "label": "Software as a Service Agreement"
+        }
+      ]
+    },
+    {
+      "query": "CCB",
+      "category": "abbreviation",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8IHCUGtcWInB1dyEFPgffm",
+          "label": "Copyright Claims Board"
+        }
+      ]
+    },
+    {
+      "query": "IP law",
+      "category": "abbreviation",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDdMucRftztKt4Ag7WzUxX",
+          "label": "Intellectual Property Law"
+        }
+      ]
+    },
+    {
+      "query": "chapter 11",
+      "category": "abbreviation",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RE5Fc26D4606fC0Cd7664845",
+          "label": "US Chapter 11 Bankruptcy"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/R4p7hCW8i9ZoWoZKGmzfPR",
+          "label": "Bankruptcy Chapter 11 Claim"
+        }
+      ]
+    },
+    {
+      "query": "alimony",
+      "category": "jargon",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDeWjTZogrlt1XvduSP1R8s",
+          "label": "Spousal Support"
+        }
+      ]
+    },
+    {
+      "query": "bail",
+      "category": "jargon",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/Rte2A8gY3vh8lVIpY5myli",
+          "label": "Pretrial Release"
+        }
+      ]
+    },
+    {
+      "query": "estoppel",
+      "category": "jargon",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RoKNrz23ylFaWAaoPC3ECY",
+          "label": "Estoppel"
+        }
+      ]
+    },
+    {
+      "query": "pro bono",
+      "category": "jargon",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8LpBISZyz97ud1vw9vqsQ9",
+          "label": "Pro Bono"
+        }
+      ]
+    }
+  ],
+  "definition_queries": [
+    {
+      "query": "dissolution of a marriage",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDhTbfA9WACnFGtRuw8v57e",
+          "label": "Divorce"
+        }
+      ]
+    },
+    {
+      "query": "harm caused by failure to exercise reasonable care",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7nqxxlAfhYqqSA2UQ5UxpX",
+          "label": "Negligence"
+        }
+      ]
+    },
+    {
+      "query": "contract to rent property from its owner",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8RfDzMtuMPdmNTonmhBxu",
+          "label": "Lease"
+        }
+      ]
+    },
+    {
+      "query": "exclusive rights rewarding authors and artists for creative works",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RCtZI50lx0N3BZKzUVkIDIR",
+          "label": "Copyright Law"
+        }
+      ]
+    },
+    {
+      "query": "intentionally deceiving someone to gain an unfair advantage",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RqGxSnAp9vX42GRKHqwvBe",
+          "label": "Fraud"
+        }
+      ]
+    },
+    {
+      "query": "giving something of value to sway the judgment of an official",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RCfdkasigpXYpOViJrDY7lZ",
+          "label": "Bribery"
+        }
+      ]
+    },
+    {
+      "query": "misappropriating money that was entrusted to your care",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/Re6TE7XBmm2L7vx1sAY9Gs",
+          "label": "Embezzlement"
+        }
+      ]
+    },
+    {
+      "query": "false statement that harms someone's reputation",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7JKVOM2aFkvG1yiLzF7ndA",
+          "label": "Defamation"
+        }
+      ]
+    },
+    {
+      "query": "trustee fails to act in the best interest of the beneficiary",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RtmRdqzdG4lddVrtCToiL1",
+          "label": "Breach of Fiduciary Duty"
+        }
+      ]
+    },
+    {
+      "query": "certain contracts must be in writing to be enforceable",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RB58sS6ypGRB2rEYARL8FS",
+          "label": "Statute of Frauds"
+        }
+      ]
+    },
+    {
+      "query": "power of a court over a particular defendant",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RinqHf65TtUhr762WKqN6R",
+          "label": "Personal Jurisdiction"
+        }
+      ]
+    },
+    {
+      "query": "creditor collects a debt by seizing part of the debtor's wages",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7OJQHant3Dx172WXuPbWgx",
+          "label": "Garnishment"
+        }
+      ]
+    },
+    {
+      "query": "document from a judge authorizing police to search a place",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RD2S8W9JAU6NjB5iZLr6HOh",
+          "label": "Search Warrant"
+        }
+      ]
+    },
+    {
+      "query": "unwelcome sexual advances creating a hostile work environment",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8UY7a51FHRoPnKMKs41jQv",
+          "label": "Sexual Harassment"
+        }
+      ]
+    },
+    {
+      "query": "parent pays money to support their child",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R9JcsdtYN2CUc5CfCTULHYC",
+          "label": "Child Support"
+        }
+      ]
+    },
+    {
+      "query": "financial support paid to a former spouse after divorce",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDeWjTZogrlt1XvduSP1R8s",
+          "label": "Spousal Support"
+        }
+      ]
+    },
+    {
+      "query": "lender takes the house when the borrower stops paying the mortgage",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RsCr2ffuxk4pqU5CQ8SAxq",
+          "label": "Foreclosure"
+        }
+      ]
+    },
+    {
+      "query": "court order requiring a party to stop doing something",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R9rhwkH0GU868poYsoFKzVb",
+          "label": "Injunction"
+        }
+      ]
+    },
+    {
+      "query": "written statement made under oath",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8VOMRqV6TS6A9httw7cSWP",
+          "label": "Affidavit"
+        }
+      ]
+    },
+    {
+      "query": "a matter already decided by a court cannot be litigated again",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8OsGCPOsihiJLtbFkIbRfx",
+          "label": "Res Judicata"
+        }
+      ]
+    },
+    {
+      "query": "time limit for bringing a lawsuit",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RDKJ7nEqeDxNDRxI2Wqil1N",
+          "label": "Statute of Limitations"
+        }
+      ]
+    },
+    {
+      "query": "buying stock using material non-public information",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R9vzE33TyrWCJovQdYnU5Mv",
+          "label": "Insider Trading"
+        }
+      ]
+    },
+    {
+      "query": "contract to keep information confidential",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8KyMVnE8XDipRREHWb4UYH",
+          "label": "Nondisclosure Agreement"
+        }
+      ]
+    },
+    {
+      "query": "detained person challenges the legality of their imprisonment",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RBgBfpeyncVHi12taLMVIIi",
+          "label": "Habeas Corpus"
+        }
+      ]
+    },
+    {
+      "query": "landlord forces a tenant to leave the rented property",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7f8oRno6qr0y6rzgnqVgK0",
+          "label": "Eviction (Event)"
+        }
+      ]
+    },
+    {
+      "query": "judge decides the case without a trial",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R8K6VFq9c39kbQouame6Onf",
+          "label": "Summary Judgment"
+        }
+      ]
+    },
+    {
+      "query": "unforeseeable events excuse a party from performing its contract obligations",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/R7mT3oM7UJnGCUIq15FYip5",
+          "label": "Force Majeure Clause"
+        },
+        {
+          "iri": "https://folio.openlegalstandard.org/RCp6PzHvkRv1l3pXC9E4Mse",
+          "label": "Force Majeure"
+        }
+      ]
+    },
+    {
+      "query": "investigating a company before a merger or acquisition",
+      "category": "natural_language",
+      "expected": [
+        {
+          "iri": "https://folio.openlegalstandard.org/RXAOdy7NJAxWjMtDJP9Bw6",
+          "label": "Due Diligence"
+        }
+      ]
+    }
+  ]
+}
