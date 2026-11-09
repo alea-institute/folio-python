@@ -390,7 +390,7 @@ wheels = [
 
 [[package]]
 name = "folio-python"
-version = "0.4.1"
+version = "0.4.2"
 source = { editable = "." }
 default-groups = ["dev", "search"]
 dependencies = [
