@@ -1,0 +1,183 @@
+{
+  "rows": [
+    {
+      "method": "[rapidfuzz] plain label",
+      "hit@1": 0.088,
+      "hit@5": 0.088,
+      "mrr": 0.092,
+      "latency": "p50 182.1 ms"
+    },
+    {
+      "method": "[rapidfuzz] plain definition",
+      "hit@1": 0.0,
+      "hit@5": 0.0,
+      "mrr": 0.0,
+      "latency": "p50 68.9 ms"
+    },
+    {
+      "method": "[rapidfuzz] LLM+RRF defaults",
+      "hit@1": 0.176,
+      "hit@5": 0.324,
+      "mrr": 0.234,
+      "latency": "p50 2136 ms (LLM excluded)"
+    },
+    {
+      "method": "[rapidfuzz] LLM+RRF rank-only RRF (score_exponent=0, no decay)",
+      "hit@1": 0.147,
+      "hit@5": 0.294,
+      "mrr": 0.234,
+      "latency": "p50 2298 ms (LLM excluded)"
+    },
+    {
+      "method": "[rapidfuzz] LLM+RRF no anchoring (anchor_score=None)",
+      "hit@1": 0.118,
+      "hit@5": 0.265,
+      "mrr": 0.184,
+      "latency": "p50 2608 ms (LLM excluded)"
+    },
+    {
+      "method": "[rapidfuzz] LLM+RRF no definitions",
+      "hit@1": 0.118,
+      "hit@5": 0.206,
+      "mrr": 0.163,
+      "latency": "p50 1662 ms (LLM excluded)"
+    },
+    {
+      "method": "[rapidfuzz] LLM+RRF original_weight=1",
+      "hit@1": 0.235,
+      "hit@5": 0.471,
+      "mrr": 0.355,
+      "latency": "p50 2328 ms (LLM excluded)"
+    },
+    {
+      "method": "[rapidfuzz] LLM+RRF expansion_decay=0",
+      "hit@1": 0.147,
+      "hit@5": 0.353,
+      "mrr": 0.247,
+      "latency": "p50 2336 ms (LLM excluded)"
+    },
+    {
+      "method": "[rapidfuzz] LLM+RRF score_exponent=1",
+      "hit@1": 0.147,
+      "hit@5": 0.265,
+      "mrr": 0.199,
+      "latency": "p50 2376 ms (LLM excluded)"
+    },
+    {
+      "method": "[rapidfuzz] LLM+RRF max_expansions=5",
+      "hit@1": 0.147,
+      "hit@5": 0.353,
+      "mrr": 0.211,
+      "latency": "p50 1521 ms (LLM excluded)"
+    },
+    {
+      "method": "[rapidfuzz] LLM+RRF per_term_limit=20",
+      "hit@1": 0.206,
+      "hit@5": 0.382,
+      "mrr": 0.287,
+      "latency": "p50 2268 ms (LLM excluded)"
+    },
+    {
+      "method": "[rapidfuzz] kaos-lexicon+RRF defaults",
+      "hit@1": 0.088,
+      "hit@5": 0.118,
+      "mrr": 0.102,
+      "latency": "p50 2090 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] plain label",
+      "hit@1": 0.147,
+      "hit@5": 0.265,
+      "mrr": 0.189,
+      "latency": "p50 13.3 ms"
+    },
+    {
+      "method": "[kaos] plain definition",
+      "hit@1": 0.118,
+      "hit@5": 0.235,
+      "mrr": 0.163,
+      "latency": "p50 0.9 ms"
+    },
+    {
+      "method": "[kaos] LLM+RRF defaults",
+      "hit@1": 0.765,
+      "hit@5": 1.0,
+      "mrr": 0.86,
+      "latency": "p50 49 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] LLM+RRF rank-only RRF (score_exponent=0, no decay)",
+      "hit@1": 0.412,
+      "hit@5": 0.824,
+      "mrr": 0.589,
+      "latency": "p50 44 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] LLM+RRF no anchoring (anchor_score=None)",
+      "hit@1": 0.765,
+      "hit@5": 1.0,
+      "mrr": 0.86,
+      "latency": "p50 48 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] LLM+RRF no definitions",
+      "hit@1": 0.735,
+      "hit@5": 0.971,
+      "mrr": 0.83,
+      "latency": "p50 46 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] LLM+RRF original_weight=1",
+      "hit@1": 0.765,
+      "hit@5": 1.0,
+      "mrr": 0.86,
+      "latency": "p50 46 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] LLM+RRF expansion_decay=0",
+      "hit@1": 0.647,
+      "hit@5": 0.941,
+      "mrr": 0.757,
+      "latency": "p50 42 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] LLM+RRF score_exponent=1",
+      "hit@1": 0.676,
+      "hit@5": 0.941,
+      "mrr": 0.79,
+      "latency": "p50 45 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] LLM+RRF max_expansions=5",
+      "hit@1": 0.765,
+      "hit@5": 1.0,
+      "mrr": 0.865,
+      "latency": "p50 42 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] LLM+RRF per_term_limit=20",
+      "hit@1": 0.794,
+      "hit@5": 1.0,
+      "mrr": 0.878,
+      "latency": "p50 47 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] kaos-lexicon+RRF defaults",
+      "hit@1": 0.118,
+      "hit@5": 0.235,
+      "mrr": 0.163,
+      "latency": "p50 27 ms (LLM excluded)"
+    },
+    {
+      "method": "[kaos] LIVE search_expanded defaults",
+      "hit@1": 0.794,
+      "hit@5": 0.971,
+      "mrr": 0.871,
+      "latency": "cold p50 3.56 s p90 4.09 s; cached p50 41.3 ms"
+    }
+  ],
+  "live": {
+    "prompt_tokens_mean": 204.58823529411765,
+    "completion_tokens_mean": 94.61764705882354
+  }
+}
