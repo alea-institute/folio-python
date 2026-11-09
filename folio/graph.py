@@ -1683,18 +1683,36 @@ class FOLIO:
             )
 
         index = self._kaos_indices.labels(include_alt_labels, source)
-        results: List[Tuple[OWLClass, int | float]] = []
+        query_words = kaos_search.tokenize_words(label)
+        fetch = kaos_search.overfetch(limit)
+        candidates: List[Tuple[OWLClass, int | float]] = []
         seen_classes = set()
-        for search_label, score in index.search(label, kaos_search.overfetch(limit)):
+        for search_label, score in index.search(label, fetch):
             for label_class in self.get_by_label(
                 search_label, include_alt_labels=include_alt_labels
             ):
                 if label_class.iri not in seen_classes:
                     seen_classes.add(label_class.iri)
-                    results.append((label_class, score))
-                if len(results) >= limit:
-                    return results
-        return results
+                    candidates.append((label_class, score))
+            if len(candidates) >= fetch:
+                break
+
+        # One alt label can be shared by many classes (e.g. "Bankruptcy" on
+        # "Time Records - Bankruptcy", "Wages Motion", ...), and they all tie on
+        # score. Within a score, put classes whose primary label matches the
+        # query first; the stable sort keeps BM25 order otherwise.
+        def primary_rank(cls: OWLClass) -> int:
+            words = kaos_search.tokenize_words(cls.label or "")
+            if words == query_words:
+                return 0
+            if query_words and words[: len(query_words)] == query_words:
+                return 1
+            if query_words and set(query_words) <= set(words):
+                return 2
+            return 3
+
+        candidates.sort(key=lambda item: (-item[1], primary_rank(item[0])))
+        return candidates[:limit]
 
     def _kaos_search_by_definition(
         self, definition: str, limit: int
