@@ -36,6 +36,7 @@ Run all three before committing; each must pass. The locked ty and types-lxml ve
 - `folio/config.py` — Default configuration (GitHub repo, cache dir, etc.)
 - `folio/logger.py` — Logging setup
 - `folio/kaos_search.py` — Optional kaos-nlp-core BM25 backend for `search_by_label`/`search_by_definition` (lazy, thread-safe, cleared by `refresh()`)
+- `folio/expansion.py` — LLM query expansion + score-weighted RRF behind `FOLIO.search_expanded` (cached, timeout-bounded, never raises on LLM failure)
 
 ## Key patterns
 

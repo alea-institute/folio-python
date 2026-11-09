@@ -1,0 +1,483 @@
+{
+ "model": "openai gpt-6.1-terra, reasoning_effort=low",
+ "expansions": {
+  "my landlord won't fix the heat": [
+   "Implied Warranty of Habitability",
+   "Landlord-Tenant Law",
+   "Failure to Provide Essential Services",
+   "Breach of Lease",
+   "Housing Code Violations",
+   "Constructive Eviction",
+   "Repair and Deduct",
+   "Rent Withholding"
+  ],
+  "non-compete enforceability": [
+   "Non-Compete Agreements",
+   "Restrictive Covenants",
+   "Covenants Not to Compete",
+   "Restraint of Trade",
+   "Employment Agreements",
+   "Non-Solicitation Agreements",
+   "Blue Pencil Doctrine",
+   "Injunctive Relief"
+  ],
+  "slip and fall at a store": [
+   "Premises Liability",
+   "Slip and Fall",
+   "Negligence",
+   "Retail Store Liability",
+   "Dangerous Premises",
+   "Failure to Warn",
+   "Negligent Maintenance",
+   "Business Invitee"
+  ],
+  "fired for reporting safety violations": [
+   "Retaliatory Discharge",
+   "Whistleblower Retaliation",
+   "Wrongful Termination",
+   "Occupational Safety and Health",
+   "Protected Activity",
+   "Workplace Safety Complaints",
+   "Public Policy Exception",
+   "Whistleblower Protection"
+  ],
+  "got hurt in a car crash": [
+   "Motor Vehicle Accident",
+   "Personal Injury",
+   "Automobile Negligence",
+   "Negligent Driving",
+   "Reckless Driving",
+   "Bodily Injury",
+   "Tort Liability",
+   "Insurance Claims"
+  ],
+  "my boss isn't paying me overtime": [
+   "Unpaid Overtime",
+   "Overtime Pay",
+   "Wage and Hour Law",
+   "Fair Labor Standards Act",
+   "Wage Theft",
+   "Unpaid Wages",
+   "Employee Misclassification",
+   "Overtime Exemption"
+  ],
+  "getting divorced, who gets the kids": [
+   "Child Custody",
+   "Legal Custody",
+   "Physical Custody",
+   "Child Visitation",
+   "Parenting Time",
+   "Parenting Plan",
+   "Best Interests of the Child",
+   "Custody Determination"
+  ],
+  "former employee took our customer list to a competitor": [
+   "Trade Secret Misappropriation",
+   "Customer Lists",
+   "Unfair Competition",
+   "Breach of Confidentiality",
+   "Breach of Fiduciary Duty",
+   "Tortious Interference with Business Relations",
+   "Breach of Non-Solicitation Agreement",
+   "Misappropriation of Confidential Information"
+  ],
+  "surgeon left a sponge inside the patient": [
+   "Medical Malpractice",
+   "Surgical Negligence",
+   "Retained Surgical Item",
+   "Retained Foreign Object",
+   "Surgical Error",
+   "Res Ipsa Loquitur",
+   "Medical Negligence",
+   "Personal Injury"
+  ],
+  "company keeps sending me robocalls": [
+   "Telephone Consumer Protection Act",
+   "Robocalls",
+   "Unsolicited Telemarketing",
+   "Automated Telephone Dialing System",
+   "Prerecorded Calls",
+   "Do Not Call Registry",
+   "Telephone Harassment",
+   "Revocation of Consent"
+  ],
+  "my ex won't pay for the children": [
+   "Child Support",
+   "Child Support Enforcement",
+   "Child Support Arrears",
+   "Child Support Order",
+   "Nonpayment of Child Support",
+   "Income Withholding",
+   "Contempt of Court",
+   "Paternity"
+  ],
+  "new car keeps breaking down and dealer won't take it back": [
+   "Lemon Law",
+   "Breach of Warranty",
+   "Implied Warranty of Merchantability",
+   "Express Warranty",
+   "Revocation of Acceptance",
+   "Rejection of Nonconforming Goods",
+   "Magnuson-Moss Warranty Act",
+   "Consumer Protection"
+  ],
+  "the builder's work on my house is defective": [
+   "Construction Defects",
+   "Defective Workmanship",
+   "Breach of Construction Contract",
+   "Breach of Warranty",
+   "Negligent Construction",
+   "Residential Construction",
+   "Implied Warranty of Workmanlike Construction",
+   "Contractor Liability"
+  ],
+  "someone is selling knockoffs with our logo": [
+   "Trademark Infringement",
+   "Trademark Counterfeiting",
+   "Counterfeit Goods",
+   "Unauthorized Use of Trademark",
+   "False Designation of Origin",
+   "Passing Off",
+   "Unfair Competition",
+   "Trademark Dilution"
+  ],
+  "another band copied my song": [
+   "Copyright Infringement",
+   "Music Copyright",
+   "Musical Composition",
+   "Sound Recording Copyright",
+   "Music Plagiarism",
+   "Unauthorized Reproduction",
+   "Derivative Works",
+   "Substantial Similarity"
+  ],
+  "debt collector calling me at work": [
+   "Fair Debt Collection Practices Act",
+   "Debt Collection Harassment",
+   "Workplace Debt Collection",
+   "Prohibited Debt Collection Practices",
+   "Third-Party Debt Collection Communications",
+   "Cease and Desist Notice",
+   "Invasion of Privacy",
+   "Consumer Debt Collection"
+  ],
+  "challenging my father's will": [
+   "Will Contest",
+   "Probate Litigation",
+   "Testamentary Capacity",
+   "Undue Influence",
+   "Fraudulent Will",
+   "Improper Execution of Will",
+   "Revocation of Will",
+   "Inheritance Rights"
+  ],
+  "locked out of my apartment by the landlord": [
+   "Illegal Lockout",
+   "Unlawful Eviction",
+   "Self-Help Eviction",
+   "Constructive Eviction",
+   "Wrongful Eviction",
+   "Landlord-Tenant Law",
+   "Tenant Right of Possession",
+   "Breach of Quiet Enjoyment"
+  ],
+  "hackers stole our customers' personal information": [
+   "Data Breach",
+   "Unauthorized Access",
+   "Personal Data Theft",
+   "Cybersecurity",
+   "Data Privacy",
+   "Identity Theft",
+   "Negligent Data Security",
+   "Data Breach Notification"
+  ],
+  "insurer refuses to pay a valid claim": [
+   "Insurance Bad Faith",
+   "Wrongful Denial of Coverage",
+   "Breach of Insurance Contract",
+   "Unfair Claims Settlement Practices",
+   "First-Party Bad Faith",
+   "Breach of Good Faith",
+   "Insurance Coverage Dispute",
+   "Failure to Pay Insurance Benefits"
+  ],
+  "neighbor's loud parties every night": [
+   "Private Nuisance",
+   "Noise Nuisance",
+   "Noise Ordinance",
+   "Disturbing the Peace",
+   "Disorderly Conduct",
+   "Quiet Enjoyment",
+   "Unreasonable Noise",
+   "Trespass"
+  ],
+  "sued over a negative online review": [
+   "Defamation",
+   "Libel",
+   "Business Disparagement",
+   "Trade Libel",
+   "False Light",
+   "Tortious Interference",
+   "Anti-SLAPP",
+   "Consumer Review Fairness Act"
+  ],
+  "neighbor's dog bit my child": [
+   "Dog Bite Liability",
+   "Animal Bite",
+   "Animal Owner Liability",
+   "Strict Liability",
+   "Negligence",
+   "Premises Liability",
+   "Personal Injury",
+   "Minor Child Injury"
+  ],
+  "supervisor demands dates in exchange for a promotion": [
+   "Quid Pro Quo Sexual Harassment",
+   "Workplace Sexual Harassment",
+   "Sex Discrimination",
+   "Employment Discrimination",
+   "Failure to Promote",
+   "Workplace Retaliation",
+   "Hostile Work Environment",
+   "Abuse of Authority"
+  ],
+  "hiring a foreign software engineer": [
+   "Business Immigration",
+   "Employment-Based Immigration",
+   "H-1B Visa",
+   "Specialty Occupation",
+   "Work Authorization",
+   "Labor Condition Application",
+   "Permanent Labor Certification",
+   "Foreign Worker Recruitment"
+  ],
+  "stop the bank from taking my house": [
+   "Foreclosure Defense",
+   "Wrongful Foreclosure",
+   "Foreclosure Injunction",
+   "Mortgage Default",
+   "Loan Modification",
+   "Mortgage Forbearance",
+   "Loss Mitigation",
+   "Automatic Stay"
+  ],
+  "competitors agreed to raise prices together": [
+   "Price Fixing",
+   "Horizontal Price Fixing",
+   "Price-Fixing Conspiracy",
+   "Antitrust Conspiracy",
+   "Restraint of Trade",
+   "Horizontal Agreement",
+   "Price Collusion",
+   "Cartel"
+  ],
+  "arrested for drunk driving": [
+   "Driving Under the Influence",
+   "Driving While Intoxicated",
+   "Operating While Intoxicated",
+   "Impaired Driving",
+   "Alcohol-Related Traffic Offenses",
+   "DUI Arrest",
+   "Breath Alcohol Testing",
+   "Field Sobriety Tests"
+  ],
+  "trustee spent the trust money on himself": [
+   "Breach of Trust",
+   "Breach of Fiduciary Duty",
+   "Trustee Self-Dealing",
+   "Misappropriation of Trust Assets",
+   "Embezzlement",
+   "Conversion",
+   "Trustee Surcharge",
+   "Trust Accounting"
+  ],
+  "too old to be hired": [
+   "Age Discrimination",
+   "Employment Discrimination",
+   "Discriminatory Hiring",
+   "Failure to Hire",
+   "Age Discrimination in Employment Act",
+   "Disparate Treatment",
+   "Disparate Impact",
+   "Age-Based Stereotyping"
+  ],
+  "buying another company": [
+   "Mergers and Acquisitions",
+   "Corporate Acquisition",
+   "Business Purchase",
+   "Asset Acquisition",
+   "Stock Acquisition",
+   "Takeover",
+   "Acquisition Agreement",
+   "Due Diligence"
+  ],
+  "covenant not to compete": [
+   "Noncompete Agreement",
+   "Noncompetition Clause",
+   "Restrictive Covenant",
+   "Restraint of Trade",
+   "Employment Restriction",
+   "Non-Solicitation Agreement",
+   "Breach of Restrictive Covenant",
+   "Employee Noncompetition"
+  ],
+  "medical malpractice": [
+   "Medical Negligence",
+   "Professional Negligence",
+   "Physician Negligence",
+   "Dental Malpractice",
+   "Nursing Malpractice",
+   "Failure to Diagnose",
+   "Surgical Negligence",
+   "Lack of Informed Consent"
+  ],
+  "trademark infringement": [
+   "Trademark Dilution",
+   "Likelihood of Confusion",
+   "False Designation of Origin",
+   "Unfair Competition",
+   "Trademark Counterfeiting",
+   "Passing Off",
+   "Service Mark Infringement",
+   "Cybersquatting"
+  ]
+ },
+ "usage": {
+  "my landlord won't fix the heat": {
+   "prompt_tokens": 204,
+   "completion_tokens": 111
+  },
+  "non-compete enforceability": {
+   "prompt_tokens": 203,
+   "completion_tokens": 126
+  },
+  "slip and fall at a store": {
+   "prompt_tokens": 205,
+   "completion_tokens": 103
+  },
+  "fired for reporting safety violations": {
+   "prompt_tokens": 204,
+   "completion_tokens": 59
+  },
+  "got hurt in a car crash": {
+   "prompt_tokens": 204,
+   "completion_tokens": 57
+  },
+  "my boss isn't paying me overtime": {
+   "prompt_tokens": 204,
+   "completion_tokens": 54
+  },
+  "getting divorced, who gets the kids": {
+   "prompt_tokens": 205,
+   "completion_tokens": 56
+  },
+  "former employee took our customer list to a competitor": {
+   "prompt_tokens": 207,
+   "completion_tokens": 124
+  },
+  "surgeon left a sponge inside the patient": {
+   "prompt_tokens": 207,
+   "completion_tokens": 94
+  },
+  "company keeps sending me robocalls": {
+   "prompt_tokens": 205,
+   "completion_tokens": 66
+  },
+  "my ex won't pay for the children": {
+   "prompt_tokens": 205,
+   "completion_tokens": 72
+  },
+  "new car keeps breaking down and dealer won't take it back": {
+   "prompt_tokens": 209,
+   "completion_tokens": 102
+  },
+  "the builder's work on my house is defective": {
+   "prompt_tokens": 207,
+   "completion_tokens": 66
+  },
+  "someone is selling knockoffs with our logo": {
+   "prompt_tokens": 206,
+   "completion_tokens": 88
+  },
+  "another band copied my song": {
+   "prompt_tokens": 203,
+   "completion_tokens": 94
+  },
+  "debt collector calling me at work": {
+   "prompt_tokens": 205,
+   "completion_tokens": 98
+  },
+  "challenging my father's will": {
+   "prompt_tokens": 203,
+   "completion_tokens": 101
+  },
+  "locked out of my apartment by the landlord": {
+   "prompt_tokens": 206,
+   "completion_tokens": 63
+  },
+  "hackers stole our customers' personal information": {
+   "prompt_tokens": 206,
+   "completion_tokens": 99
+  },
+  "insurer refuses to pay a valid claim": {
+   "prompt_tokens": 206,
+   "completion_tokens": 142
+  },
+  "neighbor's loud parties every night": {
+   "prompt_tokens": 204,
+   "completion_tokens": 54
+  },
+  "sued over a negative online review": {
+   "prompt_tokens": 204,
+   "completion_tokens": 88
+  },
+  "neighbor's dog bit my child": {
+   "prompt_tokens": 204,
+   "completion_tokens": 49
+  },
+  "supervisor demands dates in exchange for a promotion": {
+   "prompt_tokens": 207,
+   "completion_tokens": 108
+  },
+  "hiring a foreign software engineer": {
+   "prompt_tokens": 203,
+   "completion_tokens": 86
+  },
+  "stop the bank from taking my house": {
+   "prompt_tokens": 205,
+   "completion_tokens": 95
+  },
+  "competitors agreed to raise prices together": {
+   "prompt_tokens": 205,
+   "completion_tokens": 121
+  },
+  "arrested for drunk driving": {
+   "prompt_tokens": 204,
+   "completion_tokens": 107
+  },
+  "trustee spent the trust money on himself": {
+   "prompt_tokens": 206,
+   "completion_tokens": 113
+  },
+  "too old to be hired": {
+   "prompt_tokens": 203,
+   "completion_tokens": 80
+  },
+  "buying another company": {
+   "prompt_tokens": 202,
+   "completion_tokens": 48
+  },
+  "covenant not to compete": {
+   "prompt_tokens": 204,
+   "completion_tokens": 104
+  },
+  "medical malpractice": {
+   "prompt_tokens": 200,
+   "completion_tokens": 111
+  },
+  "trademark infringement": {
+   "prompt_tokens": 201,
+   "completion_tokens": 112
+  }
+ }
+}
