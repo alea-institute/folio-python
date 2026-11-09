@@ -219,3 +219,28 @@ def test_kaos_search_does_not_block_event_loop(real_graph, kaos_backend):
     # RapidFuzz holds the GIL for the whole scan (~1-3 s worst stall here);
     # kaos releases it inside each query, leaving only Python glue.
     assert worst < 0.1, f"event loop stalled for {worst * 1000:.0f} ms"
+
+
+@requires_kaos
+@pytest.mark.parametrize("query", ["bankruptcy", "Bankruptcy", " BANKRUPTCY "])
+def test_exact_alt_label_ties_prefer_primary_label_matches(
+    real_graph, kaos_backend, query
+):
+    """Many classes carry the same alt label (e.g. "Bankruptcy" on "Time Records -
+    Bankruptcy", "Wages Motion", ...). All score 100, so tie order used to be
+    arbitrary; classes whose *primary* label matches the query must come first."""
+    words = folio.kaos_search.tokenize_words(query)
+    results = real_graph.search_by_label(query, limit=10)
+    top_score = results[0][1]
+    tied = [cls for cls, score in results if score == top_score]
+    assert top_score == 100 and len(tied) > 1, "expected an exact alt-label tie"
+
+    def primary_matches(cls):
+        label_words = folio.kaos_search.tokenize_words(cls.label or "")
+        return label_words[: len(words)] == words
+
+    flags = [primary_matches(cls) for cls in tied]
+    assert any(flags), [c.label for c in tied]
+    # once a tied class does not match by primary label, none after it may
+    first_miss = flags.index(False) if False in flags else len(flags)
+    assert all(not f for f in flags[first_miss:]), [c.label for c in tied]
