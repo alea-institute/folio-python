@@ -44,6 +44,13 @@ from folio.config import (
     DEFAULT_HTTP_URL,
     DEFAULT_SOURCE_TYPE,
 )
+from folio.expansion import (
+    DEFAULT_EXPANSION_TIMEOUT,
+    DEFAULT_INCLUDE_DEFINITIONS,
+    DEFAULT_MAX_EXPANSIONS,
+    ExpandedSearchResult,
+    search_expanded as _search_expanded,
+)
 from folio.iri import MAX_IRI_ATTEMPTS, generate_iri
 from folio import kaos_search
 from folio.logger import get_logger
@@ -1908,6 +1915,46 @@ class FOLIO:
         except Exception as e:
             LOGGER.error("Error searching with LLM: %s", traceback.format_exc())
             raise RuntimeError("Error searching with LLM.") from e
+
+    async def search_expanded(
+        self,
+        query: str,
+        limit: int = 10,
+        include_definitions: bool = DEFAULT_INCLUDE_DEFINITIONS,
+        max_expansions: int = DEFAULT_MAX_EXPANSIONS,
+        timeout: float = DEFAULT_EXPANSION_TIMEOUT,
+    ) -> ExpandedSearchResult:
+        """
+        Search with LLM query expansion and reciprocal rank fusion.
+
+        The LLM rewrites ``query`` into up to ``max_expansions`` synonyms and legal
+        terms of art; the original query and every expansion are searched with
+        ``search_by_label`` (and ``search_by_definition``, at half weight, unless
+        ``include_definitions=False``), and the ranked lists are merged by IRI with
+        score-weighted reciprocal rank fusion (k=60; original query weighted 2x;
+        later expansions weighted less).  Expansions are cached per normalised
+        query.  If the LLM is unavailable, fails, times out or returns garbage,
+        this degrades to plain label search and does not raise.
+
+        Args:
+            query (str): The natural-language query.
+            limit (int): The maximum number of results to return.
+            include_definitions (bool): Whether to also search definitions.
+            max_expansions (int): Maximum LLM expansions (0-10; 0 disables the LLM).
+            timeout (float): Hard timeout in seconds for the LLM call.
+
+        Returns:
+            ExpandedSearchResult: ``hits`` (class, score, matched_via), the
+                ``expansions`` used, and ``expansion_source`` ("llm", "cache", "none").
+        """
+        return await _search_expanded(
+            self,
+            query,
+            limit=limit,
+            include_definitions=include_definitions,
+            max_expansions=max_expansions,
+            timeout=timeout,
+        )
 
     def get_all_properties(self) -> List[OWLObjectProperty]:
         """

@@ -1,0 +1,289 @@
+{
+  "description": "Lawyer-style natural-language queries (plus 3 known concept names) with acceptable expected FOLIO concept IRIs (any one counts as a hit). Built against FOLIO main on 2026-11-09.",
+  "queries": [
+    {
+      "query": "my landlord won't fix the heat",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBRosNDPt8cNUuRnoPqYufN",
+        "https://folio.openlegalstandard.org/RC8bnzMEhgjx01vV9ngLiR3",
+        "https://folio.openlegalstandard.org/R97svnIdQhrkKZw6i3Nn88z",
+        "https://folio.openlegalstandard.org/R8mhyaytzU3aWKoT5W7nlls"
+      ]
+    },
+    {
+      "query": "non-compete enforceability",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RuTiqSJ76kL8qUWS8cae3Z",
+        "https://folio.openlegalstandard.org/R8p2FPLcIUbqCDah7JqnJjj",
+        "https://folio.openlegalstandard.org/R7M2So7cSnn0yNcjECUou9K"
+      ]
+    },
+    {
+      "query": "slip and fall at a store",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R6BgoOCiXfPfFeBgDhUcP3",
+        "https://folio.openlegalstandard.org/RDSBerlLWg1ntpLqDQn1eVn"
+      ]
+    },
+    {
+      "query": "fired for reporting safety violations",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBaxCpyimnR8O0OxIE0VeJb",
+        "https://folio.openlegalstandard.org/RBhkx3dQ6MLH4RmvBj4nBaz",
+        "https://folio.openlegalstandard.org/RJ7AbKi8Al2xc1FYEO7ASF",
+        "https://folio.openlegalstandard.org/RDJYLQ3woaBs6FkT7wMbB4U"
+      ]
+    },
+    {
+      "query": "got hurt in a car crash",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RDhZWHoYtGaz11YejcsN0CS",
+        "https://folio.openlegalstandard.org/R8alUnZrt8GVEzHYhh1KTva"
+      ]
+    },
+    {
+      "query": "my boss isn't paying me overtime",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RX4IL0dBTdT6NybOqieEPR",
+        "https://folio.openlegalstandard.org/R9UYGSnWQz2MvNsWUofGb6J",
+        "https://folio.openlegalstandard.org/RCU6ReSCEN31kllOAIaq5Ut",
+        "https://folio.openlegalstandard.org/R88iESKPlMDuSSfwDVX9scA"
+      ]
+    },
+    {
+      "query": "getting divorced, who gets the kids",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RZm4akQHkbU4y4YWTSSjrO",
+        "https://folio.openlegalstandard.org/R1XGKMfgmQGI3yTSEndqMN",
+        "https://folio.openlegalstandard.org/RCEchldQJ7ND4j4ohefIlEg",
+        "https://folio.openlegalstandard.org/R9v922zEDjLTzShv6ZTmRGm"
+      ]
+    },
+    {
+      "query": "former employee took our customer list to a competitor",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R8AskLnQPiMPqirI390zrab",
+        "https://folio.openlegalstandard.org/R71j0369f2ok96vA6rQOxa0",
+        "https://folio.openlegalstandard.org/R9y9zZ1NXya2AYl2kCNYl3a"
+      ]
+    },
+    {
+      "query": "surgeon left a sponge inside the patient",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R7athlXhsUuRtg7LvK0uUaF",
+        "https://folio.openlegalstandard.org/R8nVhrBlasGIc7jxw1D0vbm"
+      ]
+    },
+    {
+      "query": "company keeps sending me robocalls",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R7cNZxZB8pyyRYwDBimKNJj",
+        "https://folio.openlegalstandard.org/R14tMB5DJLTrXOdVbW5WjP"
+      ]
+    },
+    {
+      "query": "my ex won't pay for the children",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBOwCCBkhg24geD2foAgBOB",
+        "https://folio.openlegalstandard.org/R7TDmkWo6F51IzefrMIgKY9",
+        "https://folio.openlegalstandard.org/R9JcsdtYN2CUc5CfCTULHYC"
+      ]
+    },
+    {
+      "query": "new car keeps breaking down and dealer won't take it back",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBHhRG514AmnN0tEERihsSr"
+      ]
+    },
+    {
+      "query": "the builder's work on my house is defective",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R7XEUVrFS72CU6LCzw9e8em"
+      ]
+    },
+    {
+      "query": "someone is selling knockoffs with our logo",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBQCFqSF0Q0sCqCcEwv2pgz",
+        "https://folio.openlegalstandard.org/R5IK3HbwB8GonR7f8MQYZ3"
+      ]
+    },
+    {
+      "query": "another band copied my song",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R8xzICx2jmaNf0lhp5OGKx"
+      ]
+    },
+    {
+      "query": "debt collector calling me at work",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBHxaoG50eKk8vBltedqqt4",
+        "https://folio.openlegalstandard.org/R7KRLFkDC6ycyN3FyXivt7D",
+        "https://folio.openlegalstandard.org/RBlW5OLfCbqfO3PmxrRqwG"
+      ]
+    },
+    {
+      "query": "challenging my father's will",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RGrDBe4o2VsLIvcRupaUaE",
+        "https://folio.openlegalstandard.org/R871E8BNNqxDeHmVsrduiWg"
+      ]
+    },
+    {
+      "query": "locked out of my apartment by the landlord",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R89e7t0wDXgx7mBu9rn271g",
+        "https://folio.openlegalstandard.org/R87EsagydUYKkWMX3oyulrq",
+        "https://folio.openlegalstandard.org/R9wMn80MhrS9iqfKdQdH1A3"
+      ]
+    },
+    {
+      "query": "hackers stole our customers' personal information",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/Raw03V8d0o2ILRa4VEpq4t"
+      ]
+    },
+    {
+      "query": "insurer refuses to pay a valid claim",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RHkmZvJbjGoqHTMCUIREOX"
+      ]
+    },
+    {
+      "query": "neighbor's loud parties every night",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RJV2685HIFNwCtEkfUWDfX",
+        "https://folio.openlegalstandard.org/R8Gzr9WKsdck4rRcLAqMHej"
+      ]
+    },
+    {
+      "query": "sued over a negative online review",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R7JKVOM2aFkvG1yiLzF7ndA",
+        "https://folio.openlegalstandard.org/R9JBjakDIsSF91IjI8v4skI",
+        "https://folio.openlegalstandard.org/RCL9tL1XOTncmAJsSYApAw"
+      ]
+    },
+    {
+      "query": "neighbor's dog bit my child",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R7ssf9135kwzOV2U0znjLMk",
+        "https://folio.openlegalstandard.org/RB2Db1BbArbo9kmZmmbIXm5"
+      ]
+    },
+    {
+      "query": "supervisor demands dates in exchange for a promotion",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBAHwKqwrRn8ZPP0gSs37MI",
+        "https://folio.openlegalstandard.org/R8UY7a51FHRoPnKMKs41jQv"
+      ]
+    },
+    {
+      "query": "hiring a foreign software engineer",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R76UTCrg8DDzlFkZCPjrdqe",
+        "https://folio.openlegalstandard.org/R8Z1hy33okTgXPKS0rmNAG1",
+        "https://folio.openlegalstandard.org/RCC0YY2TKtXIaQCGej7bg9A",
+        "https://folio.openlegalstandard.org/R7pFO5c8yTVZ93FKPzsnDHM"
+      ]
+    },
+    {
+      "query": "stop the bank from taking my house",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/R7gzXxHYGOLSEudb6n1QFWm",
+        "https://folio.openlegalstandard.org/R8xw5MnLDaqcc9w1ZHrh0yf",
+        "https://folio.openlegalstandard.org/R9ABG3dfhVDQUvRmg24IImI",
+        "https://folio.openlegalstandard.org/R7W499nGCY59KMgPnfqWfet"
+      ]
+    },
+    {
+      "query": "competitors agreed to raise prices together",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RlZPJqPkVtqcjDMl5tqMlL",
+        "https://folio.openlegalstandard.org/RCFPWMbdFLbplboOqvI77Jh"
+      ]
+    },
+    {
+      "query": "arrested for drunk driving",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RB0QemTkd6XZOLDEO42pdIw"
+      ]
+    },
+    {
+      "query": "trustee spent the trust money on himself",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBix5fW3COPX4xfo2aJNBZa",
+        "https://folio.openlegalstandard.org/RtmRdqzdG4lddVrtCToiL1"
+      ]
+    },
+    {
+      "query": "too old to be hired",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RDSTWxMJK0mcdxB1oQtK7jC"
+      ]
+    },
+    {
+      "query": "buying another company",
+      "category": "natural-language",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBosma6qE0p7REgIqlUxvIR",
+        "https://folio.openlegalstandard.org/RD0qGHeWoQmYfyZgpSOgFcG",
+        "https://folio.openlegalstandard.org/R9amI1PJs7oW7XvMDtXomF9"
+      ]
+    },
+    {
+      "query": "covenant not to compete",
+      "category": "known-name",
+      "expected": [
+        "https://folio.openlegalstandard.org/R8p2FPLcIUbqCDah7JqnJjj",
+        "https://folio.openlegalstandard.org/RuTiqSJ76kL8qUWS8cae3Z",
+        "https://folio.openlegalstandard.org/R7M2So7cSnn0yNcjECUou9K"
+      ]
+    },
+    {
+      "query": "medical malpractice",
+      "category": "known-name",
+      "expected": [
+        "https://folio.openlegalstandard.org/R7athlXhsUuRtg7LvK0uUaF",
+        "https://folio.openlegalstandard.org/R8nVhrBlasGIc7jxw1D0vbm"
+      ]
+    },
+    {
+      "query": "trademark infringement",
+      "category": "known-name",
+      "expected": [
+        "https://folio.openlegalstandard.org/RBQCFqSF0Q0sCqCcEwv2pgz"
+      ]
+    }
+  ]
+}
