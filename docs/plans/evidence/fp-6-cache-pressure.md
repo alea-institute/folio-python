@@ -83,3 +83,12 @@ stability. See [the reproduction guide](../../benchmarks/cache-pressure.md).
 
 No frontend changed, so browser screenshots are not applicable. No release,
 schema migration, data rewrite or outside service is part of this change.
+
+## Local review
+
+`ce-code-review` checked revision `f1b468178fd0df3e3e8fb1a967a6124d35c8efc8`
+against the supplied integration base and explicit restoration plan. Its local
+correctness and requirements review found no actionable issues. Final Ruff
+lint, Ruff format-check and ty checks passed. No review fixes were needed.
+This receipt covers local review; the controller still owns the campaign's
+Astra/Fable reviews and fresh-main verification before publication and merge.
