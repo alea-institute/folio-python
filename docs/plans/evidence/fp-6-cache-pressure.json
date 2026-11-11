@@ -1,0 +1,507 @@
+{
+  "schema_version": 1,
+  "revision": "13c97713f54d404019676300a5ad050b60d57b2c",
+  "python": "3.13.11",
+  "tools": {
+    "folio-python": "0.4.2",
+    "pytest": "9.1.1",
+    "pytest-benchmark": "5.2.3",
+    "pytest-cov": "7.1.0",
+    "marisa-trie": "1.4.0",
+    "rapidfuzz": "3.14.3"
+  },
+  "scenarios": [
+    {
+      "scenario": "prefix-sensitive",
+      "backend": "marisa-trie",
+      "outcome": "complete",
+      "dataset": {
+        "classes": 263,
+        "traffic_classes": 260,
+        "cold_keys": 256,
+        "hot_keys": 4
+      },
+      "capacity_entries": 128,
+      "criteria": {
+        "min_seconds": 60.0,
+        "min_misses": 12800,
+        "min_checkpoints": 10,
+        "deadline_seconds": 180.0,
+        "checkpoint_seconds": 5.0,
+        "batch_requests": 64
+      },
+      "elapsed_seconds": 60.02093890099786,
+      "requests": 2441216,
+      "misses": 1258625,
+      "hits": 1182591,
+      "result_bearing_requests": 2441216,
+      "capacity_turnovers": 9833.0078125,
+      "checkpoint_count": 11,
+      "checkpoints": [
+        {
+          "elapsed_seconds": 5.017945320927538,
+          "current_bytes": 865749,
+          "peak_bytes": 873506,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 10.03471407503821,
+          "current_bytes": 866229,
+          "peak_bytes": 873986,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 15.053692035959102,
+          "current_bytes": 866685,
+          "peak_bytes": 874442,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 20.071257345029153,
+          "current_bytes": 867141,
+          "peak_bytes": 874898,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 25.091419478994794,
+          "current_bytes": 867597,
+          "peak_bytes": 875354,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 30.109306438011117,
+          "current_bytes": 868053,
+          "peak_bytes": 875810,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 35.12649688695092,
+          "current_bytes": 868509,
+          "peak_bytes": 876266,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 40.147200210019946,
+          "current_bytes": 868965,
+          "peak_bytes": 876722,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 45.162855366943404,
+          "current_bytes": 869421,
+          "peak_bytes": 877178,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 50.176202888949774,
+          "current_bytes": 869877,
+          "peak_bytes": 877634,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 55.19605137000326,
+          "current_bytes": 870333,
+          "peak_bytes": 878090,
+          "cache_entries": {
+            "prefix_sensitive": 128,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 0
+          }
+        }
+      ],
+      "cache_entries": {
+        "prefix_sensitive": 128,
+        "prefix_insensitive": 0,
+        "fuzzy_shared": 0
+      },
+      "batch_timing": {
+        "early": {
+          "batches": 8,
+          "min_seconds": 0.0007324450416490436,
+          "mean_seconds": 0.001029759121593088,
+          "max_seconds": 0.0013268289621919394
+        },
+        "late": {
+          "batches": 8,
+          "min_seconds": 0.0018990349490195513,
+          "mean_seconds": 0.0021173018467379734,
+          "max_seconds": 0.00276845193002373
+        }
+      },
+      "traced_memory": {
+        "baseline_bytes": 861173,
+        "final_bytes": 870789,
+        "delta_bytes": 9616,
+        "peak_bytes": 878546
+      }
+    },
+    {
+      "scenario": "prefix-insensitive",
+      "backend": "marisa-trie",
+      "outcome": "complete",
+      "dataset": {
+        "classes": 263,
+        "traffic_classes": 260,
+        "cold_keys": 256,
+        "hot_keys": 4
+      },
+      "capacity_entries": 128,
+      "criteria": {
+        "min_seconds": 60.0,
+        "min_misses": 12800,
+        "min_checkpoints": 10,
+        "deadline_seconds": 180.0,
+        "checkpoint_seconds": 5.0,
+        "batch_requests": 64
+      },
+      "elapsed_seconds": 60.01696925889701,
+      "requests": 1933504,
+      "misses": 996836,
+      "hits": 936668,
+      "result_bearing_requests": 1933504,
+      "capacity_turnovers": 7787.78125,
+      "checkpoint_count": 11,
+      "checkpoints": [
+        {
+          "elapsed_seconds": 5.025759667973034,
+          "current_bytes": 792508,
+          "peak_bytes": 800435,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 10.048247972968966,
+          "current_bytes": 792988,
+          "peak_bytes": 800915,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 15.068636883981526,
+          "current_bytes": 793444,
+          "peak_bytes": 801371,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 20.08522654394619,
+          "current_bytes": 793900,
+          "peak_bytes": 801827,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 25.10015058889985,
+          "current_bytes": 794356,
+          "peak_bytes": 802283,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 30.11811945599038,
+          "current_bytes": 794812,
+          "peak_bytes": 802739,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 35.13702960498631,
+          "current_bytes": 795268,
+          "peak_bytes": 803195,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 40.15400191093795,
+          "current_bytes": 795724,
+          "peak_bytes": 803651,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 45.17012600891758,
+          "current_bytes": 796180,
+          "peak_bytes": 804107,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 50.18586015398614,
+          "current_bytes": 796636,
+          "peak_bytes": 804563,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        },
+        {
+          "elapsed_seconds": 55.20246173092164,
+          "current_bytes": 797092,
+          "peak_bytes": 805019,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 128,
+            "fuzzy_shared": 0
+          }
+        }
+      ],
+      "cache_entries": {
+        "prefix_sensitive": 0,
+        "prefix_insensitive": 128,
+        "fuzzy_shared": 0
+      },
+      "batch_timing": {
+        "early": {
+          "batches": 8,
+          "min_seconds": 0.001157880062237382,
+          "mean_seconds": 0.0019505272357491776,
+          "max_seconds": 0.0030669879633933306
+        },
+        "late": {
+          "batches": 8,
+          "min_seconds": 0.0018581969197839499,
+          "mean_seconds": 0.002048241745796986,
+          "max_seconds": 0.0024817829253152013
+        }
+      },
+      "traced_memory": {
+        "baseline_bytes": 787932,
+        "final_bytes": 797548,
+        "delta_bytes": 9616,
+        "peak_bytes": 805475
+      }
+    },
+    {
+      "scenario": "fuzzy-mixed",
+      "backend": "rapidfuzz",
+      "outcome": "complete",
+      "dataset": {
+        "classes": 263,
+        "traffic_classes": 260,
+        "cold_keys": 256,
+        "hot_keys": 4
+      },
+      "capacity_entries": 128,
+      "criteria": {
+        "min_seconds": 60.0,
+        "min_misses": 12800,
+        "min_checkpoints": 10,
+        "deadline_seconds": 180.0,
+        "checkpoint_seconds": 5.0,
+        "batch_requests": 64
+      },
+      "elapsed_seconds": 60.02621045697015,
+      "requests": 312512,
+      "misses": 156132,
+      "hits": 156380,
+      "result_bearing_requests": 312512,
+      "capacity_turnovers": 1219.78125,
+      "checkpoint_count": 11,
+      "checkpoints": [
+        {
+          "elapsed_seconds": 5.020217349985614,
+          "current_bytes": 1368020,
+          "peak_bytes": 1412004,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 10.04444665601477,
+          "current_bytes": 1368444,
+          "peak_bytes": 1412484,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 15.071943129994906,
+          "current_bytes": 1368900,
+          "peak_bytes": 1412940,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 20.105651789926924,
+          "current_bytes": 1369356,
+          "peak_bytes": 1413396,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 25.134317565942183,
+          "current_bytes": 1369868,
+          "peak_bytes": 1413852,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 30.15521545894444,
+          "current_bytes": 1370268,
+          "peak_bytes": 1414308,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 35.17338774201926,
+          "current_bytes": 1370724,
+          "peak_bytes": 1414764,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 40.19824852293823,
+          "current_bytes": 1371236,
+          "peak_bytes": 1415220,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 45.21699293097481,
+          "current_bytes": 1371636,
+          "peak_bytes": 1415676,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 50.23739538900554,
+          "current_bytes": 1372148,
+          "peak_bytes": 1416132,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        },
+        {
+          "elapsed_seconds": 55.25918492791243,
+          "current_bytes": 1372604,
+          "peak_bytes": 1416588,
+          "cache_entries": {
+            "prefix_sensitive": 0,
+            "prefix_insensitive": 0,
+            "fuzzy_shared": 128
+          }
+        }
+      ],
+      "cache_entries": {
+        "prefix_sensitive": 0,
+        "prefix_insensitive": 0,
+        "fuzzy_shared": 128
+      },
+      "batch_timing": {
+        "early": {
+          "batches": 8,
+          "min_seconds": 0.008276084903627634,
+          "mean_seconds": 0.011263646723818965,
+          "max_seconds": 0.015136350993998349
+        },
+        "late": {
+          "batches": 8,
+          "min_seconds": 0.010605737916193902,
+          "mean_seconds": 0.012944847854669206,
+          "max_seconds": 0.015319464029744267
+        }
+      },
+      "traced_memory": {
+        "baseline_bytes": 1362020,
+        "final_bytes": 1373060,
+        "delta_bytes": 11040,
+        "peak_bytes": 1417044
+      }
+    }
+  ]
+}
