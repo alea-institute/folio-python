@@ -13,6 +13,7 @@ import pytest
 
 import folio.graph
 from folio import FOLIO
+from folio.kaos_search import SEARCH_BACKEND_ENV
 
 
 CAPACITY = 128
@@ -55,7 +56,8 @@ def ontology_xml():
 
 @pytest.fixture
 def graph_factory(monkeypatch):
-    """Construct normally, replacing only external data/provider boundaries."""
+    """Construct offline graphs using the backend whose cache is measured."""
+    monkeypatch.setenv(SEARCH_BACKEND_ENV, "rapidfuzz")
     xml = ontology_xml()
     monkeypatch.setattr(FOLIO, "load_owl", staticmethod(lambda **kwargs: xml))
     monkeypatch.setattr(folio.graph, "alea_llm_client", None)
@@ -117,6 +119,8 @@ def test_prefix_backend_order_and_deduplication(offline_graph, monkeypatch, sens
     offline_graph._prefix_cache.clear()
     offline_graph._ci_prefix_cache.clear()
     monkeypatch.setattr(folio.graph, "marisa_trie", None)
+    monkeypatch.setattr(offline_graph, "_label_trie", None)
+    monkeypatch.setattr(offline_graph, "_lowercase_label_trie", None)
     assert [c.iri for c in offline_graph.search_by_prefix(query, sensitive)] == [
         iri(260),
         iri(261),
@@ -508,6 +512,56 @@ def test_long_cache_pressure(graph_factory, benchmark, request, scenario):
         lambda: measure_pressure(graph_factory, scenario),
     )
     benchmark.extra_info["cache_pressure"] = report
+
+
+def test_benchmark_harness_tiny_cache_bounds(pytester):
+    # Isolate the real benchmark plugin from the parent suite's coverage.
+    pytester.makepyfile(f"""
+        import sys
+        import tracemalloc
+        import pytest
+        sys.path.insert(0, {str(Path(__file__).parent)!r})
+        from test_cache_pressure import (
+            FOLIO, SCENARIOS, TickClock, benchmark_once, graph_factory,
+            measure_pressure, short_budget,
+        )
+
+        @pytest.mark.parametrize('scenario', SCENARIOS)
+        def test_tiny_pressure(graph_factory, benchmark, request, scenario):
+            calls = []
+            def target():
+                calls.append(1)
+                return measure_pressure(
+                    graph_factory, scenario,
+                    short_budget(min_misses=129, deadline_seconds=10),
+                    clock=TickClock(),
+                )
+
+            report = benchmark_once(benchmark, request.config, target)
+            assert calls == [1]
+            assert benchmark.stats is not None
+            assert report['outcome'] == 'complete'
+            assert report['capacity_entries'] == 128
+            assert report['misses'] > 128 and report['hits'] > 0
+            assert report['requests'] == report['hits'] + report['misses']
+            assert report['result_bearing_requests'] == report['requests']
+            selected_cache = {{
+                'prefix-sensitive': 'prefix_sensitive',
+                'prefix-insensitive': 'prefix_insensitive',
+                'fuzzy-mixed': 'fuzzy_shared',
+            }}[scenario]
+            assert report['cache_entries'][selected_cache] == 128
+            assert all(size <= 128 for size in report['cache_entries'].values())
+            assert report['checkpoint_count'] >= 2
+            assert report['checkpoints']
+            for checkpoint in report['checkpoints']:
+                assert checkpoint['cache_entries'][selected_cache] == 128
+                assert all(size <= 128 for size in checkpoint['cache_entries'].values())
+            assert FOLIO._basic_search.cache_info().currsize == 0
+            assert not tracemalloc.is_tracing()
+    """)
+    result = pytester.runpytest_subprocess("--cov=folio", "--no-cov")
+    result.assert_outcomes(passed=3)
 
 
 @pytest.mark.parametrize("opt_in", [False, True])
