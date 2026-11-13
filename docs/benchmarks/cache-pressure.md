@@ -29,6 +29,30 @@ Run just that integration check with:
 uv run --frozen pytest tests/test_cache_pressure.py::test_benchmark_harness_tiny_cache_bounds
 ```
 
+## Check the CI installation layout
+
+The Linux workflow builds the distribution and installs dependencies with
+`poetry install --no-root`. The outer suite imports the checkout through
+`PYTHONPATH=.`. Pytester's children run from temporary directories, so the
+subprocess tests prepend the absolute checkout root to their inherited
+`PYTHONPATH` for collection, including imports from the copied `conftest.py`.
+The scoped environment patch preserves existing entries and is undone afterward.
+The children remain separate processes to isolate coverage instrumentation.
+
+In a fresh activated environment that has never installed `folio-python`, run:
+
+```bash
+poetry build
+poetry install --no-root
+PYTHONPATH=. poetry run pytest tests/test_cache_pressure.py
+PYTHONPATH=. poetry run pytest tests/
+```
+
+An editable development installation can hide this import failure. The
+[`fp-7 CI receipt`](../plans/evidence/fp-7-cache-pressure-ci.md) records the
+before/after result in a separate environment without the root package and
+the regression checks for absent, relative, and additional inherited paths.
+
 ## Run sustained pressure
 
 ```bash
