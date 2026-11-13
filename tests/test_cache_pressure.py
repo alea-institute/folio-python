@@ -4,6 +4,7 @@ from collections import deque
 from dataclasses import asdict, dataclass
 import gc
 import json
+import os
 from pathlib import Path
 import sys
 import time
@@ -514,7 +515,49 @@ def test_long_cache_pressure(graph_factory, benchmark, request, scenario):
     benchmark.extra_info["cache_pressure"] = report
 
 
-def test_benchmark_harness_tiny_cache_bounds(pytester):
+def prepend_checkout_pythonpath(monkeypatch):
+    # pytester subprocesses inherit PYTHONPATH, not the outer pytest's sys.path.
+    monkeypatch.setenv(
+        "PYTHONPATH", str(Path(__file__).resolve().parents[1]), prepend=os.pathsep
+    )
+
+
+@pytest.mark.parametrize("inherited_path", [None, ".", "additional"])
+def test_pytester_subprocess_imports_checkout(pytester, monkeypatch, inherited_path):
+    if inherited_path == "additional":
+        extra = pytester.path / "extra"
+        extra.mkdir()
+        (extra / "inherited_probe.py").write_text("VALUE = 42\n")
+        inherited_path = os.pathsep.join((".", str(extra)))
+    if inherited_path is None:
+        monkeypatch.delenv("PYTHONPATH", raising=False)
+    else:
+        monkeypatch.setenv("PYTHONPATH", inherited_path)
+
+    expected_package = Path(__file__).resolve().parents[1] / "folio" / "__init__.py"
+    pytester.makepyfile(f"""
+        from pathlib import Path
+        import os
+        import folio
+
+        def test_checkout_import():
+            assert Path(folio.__file__).resolve() == Path({str(expected_package)!r})
+            inherited = {inherited_path!r}
+            if inherited is not None:
+                assert os.environ['PYTHONPATH'].endswith(os.pathsep + inherited)
+            if inherited is not None and inherited != '.':
+                import inherited_probe
+                assert inherited_probe.VALUE == 42
+    """)
+    with monkeypatch.context() as child_environment:
+        prepend_checkout_pythonpath(child_environment)
+        result = pytester.runpytest_subprocess("--no-cov")
+        result.assert_outcomes(passed=1)
+    assert os.environ.get("PYTHONPATH") == inherited_path
+
+
+def test_benchmark_harness_tiny_cache_bounds(pytester, monkeypatch):
+    prepend_checkout_pythonpath(monkeypatch)
     # Isolate the real benchmark plugin from the parent suite's coverage.
     pytester.makepyfile(f"""
         import sys
@@ -565,7 +608,8 @@ def test_benchmark_harness_tiny_cache_bounds(pytester):
 
 
 @pytest.mark.parametrize("opt_in", [False, True])
-def test_only_pressure_marker_is_gated(pytester, opt_in):
+def test_only_pressure_marker_is_gated(pytester, monkeypatch, opt_in):
+    prepend_checkout_pythonpath(monkeypatch)
     pytester.makeconftest(Path(__file__).with_name("conftest.py").read_text())
     pytester.makeini("[pytest]\nmarkers = cache_pressure: sustained pressure")
     pytester.makepyfile("""
@@ -592,7 +636,10 @@ def test_only_pressure_marker_is_gated(pytester, opt_in):
         (["--cov=folio"], "inactive coverage"),
     ],
 )
-def test_installed_plugin_invocation_and_instrumentation(pytester, options, error):
+def test_installed_plugin_invocation_and_instrumentation(
+    pytester, monkeypatch, options, error
+):
+    prepend_checkout_pythonpath(monkeypatch)
     # Use a child process so the parent's default coverage cannot mask the
     # child's --no-cov behavior. Import the actual wrapper, not a replica.
     pytester.makepyfile(f"""
