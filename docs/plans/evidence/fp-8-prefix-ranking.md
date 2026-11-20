@@ -35,8 +35,8 @@ cases. The remaining 12 selected characterization cases passed.
 
 | Final check | Result |
 | --- | --- |
-| `uv run --frozen pytest tests/`, with `FOLIO_CORE_PYTHON` set | **254 passed**, no skips; includes live ontology and benchmarks |
-| `uv run --frozen pytest tests/test_prefix_ranking.py tests/test_search_reconciliation.py -o addopts=''` | **65 passed** |
+| `uv run --frozen pytest tests/`, with `FOLIO_CORE_PYTHON` set | **298 passed**, no skips; includes live ontology and benchmarks |
+| `uv run --frozen pytest tests/test_prefix_ranking.py tests/test_search_reconciliation.py -o addopts=''` | **109 passed** |
 | `uv run --frozen pytest tests/test_folio.py -k prefix -o addopts=''` | **11 passed**, including unchanged Michigan expectations |
 | `uv run --frozen pytest tests/test_core_install.py -o addopts=''`, with rebuilt core interpreter | **2 passed**, isolated `-I` imports outside the checkout |
 | `uv run --frozen ruff check --fix folio/ tests/` | Passed, no diagnostics |
@@ -54,7 +54,7 @@ writable scratch `UV_PYTHON_INSTALL_DIR`; no project configuration changed.
 
 Both layouts ran `python -m pytest tests/ --ignore=tests/test_folio.py` with
 `--cov=folio --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=58`:
-**177 passed, 10 existing kaos-extra skips, 69.16% combined coverage** in each.
+**221 passed, 10 existing kaos-extra skips, 69.22% combined coverage** in each.
 The published search extra omits kaos; the default-group full suite above
 includes it and passed those cases. Neither new wheel test skipped.
 
@@ -79,6 +79,23 @@ The five-persona simplification pass retained the shared scorer and bounded
 metadata design, replaced temporary candidate lists with iterators, and removed
 redundant private comments. All proof tests were preserved. The new first-build
 preservation regression addresses the test review's concrete coverage gap.
+
+The full `ce-code-review` pass reviewed correctness, project standards, testing,
+maintainability, and performance at `83695ad`. Review run
+`20261120-115843-568c94bb` independently confirmed three location-reference
+validation findings. All three were fixed:
+
+- Reject empty-label duplicate declarations just as the public parser does,
+  while accepting a later populated label in the same declaration.
+- Exclude restrictions on subclass edges that also name a parent resource.
+- Reject resource operands containing nested content or literal text; retain
+  ordinary whitespace-only resource operands.
+
+The added public prefix-order tests run in both backends and both case modes.
+Before the fixes, 24 of these cases failed and 20 valid/control cases passed;
+afterward all 44 passed. Separate in-memory mutations that removed each new
+check caused 4, 4, and 16 failures respectively. No actionable review finding
+remains unapplied. The final verification table above includes these fixes.
 
 The chief campaign plan and shared mandate file are absent from this clone;
 their excerpts could not be independently read. The supplied controller mandate

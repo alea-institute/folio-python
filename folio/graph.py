@@ -1165,6 +1165,8 @@ class FOLIO:
 
         Direct locatedIn restrictions from distinct valid classes supply a
         bounded prominence proxy for locations, not a claim about popularity.
+        Resource operands must be empty apart from whitespace, and restrictions
+        cannot share a subclass edge with a named parent.
         Only the temporary XML/graph views grow with edges and references.
         """
         children: Dict[str, set[str]] = {}
@@ -1208,14 +1210,28 @@ class FOLIO:
                 or source not in self.iri_to_index
                 or (
                     source != OWL_THING
-                    and node.findtext("rdfs:label", namespaces=NSMAP) is None
+                    and not any(
+                        label.text is not None
+                        for label in node.findall("rdfs:label", NSMAP)
+                    )
                 )
             ):
                 continue
-            for restriction in node.findall("rdfs:subClassOf/owl:Restriction", NSMAP):
+            restrictions = (
+                restriction
+                for subclass in node.findall("rdfs:subClassOf", NSMAP)
+                if subclass.get(resource) is None
+                for restriction in subclass.findall("owl:Restriction", NSMAP)
+            )
+            for restriction in restrictions:
                 properties = restriction.findall("owl:onProperty", NSMAP)
                 targets = restriction.findall("owl:someValuesFrom", NSMAP)
                 if len(properties) != 1 or len(targets) != 1:
+                    continue
+                if any(
+                    len(operand) or (operand.text or "").strip()
+                    for operand in properties + targets
+                ):
                     continue
                 if properties[0].get(resource) != NSMAP["rdfs"] + "locatedIn":
                     continue

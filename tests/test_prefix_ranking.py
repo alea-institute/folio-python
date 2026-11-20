@@ -416,3 +416,76 @@ def test_first_metadata_build_preserves_public_parse_results(local_graph, monkey
     assert len(snapshots) == 1
     assert len(graph.classes) == 2
     assert len(graph.object_properties) == 1
+
+
+@pytest.mark.parametrize(
+    "duplicate_labels,promotes",
+    [
+        ("", False),
+        ("<rdfs:label/>", False),
+        ("<rdfs:label/><rdfs:label>Second source label</rdfs:label>", True),
+    ],
+)
+def test_discarded_duplicate_owner_cannot_promote_location(
+    ranked_graph, case_sensitive, duplicate_labels, promotes
+):
+    location = FOLIO_TYPE_IRIS[FOLIOTypes.LOCATION]
+    graph = ranked_graph(
+        concept(location)
+        + concept("a", "Place", parents=(location,))
+        + concept("z", "Place", parents=(location,))
+        + concept("source")
+        + f'<owl:Class rdf:about="{iri("source")}">'
+        + duplicate_labels
+        + restriction("z")
+        + "</owl:Class>"
+    )
+    assert len(graph.classes) == (5 if promotes else 4)
+    expected = ["z", "a"] if promotes else ["a", "z"]
+    assert results(graph, "Pla", case_sensitive) == [iri(name) for name in expected]
+
+
+@pytest.mark.parametrize("named_parent", [True, False])
+def test_named_subclass_edge_cannot_also_promote_location(
+    ranked_graph, case_sensitive, named_parent
+):
+    location = FOLIO_TYPE_IRIS[FOLIOTypes.LOCATION]
+    edge = restriction("z")
+    if named_parent:
+        edge = edge.replace(
+            "<rdfs:subClassOf>", f'<rdfs:subClassOf rdf:resource="{iri(location)}">'
+        )
+    graph = ranked_graph(
+        concept(location)
+        + concept("a", "Place", parents=(location,))
+        + concept("z", "Place", parents=(location,))
+        + concept("source", extra=edge)
+    )
+    assert graph[iri("source")].sub_class_of == (
+        [iri(location)] if named_parent else []
+    )
+    expected = ["a", "z"] if named_parent else ["z", "a"]
+    assert results(graph, "Pla", case_sensitive) == [iri(name) for name in expected]
+
+
+@pytest.mark.parametrize("operand", ["onProperty", "someValuesFrom"])
+@pytest.mark.parametrize(
+    "payload,promotes", [("<owl:Class/>", False), ("literal", False), (" \n ", True)]
+)
+def test_ambiguous_resource_operand_cannot_promote_location(
+    ranked_graph, case_sensitive, operand, payload, promotes
+):
+    location = FOLIO_TYPE_IRIS[FOLIOTypes.LOCATION]
+    predicate = LOCATED_IN if operand == "onProperty" else iri("z")
+    edge = restriction("z").replace(
+        f'<owl:{operand} rdf:resource="{predicate}"/>',
+        f'<owl:{operand} rdf:resource="{predicate}">{payload}</owl:{operand}>',
+    )
+    graph = ranked_graph(
+        concept(location)
+        + concept("a", "Place", parents=(location,))
+        + concept("z", "Place", parents=(location,))
+        + concept("source", extra=edge)
+    )
+    expected = ["z", "a"] if promotes else ["a", "z"]
+    assert results(graph, "Pla", case_sensitive) == [iri(name) for name in expected]
