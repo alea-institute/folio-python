@@ -88,3 +88,57 @@ def test_core_only_installed_wheel(tmp_path):
     )
     assert result.returncode == 0, result.stdout + result.stderr
     assert "core-only wheel probe passed" in result.stdout
+
+
+PREFIX_RANKING_PROBE = '''
+import importlib.util
+from folio import FOLIO
+from folio.models import NSMAP
+
+assert importlib.util.find_spec("marisa_trie") is None
+assert importlib.util.find_spec("rapidfuzz") is None
+assert importlib.util.find_spec("alea_llm_client") is None
+namespaces = " ".join(f'xmlns:{prefix}="{uri}"' for prefix, uri in NSMAP.items() if prefix)
+base = "https://folio.openlegalstandard.org/"
+document = f"""<rdf:RDF {namespaces}>
+    <owl:Class rdf:about="{base}alias">
+        <rdfs:label>Other</rdfs:label><skos:altLabel>Match</skos:altLabel>
+    </owl:Class>
+    <owl:Class rdf:about="{base}deep">
+        <rdfs:label>Match extension</rdfs:label>
+        <rdfs:subClassOf rdf:resource="{base}shallow"/>
+    </owl:Class>
+    <owl:Class rdf:about="{base}shallow">
+        <rdfs:label>Match extension</rdfs:label>
+    </owl:Class>
+    <owl:Class rdf:about="{base}exact">
+        <rdfs:label>Match</rdfs:label>
+    </owl:Class>
+</rdf:RDF>"""
+FOLIO.load_owl = staticmethod(lambda **kwargs: document)
+graph = FOLIO(use_cache=False)
+assert graph._label_trie is None and graph._lowercase_label_trie is None
+for case_sensitive in (True, False):
+    prefix = "Match" if case_sensitive else "MATCH"
+    for _ in range(2):
+        assert [item.iri for item in graph.search_by_prefix(prefix, case_sensitive)] == [
+            base + name for name in ("exact", "shallow", "deep", "alias")
+        ]
+print("core-only prefix ranking passed")
+'''
+
+
+def test_prefix_ranking_in_core_only_installed_wheel(tmp_path):
+    python = os.environ.get("FOLIO_CORE_PYTHON")
+    if not python:
+        pytest.skip("Set FOLIO_CORE_PYTHON to a separately installed core-only Python")
+    result = subprocess.run(
+        [python, "-I", "-c", PREFIX_RANKING_PROBE],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "core-only prefix ranking passed" in result.stdout

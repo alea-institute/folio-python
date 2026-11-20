@@ -15,6 +15,24 @@ def folio_graph():
     return FOLIO()
 
 
+@pytest.mark.parametrize("case_sensitive", [True, False])
+def test_prefix_relevance_california_and_tax_law(folio_graph, case_sensitive):
+    california = "https://folio.openlegalstandard.org/RCAE61b75805b43D0c65E1bb"
+    caldas = "https://folio.openlegalstandard.org/R47266bC6C284D8565e69144"
+    tax_law = "https://folio.openlegalstandard.org/RDGdgxwCGXpkY1zfT2WwGl9"
+    for _ in range(2):
+        for prefix in ["Cal"] if case_sensitive else ["Cal", "cal", "cAL"]:
+            hits = folio_graph.search_by_prefix(prefix, case_sensitive=case_sensitive)
+            iris = [item.iri for item in hits]
+            assert iris.index(california) < iris.index(caldas)
+            assert folio_graph[california].label == "California"
+            assert folio_graph[caldas].label == "Caldas"
+        for prefix in ["Tax"] if case_sensitive else ["Tax", "tax", "tAX"]:
+            hits = folio_graph.search_by_prefix(prefix, case_sensitive=case_sensitive)
+            assert hits[0].iri == tax_law
+            assert hits[0].label == "Tax Law"
+
+
 def test_list_branches():
     """
     Test the list_branches method of the FOLIO class.

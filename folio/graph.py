@@ -20,8 +20,11 @@ import importlib.util
 import json
 import time
 import traceback
+from collections import deque
+from collections.abc import Iterable
 from enum import Enum
 from functools import cache, lru_cache
+from itertools import chain
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Protocol, Tuple
 
@@ -114,6 +117,18 @@ FOLIO_TYPE_IRIS: Dict[FOLIOTypes, str] = {
     FOLIOTypes.STATUS: "Rx69EnEj3H3TpcgTfUSoYx",
     FOLIOTypes.SYSTEM_IDENTIFIERS: "R8EoZh39tWmXCkmP2Xzjl6E",
 }
+
+PREFIX_LOW_UTILITY_BRANCHES = frozenset(
+    {
+        FOLIOTypes.LANGUAGE,
+        FOLIOTypes.LOCATION,
+        FOLIOTypes.STANDARDS_COMPATIBILITY,
+        FOLIOTypes.SYSTEM_IDENTIFIERS,
+        FOLIOTypes.MATTER_NARRATIVE,
+        FOLIOTypes.CURRENCY,
+        FOLIOTypes.DATA_FORMAT,
+    }
+)
 
 OWL_THING = "http://www.w3.org/2002/07/owl#Thing"
 
@@ -260,6 +275,7 @@ class FOLIO:
         self._lowercase_to_original: Dict[str, List[str]] = {}
         self._prefix_cache: Dict[str, List[OWLClass]] = {}
         self._ci_prefix_cache: Dict[str, List[OWLClass]] = {}
+        self._prefix_rank_bonus: List[float] = []
         self._kaos_indices = kaos_search.KaosSearchIndices()
         self.triples: List[Tuple[str, str, str]] = []
 
@@ -1112,6 +1128,7 @@ class FOLIO:
 
         # freeze triple tuples
         self._cached_triples = tuple(self.triples)
+        self._build_prefix_rank_bonus()
 
         # clear prefix caches (fixes staleness on refresh())
         self._prefix_cache = {}
@@ -1136,6 +1153,109 @@ class FOLIO:
                 self._lowercase_to_original[folded].append(label)
             self._lowercase_label_trie = marisa_trie.Trie(
                 list(self._lowercase_to_original.keys())
+            )
+
+    def _build_prefix_rank_bonus(self) -> None:
+        """Precompute structural scores once per parse; retain one float per class.
+
+        Depth is the shortest path from virtual owl:Thing (parentless custom
+        classes start at depth one). Missing-only ancestry and rootless cycles
+        receive no depth bonus. All recognized branch ancestries count: mixed
+        ordinary/low-utility membership receives no penalty.
+
+        Direct locatedIn restrictions from distinct valid classes supply a
+        bounded prominence proxy for locations, not a claim about popularity.
+        Resource operands must be empty apart from whitespace, and restrictions
+        cannot share a subclass edge with a named parent.
+        Only the temporary XML/graph views grow with edges and references.
+        """
+        children: Dict[str, set[str]] = {}
+        depths = {OWL_THING: 0}
+        for cls in self.classes:
+            for parent in cls.sub_class_of:
+                children.setdefault(parent, set()).add(cls.iri)
+            if not cls.sub_class_of and cls.iri != OWL_THING:
+                depths[cls.iri] = 1
+        pending = deque(depths)
+        while pending:
+            parent = pending.popleft()
+            for child in children.get(parent, ()):
+                depth = depths[parent] + 1
+                if child not in depths or depth < depths[child]:
+                    depths[child] = depth
+                    pending.append(child)
+
+        branches: Dict[str, set[FOLIOTypes]] = {}
+        for branch, root in FOLIO_TYPE_IRIS.items():
+            root = self.normalize_iri(root)
+            if root not in self.iri_to_index:
+                continue
+            pending = deque([root])
+            while pending:
+                current = pending.popleft()
+                memberships = branches.setdefault(current, set())
+                if branch in memberships:
+                    continue
+                memberships.add(branch)
+                pending.extend(children.get(current, ()))
+
+        sources: Dict[str, set[str]] = {}
+        about = self.get_ns_tag("rdf", "about")
+        resource = self.get_ns_tag("rdf", "resource")
+        assert self.tree is not None
+        for node in self.tree.findall("owl:Class", NSMAP):
+            source = node.get(about)
+            if (
+                source is None
+                or source not in self.iri_to_index
+                or (
+                    source != OWL_THING
+                    and not any(
+                        label.text is not None
+                        for label in node.findall("rdfs:label", NSMAP)
+                    )
+                )
+            ):
+                continue
+            restrictions = (
+                restriction
+                for subclass in node.findall("rdfs:subClassOf", NSMAP)
+                if subclass.get(resource) is None
+                for restriction in subclass.findall("owl:Restriction", NSMAP)
+            )
+            for restriction in restrictions:
+                properties = restriction.findall("owl:onProperty", NSMAP)
+                targets = restriction.findall("owl:someValuesFrom", NSMAP)
+                if len(properties) != 1 or len(targets) != 1:
+                    continue
+                if any(
+                    len(operand) or (operand.text or "").strip()
+                    for operand in properties + targets
+                ):
+                    continue
+                if properties[0].get(resource) != NSMAP["rdfs"] + "locatedIn":
+                    continue
+                target = targets[0].get(resource)
+                if (
+                    target is not None
+                    and target != source
+                    and FOLIOTypes.LOCATION in branches.get(target, ())
+                ):
+                    sources.setdefault(target, set()).add(source)
+
+        self._prefix_rank_bonus = []
+        for cls in self.classes:
+            depth = depths.get(cls.iri)
+            memberships = branches.get(cls.iri, set())
+            count = len(sources.get(cls.iri, ()))
+            self._prefix_rank_bonus.append(
+                (5 / (1 + depth) if depth is not None else 0)
+                - (
+                    2
+                    if memberships and memberships <= PREFIX_LOW_UTILITY_BRANCHES
+                    else 0
+                )
+                + 5 * count / (1 + count)
             )
 
     def get_subgraph(
@@ -1392,6 +1512,7 @@ class FOLIO:
         self.triples.clear()
         self._cached_triples = ()
         self._kaos_indices.clear()
+        self._prefix_rank_bonus.clear()
 
         # load the ontology
         LOGGER.info("Refreshing FOLIO ontology with use_cache=False...")
@@ -1418,7 +1539,17 @@ class FOLIO:
         self, prefix: str, case_sensitive: bool = False
     ) -> List[OWLClass]:
         """
-        Search for OWL classes by label prefix.
+        Search primary and alternative labels by prefix, ordered by relevance.
+
+        A class's best matching label determines its score. Primary labels
+        always precede aliases; within each group exact matches precede prefix
+        matches. Bounded secondary scores favor shorter matching labels and
+        shallower ontology depth, penalize exclusively low-utility branches
+        (PREFIX_LOW_UTILITY_BRANCHES), and favor locations referenced by more
+        distinct classes through direct locatedIn restrictions. This last term
+        is an ontology prominence proxy, not measured popularity. Unknown
+        depth and unclassified branches are neutral. Ties use canonical IRI.
+        Both case modes retain separate bounded 128-entry result caches.
 
         Args:
             prefix (str): The prefix to search for.
@@ -1428,100 +1559,77 @@ class FOLIO:
 
         Returns:
             List[OWLClass]: The list of OWL classes whose labels start with
-                the prefix, sorted by label length ascending.
+                the prefix, sorted by descending relevance with no duplicates.
         """
         if case_sensitive:
             return self._search_by_prefix_sensitive(prefix)
         return self._search_by_prefix_insensitive(prefix)
 
+    def _rank_prefix_matches(
+        self, keys: Iterable[str], prefix: str, case_sensitive: bool
+    ) -> List[OWLClass]:
+        """Rank each class by its best matching primary or alias occurrence.
+
+        Score = 1000 * primary + 100 * exact + 20 / (1 + key length)
+        + 5 / (1 + known depth) - 2 * exclusively low-utility membership
+        + 5 * location references / (1 + location references).
+
+        Unknown depth contributes zero. Structural terms are precomputed at
+        parse time. Secondary terms span at most 32 points, so primary always
+        beats alias and exact beats prefix within either provenance tier.
+        Exactness and length use casefolded text in insensitive mode. Ties use
+        canonical IRI, then class index, independent of backend enumeration.
+        """
+        scores: Dict[int, float] = {}
+        for key in set(keys):
+            normalized = key if case_sensitive else key.casefold()
+            lexical = 100 * (normalized == prefix) + 20 / (1 + len(normalized))
+            for index_map, primary in (
+                (self.label_to_index, True),
+                (self.alt_label_to_index, False),
+            ):
+                for index in index_map.get(key, ()):
+                    score = 1000 * primary + lexical + self._prefix_rank_bonus[index]
+                    scores[index] = max(scores.get(index, float("-inf")), score)
+        indices = sorted(
+            scores, key=lambda index: (-scores[index], self.classes[index].iri, index)
+        )
+        return [self.classes[index] for index in indices]
+
     def _search_by_prefix_sensitive(self, prefix: str) -> List[OWLClass]:
-        """Case-sensitive prefix search (original behavior)."""
         if prefix in self._prefix_cache:
             return self._prefix_cache[prefix]
 
-        # sort: primary-label keys first (False < True), then by length
         if self._label_trie is not None:
-            keys = sorted(
-                self._label_trie.keys(prefix),
-                key=lambda k: (k not in self.label_to_index, len(k)),
-            )
+            keys: Iterable[str] = self._label_trie.keys(prefix)
         else:
-            keys = sorted(
-                [
-                    label
-                    for label in list(self.label_to_index.keys())
-                    + list(self.alt_label_to_index.keys())
-                    if label.startswith(prefix)
-                ],
-                key=lambda k: (k not in self.label_to_index, len(k)),
+            keys = (
+                label
+                for label in chain(self.label_to_index, self.alt_label_to_index)
+                if label.startswith(prefix)
             )
-
-        # deduplicate by class index, label_to_index checked before alt_label_to_index
-        seen: set = set()
-        iri_list: list = []
-        for key in keys:
-            for idx in self.label_to_index.get(key, []):  # type: ignore[arg-type]
-                if idx not in seen:
-                    seen.add(idx)
-                    iri_list.append(idx)
-            for idx in self.alt_label_to_index.get(key, []):  # type: ignore[arg-type]
-                if idx not in seen:
-                    seen.add(idx)
-                    iri_list.append(idx)
-
-        classes = [self.classes[index] for index in iri_list]
+        classes = self._rank_prefix_matches(keys, prefix, case_sensitive=True)
         _store_prefix_cache(self._prefix_cache, prefix, classes)
         return classes
 
     def _search_by_prefix_insensitive(self, prefix: str) -> List[OWLClass]:
-        """Case-insensitive prefix search via parallel lowercase trie."""
         folded = prefix.casefold()
-
         if folded in self._ci_prefix_cache:
             return self._ci_prefix_cache[folded]
 
         if marisa_trie is not None and self._lowercase_label_trie is not None:
-            lowercase_keys = sorted(
-                self._lowercase_label_trie.keys(folded),
-                key=len,
-            )
-            # resolve lowercase keys back to original-case labels;
-            # sort: primary-label keys first, then by length
-            original_keys = sorted(
-                [
-                    orig
-                    for lk in lowercase_keys
-                    for orig in self._lowercase_to_original.get(lk, [])
-                ],
-                key=lambda k: (k not in self.label_to_index, len(k)),
+            original_keys = (
+                original
+                for key in self._lowercase_label_trie.keys(folded)
+                for original in self._lowercase_to_original.get(key, ())
             )
         else:
-            # pure-Python fallback: case-insensitive prefix match
-            # sort: primary-label keys first, then by length
-            original_keys = sorted(
-                [
-                    label
-                    for label in list(self.label_to_index.keys())
-                    + list(self.alt_label_to_index.keys())
-                    if label.casefold().startswith(folded)
-                ],
-                key=lambda k: (k not in self.label_to_index, len(k)),
+            original_keys = (
+                label
+                for label in chain(self.label_to_index, self.alt_label_to_index)
+                if label.casefold().startswith(folded)
             )
-
-        # resolve to OWLClass with deduplication by index
-        seen: set = set()
-        iri_list: list = []
-        for key in original_keys:
-            for idx in self.label_to_index.get(key, []):  # type: ignore[arg-type]
-                if idx not in seen:
-                    seen.add(idx)
-                    iri_list.append(idx)
-            for idx in self.alt_label_to_index.get(key, []):  # type: ignore[arg-type]
-                if idx not in seen:
-                    seen.add(idx)
-                    iri_list.append(idx)
-
-        classes = [self.classes[index] for index in iri_list]
+        classes = self._rank_prefix_matches(original_keys, folded, case_sensitive=False)
         _store_prefix_cache(self._ci_prefix_cache, folded, classes)
         return classes
 
