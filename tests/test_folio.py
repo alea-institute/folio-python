@@ -15,6 +15,22 @@ def folio_graph():
     return FOLIO()
 
 
+def test_published_parser_counts(folio_graph):
+    """Raw declarations and accepted models differ for unlabeled legacy nodes."""
+    root = folio_graph.tree
+    assert len(root.findall("owl:Class", folio.graph.NSMAP)) == 18324
+    assert len(root.findall("owl:ObjectProperty", folio.graph.NSMAP)) == 181
+    assert len(folio_graph.classes) == 18323
+    assert len(folio_graph.object_properties) == 175
+    for tag, count in (
+        ("owl:DatatypeProperty", 7),
+        ("owl:AnnotationProperty", 25),
+        ("owl:NamedIndividual", 30),
+        ("rdf:Description", 11),
+    ):
+        assert len(root.findall(tag, folio.graph.NSMAP)) == count
+
+
 @pytest.mark.parametrize("case_sensitive", [True, False])
 def test_prefix_relevance_california_and_tax_law(folio_graph, case_sensitive):
     california = "https://folio.openlegalstandard.org/RCAE61b75805b43D0c65E1bb"
