@@ -47,3 +47,36 @@ Baseline verification:
 
 The characterization preserves the actual legacy triple output; it does not
 change existing object-property edge generation or refresh semantics.
+
+## Implemented behavior and compatibility
+
+All four dispatch branches now append detached `OWLNode` records to getter-only
+tuple collections. Frozen records retain expanded names, immutable attribute
+pairs, literal text/tails, ordered nested elements, and optional `rdf:about`.
+Processing instructions are omitted without losing their tail text or changing
+the source tree. Successful parsing replaces metadata; XML syntax errors retain
+previous snapshots. Existing graph parsing and refresh behavior stay intact.
+
+Before implementation, 19 new behavior cases failed because the four accessors
+were absent, while the legacy characterization passed. After implementation,
+all 35 parser/model cases passed. Added coverage also executes the README snippet
+and probes all four accessors from an isolated core-only installed wheel.
+
+On both saved published inputs, the complete post-change legacy snapshots are
+byte-identical to the pre-change JSON snapshots above, including their hashes.
+The published integration test separately compares fresh full and metadata-free
+graphs, asserting identical counts, models, indexes, edges and triples. The
+original production XML is unchanged.
+
+Final implementation verification on Python 3.14.0:
+
+- Full suite, with `FOLIO_CORE_PYTHON` configured: **332 passed** in 30.39 seconds,
+  including benchmarks and all three isolated wheel probes. No skips or network
+  failures occurred.
+- Ruff lint/autofix and formatting, `ty check folio/`, and `git diff --check`:
+  **passed**.
+
+The package remains at version `0.4.2`; publishing configuration is unchanged.
+No UI changed, so browser screenshots are not applicable. The controller should
+carry the README API description to the separate public documentation repository
+and supply the unavailable campaign excerpts before campaign acceptance.

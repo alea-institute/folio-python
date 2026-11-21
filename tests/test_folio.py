@@ -2,6 +2,9 @@
 import sys
 
 # packages
+from copy import deepcopy
+
+import lxml.etree
 import pytest
 
 # project imports
@@ -29,6 +32,35 @@ def test_published_parser_counts(folio_graph):
         ("rdf:Description", 11),
     ):
         assert len(root.findall(tag, folio.graph.NSMAP)) == count
+
+
+def test_published_metadata_preserves_legacy_contents(
+    folio_graph, local_graph, legacy_graph_snapshot
+):
+    metadata = (
+        ("owl:DatatypeProperty", "datatype_properties", 7),
+        ("owl:AnnotationProperty", "annotation_properties", 25),
+        ("owl:NamedIndividual", "named_individuals", 30),
+        ("rdf:Description", "rdf_descriptions", 11),
+    )
+    root = deepcopy(folio_graph.tree)
+    original = lxml.etree.tostring(folio_graph.tree)
+    full = local_graph("".join(lxml.etree.tostring(node).decode() for node in root))
+    for tag, accessor, count in metadata:
+        declarations = root.findall(tag, folio.graph.NSMAP)
+        records = getattr(full, accessor)
+        assert len(records) == count == len(declarations)
+        assert [record.iri for record in records] == [
+            node.get(FOLIO.get_ns_tag("rdf", "about")) for node in declarations
+        ]
+        for node in declarations:
+            root.remove(node)
+    filtered = local_graph("".join(lxml.etree.tostring(node).decode() for node in root))
+    assert len(full.classes) == len(filtered.classes) == 18323
+    assert len(full.object_properties) == len(filtered.object_properties) == 175
+    assert legacy_graph_snapshot(full) == legacy_graph_snapshot(filtered)
+    assert lxml.etree.tostring(folio_graph.tree) == original
+    assert all(getattr(filtered, name) == () for _, name, _ in metadata)
 
 
 @pytest.mark.parametrize("case_sensitive", [True, False])

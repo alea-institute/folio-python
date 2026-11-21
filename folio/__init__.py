@@ -16,13 +16,14 @@ __url__ = "https://openlegalstandard.org/"
 
 # import graph to re-export
 from .graph import FOLIO, FOLIOTypes, FOLIO_TYPE_IRIS
-from .models import OWLClass, OWLObjectProperty, NSMAP
+from .models import OWLClass, OWLNode, OWLObjectProperty, NSMAP
 
 __all__ = [
     "FOLIO",
     "FOLIOTypes",
     "FOLIO_TYPE_IRIS",
     "OWLClass",
+    "OWLNode",
     "OWLObjectProperty",
     "NSMAP",
 ]
