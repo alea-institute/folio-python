@@ -236,6 +236,99 @@ against a loaded ontology, including `test_query_combined_filters`,
 `test_query_regex`, `test_query_by_parent_iri`, `test_query_has_children`, and
 `test_query_properties_has_inverse`.
 
+## Search with query expansion
+
+Use `await folio.search_expanded()` when a natural-language query may not match
+the ontology's labels. For example, “my landlord won't fix the heat” can expand
+to terms such as “Warranty of Habitability” and “Landlord Negligence”. The LLM
+suggests search terms; FOLIO searches the original query and those terms, then
+combines the hits by IRI. This is useful for discovery when the user does not
+already know the legal term. Use `search_by_label()` for a direct label lookup.
+
+Install the search extra with `pip install 'folio-python[search]'`. On an
+already initialized graph with your configured LLM, call the async method:
+
+```python
+result = await folio.search_expanded(
+    query="my landlord won't fix the heat",
+    limit=3,
+    include_definitions=True,
+    max_expansions=8,
+    timeout=10.0,
+)
+print(result.expansions, result.expansion_source)
+for hit in result.hits:
+    print(hit.owl_class.label, hit.owl_class.iri, hit.score, hit.matched_via)
+```
+
+Run this snippet inside an async function, or use `await` directly in a notebook
+that supports it. The graph's `llm` and `llm_kwargs` configure the expansion
+provider; the arguments to `search_expanded()` are:
+
+| Argument | Default | Meaning |
+| --- | --- | --- |
+| `query` | Required | Natural-language query to expand and search. |
+| `limit` | `10` | Maximum number of returned hits; use a positive value. |
+| `include_definitions` | `True` | Also search definitions, with lower weight than labels. |
+| `max_expansions` | `8` | Maximum expansion terms used, bounded to 0–10; `0` disables expansion. |
+| `timeout` | `10.0` | LLM-call timeout in seconds, not a deadline for the entire search. |
+
+### Fallback and results
+
+If expansion is disabled or no usable terms are available because the LLM is
+absent, fails, times out, returns an invalid response, or has an open circuit
+after repeated failures, FOLIO still searches the original query. This fallback
+searches both labels and definitions by default; set `include_definitions=False`
+for label-only search. LLM failures are contained, but errors from the
+original-query search can still propagate. The search extra is required even
+when expansion is unavailable.
+
+The returned `ExpandedSearchResult` has these fields:
+
+| Field | Meaning |
+| --- | --- |
+| `query` | Query used for search, normalized and trimmed (up to 500 characters). |
+| `expansions` | Expansion terms used, or an empty list for original-query search. |
+| `hits` | List of `ExpandedSearchHit` objects. |
+| `expansion_source` | `"llm"` for new terms, `"cache"` for reused or shared terms, or `"none"` when no terms are used. |
+| `expansion_error` | Short failure reason when available, otherwise `None`. |
+| `elapsed_ms` | Elapsed search time in milliseconds. |
+| `usage` | Provider usage metadata when available, otherwise an empty dictionary. |
+
+Each hit contains `owl_class` (with its `label` and `iri`), `score`, and
+`matched_via` (the original query and/or expansion terms that contributed to the
+hit). The score combines several searches using weighted reciprocal rank
+fusion; it is neither a probability nor the underlying search's 0–100 score.
+Strong original-label matches can be kept first, so scores are not guaranteed
+to decrease strictly in result order.
+
+For JSON output, `result.to_dict()` includes the query, expansion terms, source,
+error, elapsed time, and a **`results`** list (not `hits`). Each entry contains
+`iri`, `label`, `score`, and `matched_via`. The serialized dictionary omits `usage`.
+
+### Runnable example without a live LLM
+
+The repository's [expanded-search example](examples/expanded_search.py) uses a
+fixed demo LLM response for the sample query, so it needs no API key and makes
+no provider call. It may download the public ontology during graph construction;
+the actual hits depend on that ontology and the search backend.
+
+```bash
+uv run --frozen python examples/expanded_search.py
+```
+
+The example's async `expanded_search(graph, query, ...)` helper also accepts your
+own initialized graph for real expansion. Importing the module does not load an
+ontology. Examples are checkout files, not part of the installed distribution.
+
+The [example tests](tests/test_expanded_search_example.py) run this helper against
+local RDF and a stub LLM, with HTTP requests blocked. They cover expansion hits
+and source metadata, fallback, opting out, serialization, and safe import:
+
+```bash
+uv run --frozen pytest tests/test_expanded_search_example.py
+```
+
 ## Searching with an LLM
 
 ```python
