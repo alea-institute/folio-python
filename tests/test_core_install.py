@@ -142,3 +142,57 @@ def test_prefix_ranking_in_core_only_installed_wheel(tmp_path):
     )
     assert result.returncode == 0, result.stdout + result.stderr
     assert "core-only prefix ranking passed" in result.stdout
+
+
+METADATA_PROBE = """
+import importlib.util
+from dataclasses import FrozenInstanceError
+from folio import FOLIO, NSMAP, OWLNode
+
+for module in ("rapidfuzz", "marisa_trie", "alea_llm_client", "kaos_nlp_core"):
+    assert importlib.util.find_spec(module) is None
+namespaces = " ".join(f'xmlns:{prefix}="{uri}"' for prefix, uri in NSMAP.items() if prefix)
+kinds = (
+    ("owl:DatatypeProperty", "datatype_properties"),
+    ("owl:AnnotationProperty", "annotation_properties"),
+    ("owl:NamedIndividual", "named_individuals"),
+    ("rdf:Description", "rdf_descriptions"),
+)
+body = "".join(
+    f'<{tag} rdf:about="https://example.org/{name}"><rdfs:label>Metadata</rdfs:label></{tag}>'
+    for tag, name in kinds
+)
+FOLIO.load_owl = staticmethod(lambda **kwargs: f'<rdf:RDF {namespaces}>{body}</rdf:RDF>')
+graph = FOLIO(use_cache=False)
+for tag, name in kinds:
+    records = getattr(graph, name)
+    assert isinstance(records, tuple) and len(records) == 1
+    record = records[0]
+    assert isinstance(record, OWLNode)
+    assert record.iri == f"https://example.org/{name}"
+    assert record.children[0].text == "Metadata"
+    try:
+        record.children[0].text = "changed"
+    except FrozenInstanceError:
+        pass
+    else:
+        raise AssertionError("Mutable metadata")
+assert not graph.classes and not graph.object_properties and not graph.triples
+print("core-only metadata probe passed")
+"""
+
+
+def test_metadata_in_core_only_installed_wheel(tmp_path):
+    python = os.environ.get("FOLIO_CORE_PYTHON")
+    if not python:
+        pytest.skip("Set FOLIO_CORE_PYTHON to a separately installed core-only Python")
+    result = subprocess.run(
+        [python, "-I", "-c", METADATA_PROBE],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=30,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "core-only metadata probe passed" in result.stdout

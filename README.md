@@ -109,6 +109,43 @@ for subject, property_obj, object_class in connections:
     print(f"{subject.label} {property_obj.label} {object_class.label}")
 ```
 
+## Read-only ontology metadata
+
+Use `datatype_properties`, `annotation_properties`, `named_individuals`, and
+`rdf_descriptions` to inspect declarations outside the class and object-property
+interfaces. Each accessor returns a tuple of immutable `OWLNode` records in
+document order, preserving repeated subjects and declarations without labels.
+
+```python
+from folio import FOLIO, NSMAP
+
+folio = FOLIO()
+for declaration in folio.annotation_properties:
+    labels = [
+        child.text
+        for child in declaration.children
+        if child.tag == f"{{{NSMAP['rdfs']}}}label"
+    ]
+    print(declaration.iri, labels)
+```
+
+`OWLNode` is also importable from `folio`. Its fields are `tag`, `attributes`
+(a tuple of name/value pairs), `text`, `tail`, and `children` (a tuple of nested
+`OWLNode` records). Tags and attribute names use expanded `{namespace}local`
+names; `dict(node.attributes)` gives a separate mutable copy for lookup. `iri`
+returns the literal `rdf:about` value, or `None` when absent. Nested restrictions,
+repeated predicates, language tags, datatype attributes, and text whitespace
+remain available. Non-element nodes, such as processing instructions, are
+omitted while preserving their following text.
+
+These are structural snapshots, not RDF reasoning results or XML round-trip
+representations: original namespace prefixes and inherited XML context are not
+retained. Changing the source tree cannot change a record. A successful reparse
+or `refresh()` replaces these four collections; previously held tuples keep
+their old values. Malformed XML leaves the previous metadata snapshots intact.
+The existing `classes`, `object_properties`, indexes, and triples keep their
+existing contents and behavior; metadata is not merged into them.
+
 ## Structured Queries
 
 Use `query()` and `query_properties()` for precise, composable filtering:

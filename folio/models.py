@@ -1,10 +1,11 @@
 """
-This module contains the OWLClass model and related pydantic models for the FOLIO package.
+OWL class/property models and immutable structural metadata for the FOLIO package.
 """
 
 # pylint: disable=fixme,no-member,unsupported-assignment-operation,too-many-lines,too-many-public-methods
 
 # imports
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Any
 
 # packages
@@ -24,6 +25,27 @@ NSMAP: Dict[Optional[str], str] = {
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xml": "http://www.w3.org/XML/1998/namespace",
 }
+
+
+@dataclass(frozen=True, slots=True)
+class OWLNode:
+    """Detached, read-only XML element snapshot, without RDF inference.
+
+    Tags and attribute names use expanded ``{namespace}local`` names. Immutable
+    tuples preserve attribute pairs and child order, including repeated predicates.
+    Text and tail retain whitespace; namespace prefix spelling is not preserved.
+    """
+
+    tag: str
+    attributes: tuple[tuple[str, str], ...] = ()
+    text: Optional[str] = None
+    tail: Optional[str] = None
+    children: tuple["OWLNode", ...] = ()
+
+    @property
+    def iri(self) -> Optional[str]:
+        """The literal rdf:about value, or None for nodes without one."""
+        return dict(self.attributes).get(f"{{{NSMAP['rdf']}}}about")
 
 
 class OWLObjectProperty(BaseModel):

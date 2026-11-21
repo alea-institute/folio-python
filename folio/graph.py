@@ -23,6 +23,7 @@ import time
 import traceback
 from collections import deque
 from collections.abc import Iterable
+from dataclasses import replace
 from enum import Enum
 from functools import cache, lru_cache
 from itertools import chain
@@ -58,7 +59,7 @@ from folio.expansion import (
 from folio.iri import MAX_IRI_ATTEMPTS, generate_iri
 from folio import kaos_search
 from folio.logger import get_logger
-from folio.models import OWLClass, OWLObjectProperty, NSMAP
+from folio.models import OWLClass, OWLNode, OWLObjectProperty, NSMAP
 
 
 class FOLIOTypes(Enum):
@@ -205,6 +206,27 @@ LLMSearchResult = Tuple[OWLClass, int | float] | Tuple[OWLClass, int | float, st
 
 
 # pylint: disable=too-many-instance-attributes
+def _capture_owl_node(node: lxml.etree._Element) -> OWLNode:
+    """Copy element values without retaining or changing the source XML tree."""
+    tag = node.tag
+    assert isinstance(tag, str)
+    text = node.text
+    children: list[OWLNode] = []
+    for child in node:
+        if isinstance(child.tag, str):
+            children.append(_capture_owl_node(child))
+        elif child.tail is not None:
+            # Omit non-elements, but keep their following mixed-content text.
+            if children:
+                previous = children[-1]
+                children[-1] = replace(
+                    previous, tail=(previous.tail or "") + child.tail
+                )
+            else:
+                text = (text or "") + child.tail
+    return OWLNode(tag, tuple(node.attrib.items()), text, node.tail, tuple(children))
+
+
 class FOLIO:
     """
     FOLIO (Federated Open Legal Information Ontology) Python library
@@ -264,6 +286,10 @@ class FOLIO:
         self.description: Optional[str] = None
         self.classes: List[OWLClass] = []
         self.object_properties: List[OWLObjectProperty] = []
+        self._datatype_properties: tuple[OWLNode, ...] = ()
+        self._annotation_properties: tuple[OWLNode, ...] = ()
+        self._named_individuals: tuple[OWLNode, ...] = ()
+        self._rdf_descriptions: tuple[OWLNode, ...] = ()
         self.iri_to_index: Dict[str, int] = {}
         self.iri_to_property_index: Dict[str, int] = {}
         self.label_to_index: Dict[str, List[int]] = {}
@@ -1052,9 +1078,34 @@ class FOLIO:
             elif child.tag == self.get_ns_tag("dc", "description"):
                 self.description = child.text
 
+    @property
+    def datatype_properties(self) -> tuple[OWLNode, ...]:
+        """Read-only snapshots of root owl:DatatypeProperty declarations, in order."""
+        return self._datatype_properties
+
+    @property
+    def annotation_properties(self) -> tuple[OWLNode, ...]:
+        """Read-only snapshots of root owl:AnnotationProperty declarations, in order."""
+        return self._annotation_properties
+
+    @property
+    def named_individuals(self) -> tuple[OWLNode, ...]:
+        """Read-only snapshots of root owl:NamedIndividual declarations, in order."""
+        return self._named_individuals
+
+    @property
+    def rdf_descriptions(self) -> tuple[OWLNode, ...]:
+        """Read-only snapshots of root rdf:Description declarations, in order."""
+        return self._rdf_descriptions
+
     def parse_node(self, node: lxml.etree._Element) -> None:
         """
         Parse a node in the FOLIO ontology.
+
+        Datatype/annotation properties, named individuals and RDF descriptions
+        append detached OWLNode records to their respective collections. Their
+        nested elements remain structural data, separate from classes, object
+        properties, indexes and triples.
 
         Switch on these types:
             - owl:Class
@@ -1078,17 +1129,13 @@ class FOLIO:
         elif node.tag == self.get_ns_tag("owl", "ObjectProperty"):
             self.parse_owl_object_property(node)
         elif node.tag == self.get_ns_tag("owl", "DatatypeProperty"):
-            # TODO: parse datatype property
-            pass
+            self._datatype_properties += (_capture_owl_node(node),)
         elif node.tag == self.get_ns_tag("owl", "AnnotationProperty"):
-            # TODO: parse annotation property
-            pass
+            self._annotation_properties += (_capture_owl_node(node),)
         elif node.tag == self.get_ns_tag("owl", "NamedIndividual"):
-            # TODO: parse named individual
-            pass
+            self._named_individuals += (_capture_owl_node(node),)
         elif node.tag == self.get_ns_tag("rdf", "Description"):
-            # TODO: parse rdf description
-            pass
+            self._rdf_descriptions += (_capture_owl_node(node),)
         else:
             LOGGER.debug("Unknown node type: %s", node.tag)
 
@@ -1109,6 +1156,13 @@ class FOLIO:
 
         # parse the buffer into a tree
         self.tree = lxml.etree.fromstring(buffer, parser=self.parser)
+
+        # Replace metadata only after valid XML is available. Held tuples remain
+        # snapshots across reparses, refreshes and direct parse_node() calls.
+        self._datatype_properties = ()
+        self._annotation_properties = ()
+        self._named_individuals = ()
+        self._rdf_descriptions = ()
 
         # parse node types
         for node in self.tree.iterchildren():
