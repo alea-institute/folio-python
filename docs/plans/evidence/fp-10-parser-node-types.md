@@ -68,7 +68,7 @@ The published integration test separately compares fresh full and metadata-free
 graphs, asserting identical counts, models, indexes, edges and triples. The
 original production XML is unchanged.
 
-Final implementation verification on Python 3.14.0:
+Implementation verification before review on Python 3.14.0:
 
 - Full suite, with `FOLIO_CORE_PYTHON` configured: **332 passed** in 30.39 seconds,
   including benchmarks and all three isolated wheel probes. No skips or network
@@ -80,3 +80,51 @@ The package remains at version `0.4.2`; publishing configuration is unchanged.
 No UI changed, so browser screenshots are not applicable. The controller should
 carry the README API description to the separate public documentation repository
 and supply the unavailable campaign excerpts before campaign acceptance.
+
+## Review and final verification
+
+The `ce-simplify-code` full team reviewed reuse, quality, efficiency, test value,
+and comments. No code changes were needed. Three optional comment-removal
+suggestions were declined to retain the module documentation convention and
+explanations of XML tail preservation and metadata reset ordering.
+
+The `ce-code-review` full review covered correctness, testing, project standards,
+and maintainability at `c291ca1`. Run `20261121-072602-5a220221` retained one
+finding: the mixed-content test saved its source bytes after capture, leaving
+capture-time mutation insufficiently tested. Both testing and maintainability
+identified the gap. Independent validation confirmed that clearing processing
+instruction tails after snapshot capture could still pass that test.
+
+The additive `test_direct_capture_preserves_source_xml` now serializes an
+independently constructed element before calling `parse_node()` and compares the
+same source afterward. It includes repeated definitions and mixed text around
+processing instructions. A verification-only in-memory mutant that clears the
+source tails fails at the new byte comparison; normal parsing passes. No existing
+test was edited to address the finding. No actionable review finding remains.
+
+The review dismissed a suggested tuple-builder/cache redesign: the published
+collection sizes copy only 811 prior references across 73 records, and no
+observed workload or requirement justified the extra state. Cross-model review
+was disabled by the checkout; campaign review remains the controller's gate.
+
+Final checks after the review fix:
+
+| Check | Result |
+|---|---|
+| Full suite on Python 3.14.0, including benchmarks and isolated core-only wheel | **333 passed**, zero skips, 30.08 seconds |
+| Deterministic coverage on Python 3.14.0 | **264 passed**, **80.98%**, above the 58% floor |
+| Deterministic coverage on Python 3.10.19 | **254 passed**, **71.55%**, above the 58% floor; 10 existing optional kaos skips because kaos requires Python 3.13+ |
+| Ruff lint/autofix and formatting; `ty check folio/` | **Passed** |
+| Existing test function ASTs against the starting commit | All **164 unchanged** |
+| Parser TODO check | **Zero** TODOs in `parse_node()` |
+| Public-safe diff and whitespace | No machine-local paths in changed documentation; `git diff --check` passed |
+
+Coverage used the repository's deterministic selection (`tests/` excluding
+`tests/test_folio.py`) with branch coverage and `--cov-fail-under=58`. Each Python
+environment had its own installed core-only wheel configured through
+`FOLIO_CORE_PYTHON`. The final test addition changes no package source, so the
+historical snapshot comparison and installed-wheel build remain applicable.
+
+The regression test already preserves the review lesson; no separate solution
+document is needed. Browser verification has no affected route for this library
+change. No push, PR, remote CI watch, release, or deployment was attempted.

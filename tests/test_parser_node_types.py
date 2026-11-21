@@ -173,6 +173,24 @@ def test_mixed_content_skips_processing_instructions_without_losing_text(local_g
     assert len(source.xpath(".//processing-instruction()")) == 5
 
 
+def test_direct_capture_preserves_source_xml(local_graph):
+    namespaces = " ".join(
+        f'xmlns:{prefix}="{uri}"' for prefix, uri in NSMAP.items() if prefix
+    )
+    source = lxml.etree.fromstring(
+        f'''<rdf:Description {namespaces} rdf:about="{BASE}source">before<?keep one?> middle<skos:definition xml:lang="en">First<?keep two?> definition</skos:definition> between<skos:definition xml:lang="fr">Deuxième</skos:definition> after<?keep three?> end</rdf:Description>'''.encode()
+    )
+    original = lxml.etree.tostring(source)
+    graph = local_graph()
+    assert graph.parse_node(source) is None
+    record = graph.rdf_descriptions[0]
+    assert record.iri == BASE + "source"
+    assert record.text == "before middle"
+    assert [child.text for child in record.children] == ["First definition", "Deuxième"]
+    assert [child.tail for child in record.children] == [" between", " after end"]
+    assert lxml.etree.tostring(source) == original
+
+
 @pytest.mark.parametrize("tag,accessor", NODE_KINDS)
 def test_read_only_detached_snapshots(local_graph, tag, accessor):
     graph = local_graph(
