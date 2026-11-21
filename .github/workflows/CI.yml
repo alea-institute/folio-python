@@ -59,6 +59,8 @@ jobs:
         run: |
             poetry build
       - name: Test with pytest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             poetry install --no-root
             PYTHONPATH=. poetry run pytest tests/

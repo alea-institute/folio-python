@@ -18,6 +18,7 @@ import asyncio
 import hashlib
 import importlib.util
 import json
+import os
 import time
 import traceback
 from collections import deque
@@ -335,6 +336,9 @@ class FOLIO:
         """
         List the branches in a GitHub repository.
 
+        For optional authentication, set the GITHUB_TOKEN or GH_TOKEN environment
+        variable. A non-empty GITHUB_TOKEN takes precedence over GH_TOKEN.
+
         Args:
             repo_owner (str): The owner of the GitHub repository.
             repo_name (str): The name of the GitHub repository.
@@ -345,8 +349,10 @@ class FOLIO:
         # GitHub API endpoint for listing branches
         url = f"{DEFAULT_GITHUB_API_URL}/repos/{repo_owner}/{repo_name}/branches"
 
-        # Set up headers with authentication
         headers = {"Accept": "application/vnd.github.v3+json"}
+        token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
 
         try:
             # setup client in context handler and make the request
